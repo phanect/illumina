@@ -36,6 +36,7 @@
     "@stdlib/error-to-json": "^0.2.2",
     "@tanstack/react-query": "^5.24.1",
     "@tanstack/react-query-devtools": "^5.62.3",
+    "@tanstack/react-router": "^1.144.0",
     "@tiptap/extension-code-block-lowlight": "^2.10.4",
     "@tiptap/extension-color": "^2.10.4",
     "@tiptap/extension-heading": "^2.10.4",
