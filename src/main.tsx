@@ -34,13 +34,6 @@ const queryClient = new QueryClient({
   },
 });
 
-// Log debug details
-console.info('__APP_NAME__', `"${__APP_NAME__}"`);
-console.info('__APP_VERSION__', `"${__APP_VERSION__}"`);
-console.info('__COMMIT_HASH__', `"${__COMMIT_HASH__}"`);
-console.info('__BUILD_DATE__', `"${__BUILD_DATE__}"`);
-
-// Render the app
 const rootElement = document.getElementById('root')!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);

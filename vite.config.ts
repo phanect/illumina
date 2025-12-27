@@ -4,20 +4,10 @@ import react from '@vitejs/plugin-react';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import { VitePWA } from 'vite-plugin-pwa';
 import ogPlugin from 'vite-plugin-open-graph';
-import { name, version, description } from './package.json';
-import { execSync } from 'child_process';
-
-const commitHash = execSync('git rev-parse --short HEAD').toString().trim();
-const buildDate = new Date().toISOString();
+import { name, description } from './package.json';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  define: {
-    __APP_NAME__: JSON.stringify(name),
-    __APP_VERSION__: JSON.stringify(version),
-    __COMMIT_HASH__: JSON.stringify(commitHash),
-    __BUILD_DATE__: JSON.stringify(buildDate),
-  },
   plugins: [
     TanStackRouterVite({
       routeFileIgnorePattern: 'components',

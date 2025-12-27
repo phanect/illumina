@@ -163,22 +163,6 @@ function RouteComponent() {
           />
           <p>{t('cleanHandles.description')}</p>
         </div>
-        <div className="p-2">
-          <div>
-            <Link href={`https://github.com/akari-blue/akari/commit/${__COMMIT_HASH__}`}>
-              {'commit: '}
-              {__COMMIT_HASH__}
-            </Link>
-          </div>
-          <div>
-            {'build date: '}
-            <TimeAgo date={__BUILD_DATE__} />
-          </div>
-          <div>
-            {'version: '}
-            {__APP_VERSION__}
-          </div>
-        </div>
         {isAuthenticated && (
           <div className="px-2 border-none">
             <Button className="w-full" onClick={logout}>
