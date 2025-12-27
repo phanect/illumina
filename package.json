@@ -1,6 +1,17 @@
 {
   "name": "akari",
   "description": "a bluesky client",
+  "license": "Apache-2.0",
+  "author": {
+    "name": "Jumpei Ogawa",
+    "url": "https://phanective.org"
+  },
+  "contributors": [
+    {
+      "name": "Luna",
+      "url": "https://github.com/ImLunaHey"
+    }
+  ],
   "private": true,
   "version": "1.1.1",
   "type": "module",

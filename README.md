@@ -1,4 +1,4 @@
-# Akari
+# Illumina
 
 ![image](https://github.com/user-attachments/assets/e7c2ff26-1865-4e19-8f40-607eeeafebb4)
 <sm>Source: https://bsky.app/profile/fettstorch.com/post/3leti7crg2k2b</sm>
@@ -20,6 +20,14 @@ To set up Akari for development:
 3. Install Dependencies: Run `npm ci` to install dependencies without updating package versions.
 4. Run the Development Server: Use `npm run dev` to start the development server.
 
-## License
+## License & Credits
 
-Akari is licensed under the CC0-1.0 license, meaning contributions are essentially public domain.
+Licensed under the [Apache License 2.0](./LICENSE.txt).
+
+This repository includes the code derived from the following opensource projects:
+
+- [Akari](https://github.com/akari-blue/akari) licensed under [CC0 1.0 Universal](./docs/licenses/akari.txt), created by [Luna](https://github.com/ImLunaHey) and its contributors.
+
+See [full contributor list for this project](https://github.com/phanect/illumina)
+
+Copyright &copy; 2025-present Jumpei Ogawa
