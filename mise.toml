@@ -2,6 +2,19 @@
 node = "24"
 
 [tasks]
+  [tasks."dev"]
+  run = "vite dev --port=5173"
+
+  [tasks.testui]
+  run = { tasks = [ "dev", "testui:*" ]}
+  env = { DOM_PREVIEW = "true" }
+
+  [tasks."testui:unit"]
+  run = "vitest --ui"
+
+  [tasks."testui:dom-preview"]
+  run = "dom-preview --proxy-to=http://localhost:5173"
+
   [tasks.clean]
   run = "git clean -dX --exclude=\"!.env\" --exclude=\"!mise.local.toml\" --force"
 
