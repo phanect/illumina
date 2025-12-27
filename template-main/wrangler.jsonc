@@ -1,0 +1,33 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+
+  "name": "%CLOUDFLARE_PROJECT_NAME%",
+  // TODO Set the latest compatibility date
+  // See: https://developers.cloudflare.com/workers/configuration/compatibility-dates/#allow-specifying-a-custom-port-when-making-a-subrequest-with-the-fetch-api
+  "compatibility_date": "2025-09-25",
+  "compatibility_flags": [ "nodejs_compat" ], // TODO Remove this if Node.js API is not required
+
+  // Smart Placement
+  // https://developers.cloudflare.com/pages/functions/smart-placement/#smart-placement
+  "placement": {
+    "mode": "smart"
+  },
+
+  "assets": {
+    "directory": "./dist"
+  },
+
+  "env": {
+    "production": {
+      "vars": {
+        "NODE_ENV": "production",
+        "SERVER_ENV": "production"
+      },
+    },
+    "staging": {
+      "vars": {
+        "SERVER_ENV": "staging"
+      }
+    }
+  }
+}

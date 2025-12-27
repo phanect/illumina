@@ -1,0 +1,19 @@
+#!/usr/bin/env nu
+
+#MISE description="Example shell script in Nushell"
+
+use ../_libs *
+
+const tasksDirPath = path self | path dirname | path join ".."
+const projectRootPath = $tasksDirPath | path join "../.." | path expand
+
+if not ("SERVER_ENV" in $env) {
+  print "[ERROR] The environment variable SERVER_ENV is missing. If you are on your local machine, copy mise.local.example.toml to mise.local.toml, or set `SERVER_ENV=development` manually."
+  exit 1
+}
+
+if ($env.SERVER_ENV == "development") {
+  container compose up -d --wait
+}
+
+# TODO add script

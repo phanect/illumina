@@ -1,0 +1,44 @@
+# TODO replace `%productname%` with the product name in lower case
+
+name: %productname%-local
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: %productname%
+      POSTGRES_PASSWORD: %productname%
+      POSTGRES_DB: %productname%
+      # With this configuration, password is no longer required to login PostgreSQL
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432
+    volumes:
+      - %productname%-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--username=%productname%", "--dbname=%productname%", "--host=localhost", "--port=5432" ]
+      interval: 1s
+      timeout: 1m
+
+  storage:
+    image: minio/minio:latest
+    restart: always
+    environment:
+      MINIO_ROOT_USER: %productname%
+      MINIO_ROOT_PASSWORD: %productname%
+    ports:
+      - 9000:9000 # API
+      - 9001:9001 # Admin console
+    command: [ "server", "/data", "--console-address", ":9001" ]
+    volumes:
+      - %productname%-storage:/data
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 1s
+      timeout: 1m
+
+volumes:
+  %productname%-db: {}
+  %productname%-storage: {}

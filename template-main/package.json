@@ -1,0 +1,59 @@
+{
+  "name": "%NAME%", // TODO
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [], // TODO Add this if the project is an npm package
+  "author": "Jumpei Ogawa (https://phanective.org)", // TODO Update here if necessary
+  // TODO Choose one or another
+  "license": "Apache-2.0",
+  "license": "MIT",
+  "license": "CC0-1.0",
+  "license": "AGPL-3.0",
+  "license": "UNLICENSED",
+
+  "private": true, // TODO remove this if the project is an npm package
+  "type": "module",
+
+  // ▼▼ TODO Add this section if the project is an npm package ▼▼
+  "main": "./dist/main.cjs",
+  "module": "./dist/main.js",
+  "types": "./dist/main.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/main.d.ts",
+        "default": "./dist/main.js"
+      },
+      "require": "./dist/main.cjs"
+    }
+  },
+  // ▲▲ TODO Add this section if the project is an npm package ▲▲
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.940.0", // TODO Required if you use src/storage.ts
+    "drizzle-orm": "0.44.7" // TODO for Drizzle
+  },
+  // TODO The package version is probably outdated, so check with `npm outdated` and update them.
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240909.0", // TODO for Cloudflare-based projects
+    "@phanect/configs": "latest",
+    "@phanect/lint": "latest",
+    "@phanect/lint-vue": "latest",
+    "@phanect/lint-svelte": "latest",
+    "@phanect/lint-astro": "latest",
+    "@types/node": "^24.0.3",
+    "drizzle-kit": "0.31.6", // TODO for Drizzle
+    "eslint": "^9.11.0",
+    "jiti": "latest",
+    "tsdown": "0.16.6", // TODO for npm packages which requires bundling
+    "typescript": "^5.6.2",
+    "vite": "^7.0.0", // TODO for frontend projects
+    "vitest": "^4.0.4",
+    "wrangler": "^4.0.0" // TODO for Cloudflare-based projects
+  },
+  "engines": {
+    // TODO Choose one or another
+    "node": "^24.0.0", // For apps
+    "node": "^20.11.0 || ^22.16.0 || >=24.0.0", // For npm packages
+  },
+  "packageManager": "pnpm@10.5.1+sha512.c424c076bd25c1a5b188c37bb1ca56cc1e136fbf530d98bcb3289982a08fd25527b8c9c4ec113be5e3393c39af04521dd647bcf1d0801eaf8ac6a7b14da313af"
+}

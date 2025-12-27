@@ -1,0 +1,41 @@
+{
+  // TODO user @phanect/configs/ts/nodejs if the project is a Node.js project
+  "extends": [
+    "@phanect/configs/ts",
+    // TODO add for npm packages (both for frontend and Node.js)
+    "@phanect/configs/ts/addons/npm"
+  ],
+  "compilerOptions": {
+    // TODO add `dom` for frontend projects.
+    // `esnext` is added by default, so you don't have to add `lib` if you only need `esnext`.
+    "lib": [
+      "esnext",
+      "dom"
+    ],
+    "types": [
+      // TODO add for Cloudflare Workers projects
+      "@cloudflare/workers-types",
+      // TODO add for projects using Vite
+      "vite/client"
+    ],
+    // add for Hono projects
+    "jsxImportSource": "hono/jsx"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.jsx"
+  ],
+  "exclude": [
+    "node_modules"
+    // TODO add the following directories if you use any framework(s)
+    // ".next",
+    // ".nuxt",
+    // .svelte-kit/
+    // .astro/
+    // "out",
+    // "dist",
+  ]
+}
