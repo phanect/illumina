@@ -101,7 +101,7 @@ function Profile() {
   const { experiments } = useSettings();
   const { session } = useBlueskyStore();
   const { t } = useTranslation(['app', 'profile']);
-  const [selectedTab, setSelectedTab] = useState<string | null>('posts');
+  const [selectedTab, setSelectedTab] = useState<string | null>("media");
   const blocked = profile?.viewer?.blockingByList;
 
   if (isLoading) return <Loading />;
@@ -165,18 +165,18 @@ function Profile() {
             <StickyHeader backButton={false} className="border-none p-0">
               <TabList label="Profile tabs">
                 {[
-                  { name: t('profile:tabs.posts'), id: 'posts' },
                   { name: t('profile:tabs.media'), id: 'media' },
+                  { name: t('profile:tabs.posts'), id: 'posts' },
                 ].map(({ name, id }) => (
                   <Tab name={name} id={id} selectedTab={selectedTab} key={id} />
                 ))}
               </TabList>
             </StickyHeader>
-            <Ariakit.TabPanel tabId="posts">
-              <Posts />
-            </Ariakit.TabPanel>
             <Ariakit.TabPanel tabId="media">
               <Media />
+            </Ariakit.TabPanel>
+            <Ariakit.TabPanel tabId="posts">
+              <Posts />
             </Ariakit.TabPanel>
           </Ariakit.TabProvider>
         )}
