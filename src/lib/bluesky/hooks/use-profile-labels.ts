@@ -1,9 +1,9 @@
-import { BskyAgent, moderateProfile, ModerationOpts } from '@atproto/api';
+import { AtpAgent, moderateProfile, ModerationOpts } from '@atproto/api';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 
 interface ProfileLabelsConfig {
-  agent: BskyAgent;
+  agent: AtpAgent;
   did: string | null | undefined;
   handle: string | null | undefined;
 }
