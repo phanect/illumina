@@ -11,7 +11,6 @@ import { FollowButton } from '@/components/ui/follow-button';
 import { FormattedNumber } from '@/components/ui/formatted-number';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { forwardRef, HtmlHTMLAttributes, Ref, useState } from 'react';
-import { NotImplementedBox } from '@/components/ui/not-implemented-box';
 import { Virtuoso } from 'react-virtuoso';
 import { Loading } from '@/components/ui/loading';
 import { NotFound } from '@/components/ui/not-found';
@@ -34,27 +33,6 @@ const List = forwardRef(function List(props: HtmlHTMLAttributes<HTMLDivElement>,
   return <div ref={ref} {...props} className="flex flex-col divide-y" />;
 });
 
-function All() {
-  const { handle } = Route.useParams();
-  const { data, isLoading, fetchNextPage } = useAuthorFeed({ handle });
-  const feed = data?.pages.flatMap((page) => page.feed);
-
-  if (isLoading) return <Loading />;
-  if (!feed) return null;
-
-  return (
-    <Virtuoso
-      useWindowScroll
-      totalCount={feed.length}
-      endReached={() => fetchNextPage()}
-      components={{
-        List,
-      }}
-      itemContent={(index: number) => <PostCard key={feed[index]?.post.uri} post={feed[index]?.post as BSkyPost} />}
-    />
-  );
-}
-
 function Posts() {
   const { handle } = Route.useParams();
   const { data, isLoading, fetchNextPage } = useAuthorFeed({ handle });
@@ -68,64 +46,6 @@ function Posts() {
     ?.filter(({ post }) => !(post.record as BSkyPost['record']).reply)
     // Filter out reposts of other users
     ?.filter(({ post }) => post.author.handle === handle);
-
-  return (
-    <Virtuoso
-      useWindowScroll
-      totalCount={filteredPosts.length}
-      endReached={() => fetchNextPage()}
-      components={{
-        List,
-      }}
-      itemContent={(index: number) => (
-        <ErrorBoundary>
-          <PostCard key={filteredPosts[index]?.post.uri} post={filteredPosts[index]?.post as BSkyPost} />
-        </ErrorBoundary>
-      )}
-    />
-  );
-}
-
-function Reposts() {
-  const { handle } = Route.useParams();
-  const { data, isLoading, fetchNextPage } = useAuthorFeed({ handle });
-  const feed = data?.pages.flatMap((page) => page.feed);
-
-  if (isLoading) return <Loading />;
-  if (!feed) return null;
-
-  const filteredPosts = feed
-    // Filter only reposts
-    ?.filter(({ post }) => post.author.handle !== handle);
-
-  return (
-    <Virtuoso
-      useWindowScroll
-      totalCount={filteredPosts.length}
-      endReached={() => fetchNextPage()}
-      components={{
-        List,
-      }}
-      itemContent={(index: number) => (
-        <ErrorBoundary>
-          <PostCard key={filteredPosts[index]?.post.uri} post={filteredPosts[index]?.post as BSkyPost} />
-        </ErrorBoundary>
-      )}
-    />
-  );
-}
-
-function Replies() {
-  const { handle } = Route.useParams();
-  const { data, isLoading, fetchNextPage } = useAuthorFeed({ handle });
-  const feed = data?.pages.flatMap((page) => page.feed);
-
-  if (isLoading) return <Loading />;
-  if (!feed) return null;
-
-  const filteredPosts = feed
-    // Filter to only replies
-    ?.filter(({ post }) => (post.record as BSkyPost['record']).reply);
 
   return (
     <Virtuoso
@@ -245,49 +165,18 @@ function Profile() {
             <StickyHeader backButton={false} className="border-none p-0">
               <TabList label="Profile tabs">
                 {[
-                  {
-                    name: t('profile:tabs.all'),
-                    id: 'all',
-                  },
                   { name: t('profile:tabs.posts'), id: 'posts' },
-                  { name: t('profile:tabs.reposts'), id: 'reposts' },
-                  { name: t('replies'), id: 'replies' },
                   { name: t('profile:tabs.media'), id: 'media' },
-                  { name: t('profile:tabs.likes'), id: 'likes' },
-                  { name: t('profile:tabs.feeds'), id: 'feeds' },
-                  { name: t('profile:tabs.starterpacks'), id: 'starter-packs' },
-                  { name: t('profile:tabs.lists'), id: 'lists' },
                 ].map(({ name, id }) => (
                   <Tab name={name} id={id} selectedTab={selectedTab} key={id} />
                 ))}
               </TabList>
             </StickyHeader>
-            <Ariakit.TabPanel tabId="all">
-              <All />
-            </Ariakit.TabPanel>
             <Ariakit.TabPanel tabId="posts">
               <Posts />
             </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="reposts">
-              <Reposts />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="replies">
-              <Replies />
-            </Ariakit.TabPanel>
             <Ariakit.TabPanel tabId="media">
               <Media />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="likes">
-              <NotImplementedBox type="likes" />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="feeds">
-              <NotImplementedBox type="feeds" />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="starter-packs">
-              <NotImplementedBox type="starter-packs" />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="lists">
-              <NotImplementedBox type="lists" />
             </Ariakit.TabPanel>
           </Ariakit.TabProvider>
         )}
