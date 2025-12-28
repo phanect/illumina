@@ -17,7 +17,6 @@
   "dependencies": {
     "@ariakit/react": "^0.4.15",
     "@atproto/api": "^0.13.25",
-    "@hookform/resolvers": "^3.9.1",
     "@radix-ui/react-accordion": "^1.2.2",
     "@radix-ui/react-avatar": "^1.1.2",
     "@radix-ui/react-checkbox": "^1.1.3",
@@ -106,7 +105,6 @@
     "globals": "^15.9.0",
     "happy-dom": "^15.11.7",
     "msw": "^2.7.0",
-    "npm-run-all": "^4.1.5",
     "postcss": "^8.4.49",
     "react-helmet": "^6.1.0",
     "tailwind-scrollbar-utilities": "^0.2.0",
