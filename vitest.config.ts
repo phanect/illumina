@@ -9,7 +9,6 @@ export default defineConfig({
     globals: true,
     css: true,
     coverage: {
-      all: true,
       enabled: true,
       include: ['src/**/*'],
       cleanOnRerun: false,
