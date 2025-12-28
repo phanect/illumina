@@ -1,10 +1,10 @@
-import { BskyAgent, moderatePost, ModerationOpts } from '@atproto/api';
+import { AtpAgent, moderatePost, ModerationOpts } from '@atproto/api';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo } from 'react';
 import { BSkyPost } from '../types/bsky-post';
 
 interface PostLabelsConfig {
-  agent: BskyAgent;
+  agent: AtpAgent;
   post: BSkyPost | null | undefined;
 }
 

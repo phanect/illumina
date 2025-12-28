@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { AtpSessionData, BskyAgent } from '@atproto/api';
+import { AtpSessionData, AtpAgent } from '@atproto/api';
 
 export type BlueskyCredentials = {
   handle: string;
@@ -21,7 +21,7 @@ type Session = AtpSessionData & {
 };
 
 type BlueskyState = {
-  agent: BskyAgent;
+  agent: AtpAgent;
   isAuthenticated: boolean;
   session: Session | null;
   login: (credentials: BlueskyCredentials) => Promise<void>;
@@ -35,11 +35,11 @@ const GUEST_ENDPOINT = 'https://public.api.bsky.app';
 export const useBlueskyStore = create<BlueskyState>()(
   persist(
     (set, get) => ({
-      agent: new BskyAgent({ service: GUEST_ENDPOINT }),
+      agent: new AtpAgent({ service: GUEST_ENDPOINT }),
       isAuthenticated: false,
 
       login: async (credentials: BlueskyCredentials) => {
-        const agent = new BskyAgent({ service: AUTHENTICATED_ENDPOINT });
+        const agent = new AtpAgent({ service: AUTHENTICATED_ENDPOINT });
         const response = await agent.login({
           identifier: credentials.handle,
           password: credentials.password,
@@ -60,7 +60,7 @@ export const useBlueskyStore = create<BlueskyState>()(
       },
 
       logout: () => {
-        set({ agent: new BskyAgent({ service: GUEST_ENDPOINT }), isAuthenticated: false, session: null });
+        set({ agent: new AtpAgent({ service: GUEST_ENDPOINT }), isAuthenticated: false, session: null });
         // reload the page after logout
         window.location.reload();
       },
@@ -69,12 +69,12 @@ export const useBlueskyStore = create<BlueskyState>()(
         const { session, isAuthenticated } = get();
         if (session && !isAuthenticated) {
           try {
-            const agent = new BskyAgent({ service: AUTHENTICATED_ENDPOINT });
+            const agent = new AtpAgent({ service: AUTHENTICATED_ENDPOINT });
             await agent.resumeSession(session);
             set({ agent, isAuthenticated: true });
           } catch (error) {
             console.error('Failed to restore session:', error);
-            set({ agent: new BskyAgent({ service: GUEST_ENDPOINT }), isAuthenticated: false, session: null });
+            set({ agent: new AtpAgent({ service: GUEST_ENDPOINT }), isAuthenticated: false, session: null });
           }
         }
       },
