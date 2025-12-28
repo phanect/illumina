@@ -3,6 +3,7 @@ import { createLazyFileRoute } from '@tanstack/react-router';
 import { useProfile } from '@/lib/bluesky/hooks/use-profile';
 import { useAuthorFeed } from '@/lib/bluesky/hooks/use-author-feed';
 import { PostCard } from '@/components/post-card';
+import { Thumbnail } from "@/components/thumbnail.tsx";
 import { BSkyPost } from '@/lib/bluesky/types/bsky-post';
 import { useTranslation } from 'react-i18next';
 import { useSettings } from '@/hooks/use-setting';
@@ -11,7 +12,7 @@ import { FollowButton } from '@/components/ui/follow-button';
 import { FormattedNumber } from '@/components/ui/formatted-number';
 import { FormattedText } from '@/components/ui/formatted-text';
 import { forwardRef, HtmlHTMLAttributes, Ref, useState } from 'react';
-import { Virtuoso } from 'react-virtuoso';
+import { Virtuoso, VirtuosoGrid } from 'react-virtuoso';
 import { Loading } from '@/components/ui/loading';
 import { NotFound } from '@/components/ui/not-found';
 import { Helmet } from 'react-helmet';
@@ -29,7 +30,7 @@ export const Route = createLazyFileRoute('/profile/$handle/')({
   component: Profile,
 });
 
-const List = forwardRef(function List(props: HtmlHTMLAttributes<HTMLDivElement>, ref: Ref<HTMLDivElement>) {
+const PostList = forwardRef(function PostList(props: HtmlHTMLAttributes<HTMLDivElement>, ref: Ref<HTMLDivElement>) {
   return <div ref={ref} {...props} className="flex flex-col divide-y" />;
 });
 
@@ -53,7 +54,7 @@ function Posts() {
       totalCount={filteredPosts.length}
       endReached={() => fetchNextPage()}
       components={{
-        List,
+        List: PostList,
       }}
       itemContent={(index: number) => (
         <ErrorBoundary>
@@ -63,6 +64,17 @@ function Posts() {
     />
   );
 }
+
+const ThumbnailList = forwardRef(function ThumbnailList(props: HtmlHTMLAttributes<HTMLDivElement>, ref: Ref<HTMLDivElement>) {
+  return (
+    <div
+      ref={ref}
+      {...props}
+      style={{ padding: "2em" }} // using `style` to overwrite paddings from `props`
+      className="flex flex-wrap justify-start gap-6"
+    />
+  )
+});
 
 function Media() {
   const { handle } = Route.useParams();
@@ -79,17 +91,15 @@ function Media() {
     ?.filter(({ post }) => (post.record as any).embed?.$type === 'app.bsky.embed.images');
 
   return (
-    <Virtuoso
+    <VirtuosoGrid
       useWindowScroll
       totalCount={filteredPosts.length}
       endReached={() => fetchNextPage()}
       components={{
-        List,
+        List: ThumbnailList,
       }}
       itemContent={(index: number) => (
-        <ErrorBoundary>
-          <PostCard key={filteredPosts[index]?.post.uri} post={filteredPosts[index]?.post as BSkyPost} />
-        </ErrorBoundary>
+        <Thumbnail key={filteredPosts[index]?.post.uri} post={filteredPosts[index]?.post as BSkyPost} />
       )}
     />
   );
