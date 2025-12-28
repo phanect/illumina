@@ -3,7 +3,7 @@ node = "24"
 
 [tasks]
   [tasks."dev"]
-  run = "vite dev --port=5173"
+  run = "vite dev"
 
   [tasks.build]
   run = "vite build"
