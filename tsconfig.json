@@ -1,26 +1,5 @@
 {
-  "extends": "@phanect/configs/ts",
-  "compilerOptions": {
-    "target": "ES2023",
-    "lib": [ "ESNext", "DOM", "DOM.Iterable" ],
-
-    /* Bundler mode */
-    "moduleDetection": "force",
-    "jsx": "react-jsx",
-
-    /* Linting */
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [ "./src/*" ]
-    },
-    "types": [
-      "vite/client",
-      "vite-plugin-pwa/client"
-    ]
-  },
+  "extends": "@phanect/configs/ts/nodejs",
   "include": [
     "./**/*.js",
     "./**/*.mjs",
@@ -33,9 +12,6 @@
   ],
   "exclude": [
     "node_modules/",
-    "coverage/",
-    "dev-dist/",
-    "dist/",
-    "html/"
+    "projects/"
   ]
 }

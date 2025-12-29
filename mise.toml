@@ -1,12 +1,14 @@
+experimental_monorepo_root = true
+
 [tools]
 node = "24"
 
 [tasks]
   [tasks."dev"]
-  run = "vite dev"
+  run = { task = "//projects/...:dev" }
 
   [tasks.build]
-  run = "vite build"
+  run = { task = "//projects/...:build" }
 
   [tasks.lint]
   run = [
@@ -14,7 +16,7 @@ node = "24"
   ]
 
   [tasks."lint:types"]
-  run = "tsc --noEmit"
+  run = { task = "//projects/...:lint:types" }
 
   [tasks."lint:es"]
   run = "eslint"
@@ -34,21 +36,13 @@ node = "24"
   run = "stylelint --fix \"**/*.{css,scss}\""
 
   [tasks.test]
-  run = "vitest run"
+  run = { task = "//projects/...:test" }
 
   [tasks.test-lang]
-  run = "vitest test lang"
-  env = { CHECK_LANGUAGES = "true" }
+  run = { task = "//projects/...:test-lang" }
 
   [tasks.testui]
-  run = { tasks = [ "dev", "testui:*" ]}
-  env = { DOM_PREVIEW = "true" }
-
-  [tasks."testui:unit"]
-  run = "vitest --ui"
-
-  [tasks."testui:dom-preview"]
-  run = "dom-preview --proxy-to=http://localhost:5173"
+  run = { task = "//projects/...:testui" }
 
   [tasks.clean]
   run = "git clean -dX --exclude=\"!.env\" --exclude=\"!mise.local.toml\" --force"
@@ -73,8 +67,10 @@ _.path = "{{config_root}}/node_modules/.bin"
 
 [settings]
 jobs = 8
+task.monorepo_depth = 2
 npm.package_manager = "pnpm"
 
-# Required for hooks as of 2025.10
+# Required for hooks & monorepo tasks as of 2026.01
 # https://mise.jdx.dev/hooks.html
+# https://mise.jdx.dev/tasks/monorepo.html
 experimental = true

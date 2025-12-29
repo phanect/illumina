@@ -1,0 +1,9 @@
+dist-ssr
+*.local
+html
+dev-dist
+coverage
+.vitest-preview
+
+# Tanstack router
+/src/routeTree.gen.ts
