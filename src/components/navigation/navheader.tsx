@@ -1,6 +1,6 @@
 import { useLocation } from '@tanstack/react-router';
 import { HashIcon, SettingsIcon } from 'lucide-react';
-import AkariLogo from '@/../public/images/logo.svg';
+import Logo from '@/../public/images/logo.svg';
 import { useAuth } from '@/lib/bluesky/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
@@ -25,7 +25,7 @@ export const NavHeader = () => {
           className="hover:bg-transparent active:scale-90"
         >
           <Image
-            src={AkariLogo}
+            src={Logo}
             alt="Illumina"
             classNames={{
               image: 'size-12',
