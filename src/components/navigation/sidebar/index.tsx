@@ -14,7 +14,7 @@ import { NotificationsLink } from './notifications-link';
 import { ProfileLink } from './profile-link';
 import { SettingsLink } from './settings-link';
 import { useLocation } from '@tanstack/react-router';
-import AkariLogo from '@/../public/images/logo.svg';
+import Logo from '@/../public/images/logo.svg';
 import { Image } from '@/components/ui/image';
 
 export const Sidebar = () => {
@@ -52,7 +52,7 @@ export const Sidebar = () => {
           ) : (
             <div className="flex flex-row items-center gap-2">
               <Image
-                src={AkariLogo}
+                src={Logo}
                 alt="Illumina"
                 classNames={{
                   image: 'size-12',

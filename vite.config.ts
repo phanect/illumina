@@ -42,7 +42,7 @@ export default defineConfig({
       },
       includeAssets: ['public/images/**/*'],
       manifest: {
-        id: 'blue.akari',
+        id: "org.phanective.illumina",
         name,
         short_name: name + (process.env.NODE_ENV === 'development' ? ' (Dev)' : ''),
         description,
