@@ -1,1 +1,1 @@
-export const appName = 'akari';
+export const appName = "Illumina";

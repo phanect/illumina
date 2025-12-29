@@ -53,7 +53,7 @@ export const Sidebar = () => {
             <div className="flex flex-row items-center gap-2">
               <Image
                 src={AkariLogo}
-                alt="Akari"
+                alt="Illumina"
                 classNames={{
                   image: 'size-12',
                 }}
