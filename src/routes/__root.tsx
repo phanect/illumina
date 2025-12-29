@@ -92,7 +92,7 @@ function Root() {
           <div className="flex mx-auto lg:flex-row lg:w-fit lg:gap-2">
             <Navbar />
             <div className="flex justify-center mx-auto">
-              <div className="flex flex-col sm:border-x w-screen md:w-137.5">
+              <div className="flex flex-col sm:border-x w-screen md:max-w-5xl">
                 <ErrorBoundary>
                   <Outlet key="app" />
                 </ErrorBoundary>
