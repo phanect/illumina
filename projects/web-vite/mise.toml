@@ -1,0 +1,32 @@
+[tasks]
+  [tasks."dev"]
+  run = "vite dev"
+
+  [tasks.build]
+  run = "vite build"
+
+  [tasks."lint:types"]
+  run = "tsc --noEmit"
+
+  [tasks.test]
+  run = "vitest run"
+
+  [tasks.test-lang]
+  run = "vitest test lang"
+  env = { CHECK_LANGUAGES = "true" }
+
+  [tasks.testui]
+  run = { tasks = [ "dev", "testui:*" ]}
+  env = { DOM_PREVIEW = "true" }
+
+  [tasks."testui:unit"]
+  run = "vitest --ui"
+
+  [tasks."testui:dom-preview"]
+  run = "dom-preview --proxy-to=http://localhost:5173"
+
+[env]
+_.path = "./node_modules/.bin"
+
+[settings]
+jobs = 8
