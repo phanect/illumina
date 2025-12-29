@@ -84,11 +84,13 @@ function Media() {
   if (isLoading) return <Loading />;
   if (!feed) return null;
 
-  const filteredPosts = feed
-    // Filter to only media
+  // Filter to only media
+  const filteredPosts = feed?.filter(({ post, reason }) =>
     // TODO: fix this
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ?.filter(({ post }) => (post.record as any).embed?.$type === 'app.bsky.embed.images');
+    (post.record as any).embed?.$type === "app.bsky.embed.images"
+    && reason?.$type !== "app.bsky.feed.defs#reasonRepost"
+  );
 
   return (
     <VirtuosoGrid
