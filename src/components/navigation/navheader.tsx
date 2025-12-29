@@ -26,7 +26,7 @@ export const NavHeader = () => {
         >
           <Image
             src={AkariLogo}
-            alt="Akari"
+            alt="Illumina"
             classNames={{
               image: 'size-12',
             }}
