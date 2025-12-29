@@ -75,7 +75,9 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
     const langs = post.record.langs?.filter((lang) => lang.split('-')[0] !== currentLanguage) ?? [];
     const source = (langs.length === 1 ? langs[0] : 'auto') ?? 'auto';
     toast.info('Translating post text from ' + source + ' to ' + currentLanguage);
-    const response = await fetch(isProd ? 'https://translate.akari.blue' : 'http://localhost:8787', {
+
+    // TODO replace prod URL
+    const response = await fetch(isProd ? 'http://localhost:8787' : 'http://localhost:8787', {
       method: 'POST',
       body: JSON.stringify({
         q: post.record.text,
