@@ -68,7 +68,7 @@ const BetterContext = ({ context }: { context?: string }) => {
 const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTranslatedText: (text: string) => void }) => {
   const { trackEvent } = usePlausible();
   const isAuthenticated = useBlueskyStore((state) => state.isAuthenticated);
-  const isProd = window.location.hostname === 'akari.blue';
+  const isProd = window.location.hostname === "illumina.phanective.org";
   const handleTranslate = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     const currentLanguage = navigator.language.split('-')[0];
@@ -133,7 +133,7 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
           onClick={(event) => {
             event.stopPropagation();
             navigator.clipboard.writeText(
-              `https://akari.blue/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`,
+              `https://illumina.phanective.org/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`,
             );
             toast.info('Copied post link to clipboard');
             trackEvent('copyToClipboard', { type: 'post-link' });
