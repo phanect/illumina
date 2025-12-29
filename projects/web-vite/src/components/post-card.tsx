@@ -17,6 +17,7 @@ import { memo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import TimeAgo from "react-timeago-i18n";
 import { toast } from "sonner";
+import { baseURL, hostname } from "@/config.ts";
 import { usePlausible } from "@/hooks/use-plausible";
 import { usePostLabels } from "@/lib/bluesky/hooks/use-post-labels";
 import { useUnlike } from "@/lib/bluesky/hooks/use-unlike";
@@ -77,7 +78,7 @@ const BetterContext = ({ context }: { context?: string; }) => {
 const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTranslatedText: (text: string) => void; }) => {
   const { trackEvent } = usePlausible();
   const isAuthenticated = useBlueskyStore((state) => state.isAuthenticated);
-  const isProd = window.location.hostname === "illumina.phanective.org";
+  const isProd = window.location.hostname === hostname;
   const handleTranslate = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
     const currentLanguage = navigator.language.split("-")[0];
@@ -144,7 +145,7 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
           onClick={(event) => {
             event.stopPropagation();
             navigator.clipboard.writeText(
-              `https://illumina.phanective.org/profile/${ post.author.handle }/post/${ post.uri.split("/").pop() }`,
+              `${ baseURL }/profile/${ post.author.handle }/post/${ post.uri.split("/").pop() }`,
             );
             toast.info("Copied post link to clipboard");
             trackEvent("copyToClipboard", { type: "post-link" });
