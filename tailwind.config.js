@@ -1,3 +1,6 @@
+import tailwindPlugins from "tailwindcss/plugin";
+import animate from "tailwindcss-animate";
+
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
@@ -76,11 +79,8 @@ export default {
     },
   },
   plugins: [
-    require('tailwindcss-animate'),
-    require('tailwindcss-safe-area'),
-    require('tailwind-scrollbar-hide'),
-    require('tailwind-scrollbar-utilities').scrollbarGutter(),
-    require('tailwindcss/plugin')(({ addUtilities }) => {
+    animate,
+    tailwindPlugins(({ addUtilities }) => {
       addUtilities({
         '.overflow-anchor-none': {
           overflowAnchor: 'none',
