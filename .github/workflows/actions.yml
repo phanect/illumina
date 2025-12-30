@@ -48,7 +48,7 @@ jobs:
 
       - run: mise test
 
-  check-language:
+  test-langs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -57,5 +57,5 @@ jobs:
           install: true
           cache: true
 
-      - run: CHECK_LANGUAGES=true npm run test lang
+      - run: mise test-lang
         continue-on-error: true
