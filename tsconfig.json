@@ -16,6 +16,8 @@
 
     /* Linting */
     "strict": true,
+    "allowJs": true,
+    "checkJs": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -31,9 +33,13 @@
     ]
   },
   "include": [
+    "./**/*.js",
+    "./**/*.mjs",
+    "./**/*.cjs",
     "./**/*.ts",
     "./**/*.mts",
     "./**/*.cts",
+    "./**/*.jsx",
     "./**/*.tsx"
   ]
 }

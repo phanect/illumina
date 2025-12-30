@@ -2,7 +2,7 @@ import tailwindPlugins from "tailwindcss/plugin";
 import animate from "tailwindcss-animate";
 
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   darkMode: "selector",
   theme: {
@@ -92,3 +92,5 @@ export default {
     }),
   ],
 };
+
+export default config;
