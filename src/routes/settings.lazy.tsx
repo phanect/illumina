@@ -10,8 +10,6 @@ import { Helmet } from 'react-helmet';
 import { Moon, Sun } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useTheme } from '@/components/theme-provider/use-theme';
-import { Link } from '@/components/ui/link';
-import TimeAgo from 'react-timeago-i18n';
 import { StickyHeader } from '@/components/sticky-header';
 
 export const Route = createLazyFileRoute('/settings')({
