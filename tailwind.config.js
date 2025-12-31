@@ -90,14 +90,5 @@ export default {
         },
       });
     }),
-    require('tailwindcss-view-transitions')({
-      styles: {
-        root: { animation: 'none' },
-        'main-content': {
-          old: { animationDuration: '1s' },
-          new: { animationDuration: '3s' },
-        },
-      },
-    }),
   ],
 };

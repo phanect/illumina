@@ -78,7 +78,7 @@ function Root() {
         dir={dir}
         lang={language}
         className={cn(
-          'bg-background text-foreground vt-name-[main-content]',
+          'bg-background text-foreground w-full flex justify-center',
           font.family === 'OpenDyslexic' && 'font-[OpenDyslexic]',
           font.family === 'Atkinson-Hyperlegible' && 'font-[Atkinson-Hyperlegible]',
           font.size === 'extra-small' && 'text-xs',
