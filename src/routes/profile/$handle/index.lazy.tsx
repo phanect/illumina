@@ -1,4 +1,4 @@
-import * as Ariakit from '@ariakit/react';
+import { TabPanel, TabProvider } from '@ariakit/react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useProfile } from '@/lib/bluesky/hooks/use-profile';
 import { useAuthorFeed } from '@/lib/bluesky/hooks/use-author-feed';
@@ -166,7 +166,7 @@ function Profile() {
           </div>
         </div>
         {!blocked && (
-          <Ariakit.TabProvider
+          <TabProvider
             defaultSelectedId={selectedTab}
             setSelectedId={(selectedId) => {
               if (!selectedId) return;
@@ -181,13 +181,13 @@ function Profile() {
                 <Tab name={name} id={id} selectedTab={selectedTab} key={id} />
               ))}
             </TabList>
-            <Ariakit.TabPanel tabId="media">
+            <TabPanel tabId="media">
               <Media />
-            </Ariakit.TabPanel>
-            <Ariakit.TabPanel tabId="posts">
+            </TabPanel>
+            <TabPanel tabId="posts">
               <Posts />
-            </Ariakit.TabPanel>
-          </Ariakit.TabProvider>
+            </TabPanel>
+          </TabProvider>
         )}
       </div>
     </>

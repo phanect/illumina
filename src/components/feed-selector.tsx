@@ -1,7 +1,7 @@
 import { useAuth } from '../lib/bluesky/hooks/use-auth';
 import { usePreferences } from '../lib/bluesky/hooks/use-preferences';
 import { useSettings } from '../hooks/use-setting';
-import * as Ariakit from '@ariakit/react';
+import { TabPanel, TabProvider } from '@ariakit/react';
 import { Timeline } from './timeline';
 import { Loading } from './ui/loading';
 import { TabList } from './ui/tab-list';
@@ -55,7 +55,7 @@ export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => 
       {isLoading ? (
         <Loading />
       ) : (
-        <Ariakit.TabProvider
+        <TabProvider
           defaultSelectedId={selectedFeed}
           setSelectedId={(selectedId) => {
             if (!selectedId) return;
@@ -100,14 +100,14 @@ export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => 
           {feeds.length >= 2 && (
             <>
               {data?.map((feed) => (
-                <Ariakit.TabPanel key={feed.uri} tabId={feed.uri}>
+                <TabPanel key={feed.uri} tabId={feed.uri}>
                   <Timeline columnNumber={columnNumber} />
-                </Ariakit.TabPanel>
+                </TabPanel>
               ))}
             </>
           )}
           {feeds.length === 1 && <Timeline columnNumber={columnNumber} />}
-        </Ariakit.TabProvider>
+        </TabProvider>
       )}
     </div>
   );

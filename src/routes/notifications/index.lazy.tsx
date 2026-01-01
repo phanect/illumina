@@ -1,4 +1,4 @@
-import * as Ariakit from '@ariakit/react';
+import { TabPanel, TabProvider } from '@ariakit/react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
@@ -44,7 +44,7 @@ function RouteComponent() {
         <title>{t('notifications:notifications')}</title>
       </Helmet>
 
-      <Ariakit.TabProvider
+      <TabProvider
         defaultSelectedId={selectedTab}
         setSelectedId={(selectedId) => {
           if (!selectedId) return;
@@ -62,16 +62,16 @@ function RouteComponent() {
           </TabList>
         </StickyHeader>
         <div className="flex flex-col">
-          <Ariakit.TabPanel tabId="all">{notifications && <GroupedNotifications />}</Ariakit.TabPanel>
-          <Ariakit.TabPanel tabId="mentions" className="flex flex-col">
+          <TabPanel tabId="all">{notifications && <GroupedNotifications />}</TabPanel>
+          <TabPanel tabId="mentions" className="flex flex-col">
             {mentions?.map((notification) => (
               <div key={notification.uri} className="border-neutral-700 hover:bg-neutral-200 hover:bg-opacity-10">
                 <Notification key={notification.uri} notification={notification} />
               </div>
             ))}
-          </Ariakit.TabPanel>
+          </TabPanel>
         </div>
-      </Ariakit.TabProvider>
+      </TabProvider>
     </>
   );
 }
