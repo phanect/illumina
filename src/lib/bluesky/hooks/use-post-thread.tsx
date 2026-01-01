@@ -9,7 +9,7 @@ export function usePostThread({ uri }: { uri?: string }) {
     queryFn: async () => {
       if (!uri) throw new Error('No URI provided');
 
-      const response = await agent.api.app.bsky.feed.getPostThread({ uri });
+      const response = await agent.app.bsky.feed.getPostThread({ uri });
       return response.data.thread;
     },
     enabled: !!agent && !!uri,
