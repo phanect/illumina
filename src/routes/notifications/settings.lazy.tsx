@@ -14,7 +14,7 @@ function RouteComponent() {
       <StickyHeader>{'notification settings'}</StickyHeader>
       <div className="p-6">
         <div className="flex flex-row gap-2">
-          <FlaskConicalIcon className="flex-shrink-0" />
+          <FlaskConicalIcon className="shrink-0" />
           <div className="flex flex-col gap-2">
             <h1>{'notification filters'}</h1>
             <div className="flex justify-between">
@@ -34,7 +34,7 @@ function RouteComponent() {
               </div>
             </div>
             <p className="bg-gray-800 p-2 rounded border border-gray-700 text-xs flex flex-row gap-2">
-              <TriangleAlert className="flex-shrink-0 stroke-yellow-500" />
+              <TriangleAlert className="shrink-0 stroke-yellow-500" />
               <div>
                 <span className="font-bold">{'Experimental'}</span>
                 {

@@ -30,7 +30,7 @@ export function LikeNotification({ notifications }: { notifications: BSkyLikeNot
         className="absolute inset-0"
       />
       <div className="flex flex-row gap-2 p-2 hover:no-underline">
-        <div className="flex flex-shrink-0 w-12 justify-end aspect-square">
+        <div className="flex shrink-0 w-12 justify-end aspect-square">
           <HeartIcon className="fill-pink-500 stroke-pink-500 size-6" />
         </div>
         <div className="hover:no-underline w-full">
