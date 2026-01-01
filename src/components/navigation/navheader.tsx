@@ -1,6 +1,5 @@
 import { useLocation } from '@tanstack/react-router';
 import { HashIcon, SettingsIcon } from 'lucide-react';
-import Logo from '@/../public/images/logo.svg';
 import { useAuth } from '@/lib/bluesky/hooks/use-auth';
 import { cn } from '@/lib/utils';
 import { Button } from '../ui/button';
@@ -25,7 +24,7 @@ export const NavHeader = () => {
           className="hover:bg-transparent active:scale-90"
         >
           <Image
-            src={Logo}
+            src="/images/logo.svg"
             alt="Illumina"
             classNames={{
               image: 'size-12',
