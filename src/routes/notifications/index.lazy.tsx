@@ -65,7 +65,7 @@ function RouteComponent() {
           <Ariakit.TabPanel tabId="all">{notifications && <GroupedNotifications />}</Ariakit.TabPanel>
           <Ariakit.TabPanel tabId="mentions" className="flex flex-col">
             {mentions?.map((notification) => (
-              <div key={notification.uri} className="border-neutral-700 hover:bg-neutral-500 hover:bg-opacity-10">
+              <div key={notification.uri} className="border-neutral-700 hover:bg-neutral-200 hover:bg-opacity-10">
                 <Notification key={notification.uri} notification={notification} />
               </div>
             ))}
