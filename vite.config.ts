@@ -21,6 +21,7 @@ export default defineConfig({
         enabled: process.env.NODE_ENV !== 'test',
       },
       workbox: {
+        maximumFileSizeToCacheInBytes: 6291456, // === 6MiB
         runtimeCaching: [
           {
             // Cache frequently accessed images
