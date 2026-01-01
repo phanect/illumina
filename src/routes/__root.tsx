@@ -1,5 +1,5 @@
 import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/router-devtools';
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import '../index.css';
 import { ErrorBoundary } from '../components/error-boundary';
 import { useBlueskyStore } from '../lib/bluesky/store';
