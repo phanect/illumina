@@ -1,6 +1,6 @@
 import type { ShouldShowProps } from '../../types';
 import type { Editor } from '@tiptap/react';
-import { BubbleMenu } from '@tiptap/react';
+import { BubbleMenu } from '@tiptap/react/menus';
 import { LinkEditBlock } from '../link/link-edit-block';
 import { LinkPopoverBlock } from '../link/link-popover-block';
 import { useCallback, useState } from 'react';
@@ -85,9 +85,9 @@ export const LinkBubbleMenu = ({ editor }: LinkBubbleMenuProps) => {
     <BubbleMenu
       editor={editor}
       shouldShow={shouldShow}
-      tippyOptions={{
+      options={{
         placement: 'bottom-start',
-        onHidden: () => setShowEdit(false),
+        onHide: () => setShowEdit(false),
       }}
     >
       {showEdit ? (
