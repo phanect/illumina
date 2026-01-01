@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import * as Ariakit from '@ariakit/react';
+import { Tab as AriaKitTab} from '@ariakit/react';
 
 export const Tab = ({
   name,
@@ -13,7 +13,7 @@ export const Tab = ({
   onClick?: () => void;
 }) => {
   return (
-    <Ariakit.Tab id={id} className={cn('flex h-10 items-center justify-center whitespace-nowrap px-4')} onClick={onClick}>
+    <AriaKitTab id={id} className={cn('flex h-10 items-center justify-center whitespace-nowrap px-4')} onClick={onClick}>
       <span
         className={cn(
           'p-2 border-b-4 border-b-transparent text-neutral-400 dark:text-neutral-500 hover:text-black dark:hover:text-white hover:border-blue-500',
@@ -22,6 +22,6 @@ export const Tab = ({
       >
         {name}
       </span>
-    </Ariakit.Tab>
+    </AriaKitTab>
   );
 };

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import * as Ariakit from '@ariakit/react';
+import { TabList as AriaKitTabList} from '@ariakit/react';
 
 export const TabList = ({
   children,
@@ -11,7 +11,7 @@ export const TabList = ({
   className?: string;
 }) => {
   return (
-    <Ariakit.TabList
+    <AriaKitTabList
       className={cn(
         'flex flex-row max-w-full overflow-x-scroll overflow-y-hidden scrollbar-hide border-b touch-none touch-pan-x',
         className,
@@ -19,6 +19,6 @@ export const TabList = ({
       aria-label={label}
     >
       {children}
-    </Ariakit.TabList>
+    </AriaKitTabList>
   );
 };
