@@ -2,6 +2,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { useBlueskyStore } from '../store';
 import { usePreferences } from './use-preferences';
 import { BSkyPost } from '../types/bsky-post';
+import type { SavedFeedsPrefV2 } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 
 type Feed = {
   feed: {
@@ -16,7 +17,7 @@ export function useFeed(selectedFeed: string | undefined) {
   const isAuthenticated = useBlueskyStore((store) => store.isAuthenticated);
   const preferences = usePreferences();
   const savedFeedsPrefV2 = isAuthenticated
-    ? preferences.data?.find((item) => item.$type === 'app.bsky.actor.defs#savedFeedsPrefV2')
+    ? preferences.data?.find((item) => item.$type === 'app.bsky.actor.defs#savedFeedsPrefV2') as SavedFeedsPrefV2 | undefined
     : null;
   const feeds = (
     savedFeedsPrefV2?.items as
