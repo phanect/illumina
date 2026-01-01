@@ -101,7 +101,7 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger className="p-2 rounded-sm hover:bg-neutral-500 hover:bg-opacity-10 group">
+      <DropdownMenuTrigger className="p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10 group">
         <Ellipsis size={20} className="group-hover:text-white transition-colors" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
@@ -266,7 +266,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
   };
 
   return (
-    <div className="hover:bg-neutral-500 hover:bg-opacity-10 hover:cursor-pointer" onClick={onClick}>
+    <div className="hover:bg-neutral-200 hover:bg-opacity-10 hover:cursor-pointer" onClick={onClick}>
       <div className="flex flex-col">
         <div className={cn('p-3 w-full gap-2 flex flex-row', className)} onClick={onClick} id={post.uri}>
           <div className="shrink-0">
@@ -342,7 +342,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                   <Accordion type="single" collapsible onClick={(event) => event.stopPropagation()}>
                     <AccordionItem value="item-1">
                       <AccordionTrigger className="w-full group">
-                        <div className="flex items-center space-x-2 rounded-sm hover:bg-neutral-500 hover:bg-opacity-10 gap-1 border justify-between p-2">
+                        <div className="flex items-center space-x-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10 gap-1 border justify-between p-2">
                           <div className="flex items-center gap-1">
                             <AlertTriangleIcon size={20} />
                             {moderationMediaLabel?.name}
@@ -364,7 +364,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                 <Link
                   to="/profile/$handle/post/$postId"
                   params={{ handle: post.author.handle, postId: post.uri.split('/').pop()! }}
-                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors hover:no-underline p-2 rounded-sm hover:bg-neutral-500 hover:bg-opacity-10"
+                  className="flex items-center space-x-2 hover:text-blue-500 transition-colors hover:no-underline p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10"
                 >
                   <MessageCircle size={20} />
                   {!experiments.zenMode && <FormattedNumber value={post.replyCount} />}
@@ -375,7 +375,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         className={cn(
-                          'flex items-center space-x-2 p-2 rounded-sm hover:bg-neutral-500 hover:bg-opacity-10',
+                          'flex items-center space-x-2 p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10',
                           post.viewer?.repost ? 'text-green-500' : 'hover:text-green-500',
                         )}
                       >
@@ -420,7 +420,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                       onClick={handleLike}
                       disabled={like.isPending || unlike.isPaused || !isAuthenticated}
                       className={cn(
-                        'flex items-center space-x-2 transition-colors p-2 rounded-sm hover:bg-neutral-500 hover:bg-opacity-10',
+                        'flex items-center space-x-2 transition-colors p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10',
                         post.viewer?.like ? 'text-pink-500' : 'hover:text-pink-500',
                       )}
                     >

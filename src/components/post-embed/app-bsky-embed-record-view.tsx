@@ -55,7 +55,7 @@ export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
   };
 
   return (
-    <div className="p-4 rounded-lg shadow border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-500 hover:bg-opacity-10 z-10">
+    <div className="p-4 rounded-lg shadow border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-200 hover:bg-opacity-10 z-10">
       {embed.record.$type === 'app.bsky.embed.record#viewRecord' && (
         <div onClick={onClick}>
           <div className="flex items-center space-x-3 mb-2">
