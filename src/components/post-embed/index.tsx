@@ -1,4 +1,4 @@
-import ReactPlayer from 'react-player/lazy';
+import ReactPlayer from 'react-player';
 import { BSkyPostEmbed } from '../../lib/bluesky/types/bsky-post-embed';
 import { Image } from '../ui/image';
 import { NotImplementedBox } from '../ui/not-implemented-box';
