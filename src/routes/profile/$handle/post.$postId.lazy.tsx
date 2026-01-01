@@ -42,7 +42,7 @@ function Post() {
 
   if (isLoading) return <Loading />;
 
-  if (!profile) return <div className="w-[550px] h-screen overflow-y-scroll">{t('profile:notFound')}</div>;
+  if (!profile) return <div className="w-137.5 h-screen overflow-y-scroll">{t('profile:notFound')}</div>;
 
   return (
     <>

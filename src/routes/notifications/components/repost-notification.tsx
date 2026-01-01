@@ -19,7 +19,7 @@ export function RepostNotification({ notification }: { notification: BSkyRepostN
         className="absolute inset-0"
       />
       <div className="flex flex-row gap-2 p-2 hover:no-underline">
-        <div className="flex flex-shrink-0 w-12 justify-end aspect-square">
+        <div className="flex shrink-0 w-12 justify-end aspect-square">
           <Repeat className="stroke-green-400 size-6" />
         </div>
         <div className="hover:no-underline w-full">

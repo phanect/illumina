@@ -16,7 +16,7 @@ export function FollowNotification({ notification }: { notification: BSkyFollowN
         className="absolute inset-0 p-"
       />
       <div className="flex flex-row gap-2 p-2 hover:no-underline">
-        <div className="flex flex-shrink-0 w-12 justify-end aspect-square">
+        <div className="flex shrink-0 w-12 justify-end aspect-square">
           <UserPlus2 className="stroke-blue-400 size-6" />
         </div>
         <div className="hover:no-underline w-full">

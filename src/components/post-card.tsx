@@ -269,7 +269,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
     <div className="hover:bg-neutral-500 hover:bg-opacity-10 hover:cursor-pointer" onClick={onClick}>
       <div className="flex flex-col">
         <div className={cn('p-3 w-full gap-2 flex flex-row', className)} onClick={onClick} id={post.uri}>
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <Avatar handle={post.author.handle} avatar={post.author.avatar} />
             {parent && <div className="border-l-2 border-gray-700 h-full ml-4 -mt-4" />}
           </div>

@@ -16,7 +16,7 @@ export function QuoteNotification({ notification }: { notification: BSkyQuoteNot
         className="absolute inset-0"
       />
       <div className="flex flex-row gap-2 p-2 hover:no-underline">
-        <div className="flex flex-shrink-0 w-12 justify-end aspect-square">
+        <div className="flex shrink-0 w-12 justify-end aspect-square">
           <Avatar handle={notification.author.handle} avatar={notification.author.avatar} />
         </div>
         <div>
