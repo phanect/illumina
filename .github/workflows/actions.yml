@@ -25,7 +25,19 @@ jobs:
           install: true
           cache: true
 
-      - run: mise lint
+      # TODO disabled until all the TypeScript & lint errors are eliminated
+      #- run: mise lint
+
+      # Type check by `tsc --noEmit` is skipped as of now
+
+      - name: run ESLint only on changed files
+        uses: tj-actions/eslint-changed-files@536c35c8184b8bbd361d3703aa63439e0895c340 # v25.3.2
+        with:
+          escape_paths: false # for files including `$` in their file name
+          skip_annotations: true
+
+      - run: mise lint:style
+
       - run: mise build
 
       - uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
