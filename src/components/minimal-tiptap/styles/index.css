@@ -1,3 +1,5 @@
+/* stylelint-disable selector-class-pattern -- temporarily allow .ProseMirror */
+
 @import "../../../index.css";
 @import './partials/code.css';
 @import './partials/placeholder.css';
