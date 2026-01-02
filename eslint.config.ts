@@ -1,13 +1,14 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import reactHooks from 'eslint-plugin-react-hooks';
+import { defineConfig } from "eslint/config";
 import reactRefresh from 'eslint-plugin-react-refresh';
 import tseslint from 'typescript-eslint';
 import i18next from 'eslint-plugin-i18next';
 import reactPlugin from 'eslint-plugin-react';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
-export default tseslint.config(
+const configs = defineConfig(tseslint.config(
   i18next.configs['flat/recommended'],
   reactPlugin.configs.flat.recommended,
   { ignores: ['dist', '**/*.test.{ts,tsx}'] },
@@ -88,4 +89,6 @@ export default tseslint.config(
       ],
     },
   },
-);
+));
+
+export default configs;
