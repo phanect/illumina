@@ -30,5 +30,12 @@
     "./**/*.cts",
     "./**/*.jsx",
     "./**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules/",
+    "coverage/",
+    "dev-dist/",
+    "dist/",
+    "html/"
   ]
 }
