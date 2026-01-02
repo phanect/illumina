@@ -10,10 +10,17 @@ node = "24"
 
   [tasks.lint]
   run = [
-    "tsc --noEmit",
-    "eslint",
-    "stylelint \"**/*.{css,scss}\"",
+    { tasks = [ "lint:types", "lint:es", "lint:style" ]}
   ]
+
+  [tasks."lint:types"]
+  run = "tsc --noEmit"
+
+  [tasks."lint:es"]
+  run = "eslint"
+
+  [tasks."lint:style"]
+  run = "stylelint \"**/*.{css,scss}\""
 
   [tasks.fix]
   run = [
