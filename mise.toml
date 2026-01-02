@@ -9,7 +9,10 @@ node = "24"
   run = "vite build"
 
   [tasks.lint]
-  run = "eslint src"
+  run = [
+    "tsc --noEmit",
+    "eslint src"
+  ]
 
   [tasks.test]
   run = "vitest run"
