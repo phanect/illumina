@@ -16,8 +16,6 @@
   padding: 9px;
   touch-action: manipulation;
   width: 40px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   appearance: none;
 }
 
