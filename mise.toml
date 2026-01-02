@@ -15,6 +15,17 @@ node = "24"
     "stylelint \"**/*.{css,scss}\"",
   ]
 
+  [tasks.fix]
+  run = [
+    { tasks = [ "fix:es", "fix:style" ]}
+  ]
+
+  [tasks."fix:es"]
+  run = "eslint --fix"
+
+  [tasks."fix:style"]
+  run = "stylelint --fix \"**/*.{css,scss}\""
+
   [tasks.test]
   run = "vitest run"
 
