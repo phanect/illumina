@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tailwindcss/preflight";
 @import "tailwindcss-safe-area";
 @import "tailwind-scrollbar-hide/v4";
 @import "tailwind-scrollbar-utilities";
