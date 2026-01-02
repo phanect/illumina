@@ -1,21 +1,21 @@
-import { BSkyPostLabel } from './bsky-post-label';
-import { Static, Type } from '@sinclair/typebox';
+import { Type, type Static } from "@sinclair/typebox";
+import { BSkyPostLabel } from "./bsky-post-label";
 
 export const ThreadGate = Type.Object({
   uri: Type.String(),
   cid: Type.String(),
   record: Type.Object({
-    $type: Type.Literal('app.bsky.feed.threadgate'),
+    $type: Type.Literal("app.bsky.feed.threadgate"),
     allow: Type.Array(
       Type.Union([
         Type.Object({
-          $type: Type.Literal('app.bsky.feed.threadgate#followingRule'),
+          $type: Type.Literal("app.bsky.feed.threadgate#followingRule"),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.feed.threadgate#mentionRule'),
+          $type: Type.Literal("app.bsky.feed.threadgate#mentionRule"),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.feed.threadgate#listRule'),
+          $type: Type.Literal("app.bsky.feed.threadgate#listRule"),
           list: Type.String(),
         }),
       ]),
@@ -29,7 +29,7 @@ export const ThreadGate = Type.Object({
       uri: Type.String(),
       cid: Type.String(),
       name: Type.String(),
-      purpose: Type.Literal('app.bsky.graph.defs#curatelist'),
+      purpose: Type.Literal("app.bsky.graph.defs#curatelist"),
       listItemCount: Type.Number(),
       indexedAt: Type.String(),
       labels: Type.Array(BSkyPostLabel),

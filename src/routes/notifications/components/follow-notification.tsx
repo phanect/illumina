@@ -1,11 +1,11 @@
-import { Avatar } from '@/components/ui/avatar';
-import { Link } from '@/components/ui/link';
-import { BSkyFollowNotification } from '@/lib/bluesky/types/bsky-notification';
-import { UserPlus2 } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { UserPlus2 } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Avatar } from "@/components/ui/avatar";
+import { Link } from "@/components/ui/link";
+import type { BSkyFollowNotification } from "@/lib/bluesky/types/bsky-notification";
 
-export function FollowNotification({ notification }: { notification: BSkyFollowNotification }) {
-  const { t } = useTranslation('notifications');
+export function FollowNotification({ notification }: { notification: BSkyFollowNotification; }) {
+  const { t } = useTranslation("notifications");
   return (
     <div className="relative">
       <Link
@@ -25,11 +25,11 @@ export function FollowNotification({ notification }: { notification: BSkyFollowN
               <Avatar
                 handle={notification.author.handle}
                 avatar={notification.author.avatar}
-                classNames={{ wrapper: 'size-8' }}
+                classNames={{ wrapper: "size-8" }}
               />
             </div>
             <div>
-              {notification.author.displayName} {t('followedYou')}
+              {notification.author.displayName} {t("followedYou")}
             </div>
           </div>
         </div>

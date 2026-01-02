@@ -1,9 +1,9 @@
-import { expect, test } from 'vitest';
-import { useAuth } from './use-auth';
-import { renderHook } from '@testing-library/react';
-import { TestRouterProvider } from '@/test/helpers/test-router-provider';
+import { renderHook } from "@testing-library/react";
+import { expect, test } from "vitest";
+import { TestRouterProvider } from "@/test/helpers/test-router-provider";
+import { useAuth } from "./use-auth";
 
-test('renders', () => {
+test("renders", () => {
   const { result } = renderHook(() => useAuth(), {
     wrapper: ({ children }) => <TestRouterProvider>{children}</TestRouterProvider>,
   });

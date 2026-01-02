@@ -1,91 +1,100 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
+import { useNavigate } from "@tanstack/react-router";
 import {
   AlertTriangleIcon,
   ClipboardIcon,
   Ellipsis,
   EyeOffIcon,
   FilterIcon,
-  LucideFileQuestion,
-  Quote,
+  Heart,
+  LucideFileQuestion, MessageCircle,
+  Quote, Repeat,
   SendHorizonalIcon,
   ShareIcon,
   UserRoundPlusIcon,
-  VolumeOffIcon,
-} from 'lucide-react';
-import { useNavigate } from '@tanstack/react-router';
-import { MessageCircle, Heart, Repeat } from 'lucide-react';
-import { useLike } from '../lib/bluesky/hooks/use-like';
-import { BSkyPost } from '../lib/bluesky/types/bsky-post';
-import { cn } from '../lib/utils';
-import { useRepost } from '../lib/bluesky/hooks/use-repost';
-import { FacetedText } from './faceted-text';
-import { Link } from './ui/link';
-import { useSettings } from '../hooks/use-setting';
-import { FormattedNumber } from './ui/formatted-number';
-import TimeAgo from 'react-timeago-i18n';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../lib/bluesky/hooks/use-auth';
-import { Handle } from './ui/handle';
-import { FormattedText } from './ui/formatted-text';
-import { Avatar } from './ui/avatar';
-import { useUnlike } from '@/lib/bluesky/hooks/use-unlike';
+  VolumeOffIcon } from "lucide-react";
+import { memo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import TimeAgo from "react-timeago-i18n";
+import { toast } from "sonner";
+import { usePlausible } from "@/hooks/use-plausible";
+import { usePostLabels } from "@/lib/bluesky/hooks/use-post-labels";
+import { useUnlike } from "@/lib/bluesky/hooks/use-unlike";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { ErrorBoundary } from "./error-boundary";
+import { FacetedText } from "./faceted-text";
+import { PostEmbed } from "./post-embed";
+import { Avatar } from "./ui/avatar";
+import { Badge } from "./ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-import { memo, useState } from 'react';
-import { toast } from 'sonner';
-import { usePlausible } from '@/hooks/use-plausible';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { usePostLabels } from '@/lib/bluesky/hooks/use-post-labels';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
-import { ErrorBoundary } from './error-boundary';
-import { PostEmbed } from './post-embed';
-import { Badge } from './ui/badge';
+} from "./ui/dropdown-menu";
+import { useSettings } from "../hooks/use-setting";
+import { FormattedNumber } from "./ui/formatted-number";
+import { FormattedText } from "./ui/formatted-text";
+import { Handle } from "./ui/handle";
+import { Link } from "./ui/link";
+import { useAuth } from "../lib/bluesky/hooks/use-auth";
+import { useLike } from "../lib/bluesky/hooks/use-like";
+import { useRepost } from "../lib/bluesky/hooks/use-repost";
+import { cn } from "../lib/utils";
+import type { BSkyPost } from "../lib/bluesky/types/bsky-post";
 
 const contextToText = (context: string) => {
-  if (context === 'following') return 'following';
-  if (context === 'friends') return 'friends';
-  if (context === 'popfriends') return 'popular friends';
-  if (context.startsWith('t-')) return `trending in ${context.slice(2)}`;
+  if (context === "following") {
+    return "following";
+  }
+  if (context === "friends") {
+    return "friends";
+  }
+  if (context === "popfriends") {
+    return "popular friends";
+  }
+  if (context.startsWith("t-")) {
+    return `trending in ${ context.slice(2) }`;
+  }
 
   return context;
 };
 
-const BetterContext = ({ context }: { context?: string }) => {
-  if (!context) return null;
+const BetterContext = ({ context }: { context?: string; }) => {
+  if (!context) {
+    return null;
+  }
 
   return (
     <span title="Reason the post was included in the feed" className="text-gray-500 dark:text-gray-400">
-      {` · `}
+      {" · "}
       {contextToText(context)}
     </span>
   );
 };
 
-const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTranslatedText: (text: string) => void }) => {
+const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTranslatedText: (text: string) => void; }) => {
   const { trackEvent } = usePlausible();
   const isAuthenticated = useBlueskyStore((state) => state.isAuthenticated);
   const isProd = window.location.hostname === "illumina.phanective.org";
   const handleTranslate = async (event: React.MouseEvent<HTMLDivElement>) => {
     event.stopPropagation();
-    const currentLanguage = navigator.language.split('-')[0];
-    const langs = post.record.langs?.filter((lang) => lang.split('-')[0] !== currentLanguage) ?? [];
-    const source = (langs.length === 1 ? langs[0] : 'auto') ?? 'auto';
-    toast.info('Translating post text from ' + source + ' to ' + currentLanguage);
+    const currentLanguage = navigator.language.split("-")[0];
+    const langs = post.record.langs?.filter((lang) => lang.split("-")[0] !== currentLanguage) ?? [];
+    const source = (langs.length === 1 ? langs[0] : "auto") ?? "auto";
+    toast.info("Translating post text from " + source + " to " + currentLanguage);
 
     // TODO replace prod URL
-    const response = await fetch(isProd ? 'http://localhost:8787' : 'http://localhost:8787', {
-      method: 'POST',
+    const response = await fetch(isProd ? "http://localhost:8787" : "http://localhost:8787", {
+      method: "POST",
       body: JSON.stringify({
         q: post.record.text,
         // fall back to auto detection if the lanauge is the same as the current language
-        source: source === currentLanguage ? 'auto' : source,
+        source: source === currentLanguage ? "auto" : source,
         target: navigator.language,
       }),
-      headers: { 'Content-Type': 'application/json' },
+      headers: { "Content-Type": "application/json" },
     });
     const json = (await response.json()) as {
       alternatives: [];
@@ -96,7 +105,7 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
       translatedText: string;
     };
     setTranslatedText(json.translatedText);
-    trackEvent('translate', { language: source });
+    trackEvent("translate", { language: source });
   };
 
   return (
@@ -106,28 +115,28 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuItem className="justify-between" onClick={handleTranslate}>
-          {'translate'} <LucideFileQuestion />
+          translate <LucideFileQuestion />
         </DropdownMenuItem>
         <DropdownMenuItem
           className="justify-between"
           onClick={(event) => {
             event.stopPropagation();
             navigator.clipboard.writeText(post.record.text);
-            toast.info('Copied post text to clipboard');
-            trackEvent('copyToClipboard', { type: 'post-text' });
+            toast.info("Copied post text to clipboard");
+            trackEvent("copyToClipboard", { type: "post-text" });
           }}
         >
-          {'copy post text'} <ClipboardIcon />
+          copy post text <ClipboardIcon />
         </DropdownMenuItem>
         {isAuthenticated && (
           <DropdownMenuItem
             className="justify-between"
             onClick={(event) => {
               event.stopPropagation();
-              toast.error('Not implemented');
+              toast.error("Not implemented");
             }}
           >
-            {'send via direct message'} <SendHorizonalIcon />
+            send via direct message <SendHorizonalIcon />
           </DropdownMenuItem>
         )}
         <DropdownMenuItem
@@ -135,13 +144,13 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
           onClick={(event) => {
             event.stopPropagation();
             navigator.clipboard.writeText(
-              `https://illumina.phanective.org/profile/${post.author.handle}/post/${post.uri.split('/').pop()}`,
+              `https://illumina.phanective.org/profile/${ post.author.handle }/post/${ post.uri.split("/").pop() }`,
             );
-            toast.info('Copied post link to clipboard');
-            trackEvent('copyToClipboard', { type: 'post-link' });
+            toast.info("Copied post link to clipboard");
+            trackEvent("copyToClipboard", { type: "post-link" });
           }}
         >
-          {'copy link to post'} <ShareIcon />
+          copy link to post <ShareIcon />
         </DropdownMenuItem>
         {isAuthenticated && (
           <>
@@ -150,57 +159,57 @@ const PostDropdownMenu = ({ post, setTranslatedText }: { post: BSkyPost; setTran
               className="justify-between"
               onClick={(event) => {
                 event.stopPropagation();
-                toast.error('Not implemented');
+                toast.error("Not implemented");
               }}
             >
-              {'mute thread'} <VolumeOffIcon />
+              mute thread <VolumeOffIcon />
             </DropdownMenuItem>
             <DropdownMenuItem
               className="justify-between"
               onClick={(event) => {
                 event.stopPropagation();
-                toast.error('Not implemented');
+                toast.error("Not implemented");
               }}
             >
-              {'mute words & tags'} <FilterIcon />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              className="justify-between"
-              onClick={(event) => {
-                event.stopPropagation();
-                toast.error('Not implemented');
-              }}
-            >
-              {'hide reply for me'} <EyeOffIcon />
-            </DropdownMenuItem>
-            <DropdownMenuItem
-              className="justify-between"
-              onClick={(event) => {
-                event.stopPropagation();
-                toast.error('Not implemented');
-              }}
-            >
-              {'hide reply for everyone'} <EyeOffIcon />
+              mute words & tags <FilterIcon />
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem
               className="justify-between"
               onClick={(event) => {
                 event.stopPropagation();
-                toast.error('Not implemented');
+                toast.error("Not implemented");
               }}
             >
-              {'block account'} <UserRoundPlusIcon />
+              hide reply for me <EyeOffIcon />
             </DropdownMenuItem>
             <DropdownMenuItem
               className="justify-between"
               onClick={(event) => {
                 event.stopPropagation();
-                toast.error('Not implemented');
+                toast.error("Not implemented");
               }}
             >
-              {'report account'} <AlertTriangleIcon />
+              hide reply for everyone <EyeOffIcon />
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem
+              className="justify-between"
+              onClick={(event) => {
+                event.stopPropagation();
+                toast.error("Not implemented");
+              }}
+            >
+              block account <UserRoundPlusIcon />
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="justify-between"
+              onClick={(event) => {
+                event.stopPropagation();
+                toast.error("Not implemented");
+              }}
+            >
+              report account <AlertTriangleIcon />
             </DropdownMenuItem>
           </>
         )}
@@ -217,7 +226,7 @@ type PostCardInnerProps = {
 };
 
 function PostCardInner({ post, context, className, parent = false }: PostCardInnerProps) {
-  const { t } = useTranslation(['app', 'post']);
+  const { t } = useTranslation([ "app", "post" ]);
   const agent = useBlueskyStore((state) => state.agent);
   const like = useLike();
   const unlike = useUnlike();
@@ -225,14 +234,16 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
   const { isAuthenticated } = useAuth();
   const { experiments } = useSettings();
   const navigate = useNavigate();
-  const [translatedText, setTranslatedText] = useState<string | null>(null);
+  const [ translatedText, setTranslatedText ] = useState<string | null>(null);
   const { moderation } = usePostLabels({ agent, post });
 
   const handleLike = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    if (!post) return;
+    if (!post) {
+      return;
+    }
 
     // unlike
     if (post.viewer?.like) {
@@ -249,26 +260,30 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
   };
 
   // Hide post if it's filtered
-  if (moderation?.ui('contentList').filter) return null;
-  const contentMedia = moderation?.ui('contentMedia');
-  const moderationMediaLabel = contentMedia?.blurs[0]?.type === 'label' ? contentMedia.blurs[0]?.labelDef.locales[0] : null;
-  const profileLabels = moderation?.ui('profileList').informs.filter((label) => label.type === 'label');
-  const moderationFilter = moderation?.ui('contentMedia').filter;
+  if (moderation?.ui("contentList").filter) {
+    return null;
+  }
+  const contentMedia = moderation?.ui("contentMedia");
+  const moderationMediaLabel = contentMedia?.blurs[0]?.type === "label" ? contentMedia.blurs[0]?.labelDef.locales[0] : null;
+  const profileLabels = moderation?.ui("profileList").informs.filter((label) => label.type === "label");
+  const moderationFilter = moderation?.ui("contentMedia").filter;
 
   const onClick = () => {
     const cellText = document.getSelection();
-    if (cellText?.type === 'Range') return;
+    if (cellText?.type === "Range") {
+      return;
+    }
 
     navigate({
-      to: '/profile/$handle/post/$postId',
-      params: { handle: post.author.handle, postId: post.uri.split('/').pop()! },
+      to: "/profile/$handle/post/$postId",
+      params: { handle: post.author.handle, postId: post.uri.split("/").pop()! },
     });
   };
 
   return (
     <div className="hover:bg-neutral-200 hover:bg-opacity-10 hover:cursor-pointer" onClick={onClick}>
       <div className="flex flex-col">
-        <div className={cn('p-3 w-full gap-2 flex flex-row', className)} onClick={onClick} id={post.uri}>
+        <div className={cn("p-3 w-full gap-2 flex flex-row", className)} onClick={onClick} id={post.uri}>
           <div className="shrink-0">
             <Avatar handle={post.author.handle} avatar={post.author.avatar} />
             {parent && <div className="border-l-2 border-gray-700 h-full ml-4 -mt-4" />}
@@ -298,12 +313,12 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                 >
                   <Handle handle={post.author.handle} />
                 </Link>
-                {' · '}
+                {" · "}
                 <Link
                   to="/profile/$handle/post/$postId"
                   params={{
                     handle: post.author.handle,
-                    postId: post.uri.split('/').pop()!,
+                    postId: post.uri.split("/").pop()!,
                   }}
                   className="hover:no-underline"
                   onClick={(event) => {
@@ -328,7 +343,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                   <div className="flex flex-col">
                     <FormattedText text={translatedText} />
                     <Link className="text-xs text-gray-500 dark:text-gray-400" href="https://libretranslate.com">
-                      {`translated from ${post.record.langs?.[0] ?? 'unknown'} to ${navigator.language.split('-')[0]} by libretranslate.com`}
+                      {`translated from ${ post.record.langs?.[0] ?? "unknown" } to ${ navigator.language.split("-")[0] } by libretranslate.com`}
                     </Link>
                   </div>
                 ) : post.record.facets ? (
@@ -347,8 +362,8 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                             <AlertTriangleIcon size={20} />
                             {moderationMediaLabel?.name}
                           </div>
-                          <div className="group-data-[state=open]:hidden">{'show'}</div>
-                          <div className="hidden group-data-[state=open]:flex">{'hide'}</div>
+                          <div className="group-data-[state=open]:hidden">show</div>
+                          <div className="hidden group-data-[state=open]:flex">hide</div>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="pt-2">
@@ -363,25 +378,25 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
               <div className="flex items-center text-gray-500 dark:text-gray-400 justify-between">
                 <Link
                   to="/profile/$handle/post/$postId"
-                  params={{ handle: post.author.handle, postId: post.uri.split('/').pop()! }}
+                  params={{ handle: post.author.handle, postId: post.uri.split("/").pop()! }}
                   className="flex items-center space-x-2 hover:text-blue-500 transition-colors hover:no-underline p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10"
                 >
                   <MessageCircle size={20} />
                   {!experiments.zenMode && <FormattedNumber value={post.replyCount} />}
-                  <span className="hidden xl:block">{t('replies')}</span>
+                  <span className="hidden xl:block">{t("replies")}</span>
                 </Link>
                 {!(experiments.zenMode && !isAuthenticated) && (
                   <>
                     <DropdownMenu>
                       <DropdownMenuTrigger
                         className={cn(
-                          'flex items-center space-x-2 p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10',
-                          post.viewer?.repost ? 'text-green-500' : 'hover:text-green-500',
+                          "flex items-center space-x-2 p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10",
+                          post.viewer?.repost ? "text-green-500" : "hover:text-green-500",
                         )}
                       >
-                        <Repeat size={20} className={cn(post.viewer?.repost ? 'stroke-current' : '')} />
+                        <Repeat size={20} className={cn(post.viewer?.repost ? "stroke-current" : "")} />
                         {!experiments.zenMode && <FormattedNumber value={post.repostCount} />}
-                        <span className="hidden xl:block">{t('reposts')}</span>
+                        <span className="hidden xl:block">{t("reposts")}</span>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent>
                         {post.viewer?.repost ? (
@@ -391,7 +406,7 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                               event.stopPropagation();
                             }}
                           >
-                            {'undo repost'} <Repeat />
+                            undo repost <Repeat />
                           </DropdownMenuItem>
                         ) : (
                           <DropdownMenuItem
@@ -402,17 +417,17 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                             }}
                             disabled={repost.isPending || !isAuthenticated}
                           >
-                            {'repost'} <Repeat />
+                            repost <Repeat />
                           </DropdownMenuItem>
                         )}
                         <DropdownMenuItem
                           className="justify-between"
                           onClick={(event) => {
                             event.stopPropagation();
-                            toast.error('Not implemented');
+                            toast.error("Not implemented");
                           }}
                         >
-                          {'quote post'} <Quote />
+                          quote post <Quote />
                         </DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
@@ -420,13 +435,13 @@ function PostCardInner({ post, context, className, parent = false }: PostCardInn
                       onClick={handleLike}
                       disabled={like.isPending || unlike.isPaused || !isAuthenticated}
                       className={cn(
-                        'flex items-center space-x-2 transition-colors p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10',
-                        post.viewer?.like ? 'text-pink-500' : 'hover:text-pink-500',
+                        "flex items-center space-x-2 transition-colors p-2 rounded-sm hover:bg-neutral-200 hover:bg-opacity-10",
+                        post.viewer?.like ? "text-pink-500" : "hover:text-pink-500",
                       )}
                     >
-                      <Heart size={20} className={cn(post.viewer?.like ? 'fill-current' : '')} />
+                      <Heart size={20} className={cn(post.viewer?.like ? "fill-current" : "")} />
                       {!experiments.zenMode && <FormattedNumber value={post.likeCount} />}
-                      <span className="hidden xl:block">{t('likes')}</span>
+                      <span className="hidden xl:block">{t("likes")}</span>
                     </button>
                     <PostDropdownMenu post={post} setTranslatedText={setTranslatedText} />
                   </>
@@ -447,8 +462,10 @@ type PostCardProps = {
   parent?: boolean;
 };
 
-export const PostCard = memo(function PostCard({ post, ...props }: PostCardProps) {
-  if (!post) return null;
+export const PostCard = memo(({ post, ...props }: PostCardProps) => {
+  if (!post) {
+    return null;
+  }
 
   return <PostCardInner {...props} post={post} />;
 });

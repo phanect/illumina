@@ -1,20 +1,20 @@
-import { Avatar } from '@/components/ui/avatar';
-import { Link } from '@/components/ui/link';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { BSkyRepostNotification } from '@/lib/bluesky/types/bsky-notification';
-import { Repeat } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { Repeat } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Avatar } from "@/components/ui/avatar";
+import { Link } from "@/components/ui/link";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import type { BSkyRepostNotification } from "@/lib/bluesky/types/bsky-notification";
 
-export function RepostNotification({ notification }: { notification: BSkyRepostNotification }) {
+export function RepostNotification({ notification }: { notification: BSkyRepostNotification; }) {
   const session = useBlueskyStore((state) => state.session);
-  const { t } = useTranslation('notifications');
+  const { t } = useTranslation("notifications");
   return (
     <div className="relative">
       <Link
         to="/profile/$handle/post/$postId"
         params={{
-          handle: session!.did!,
-          postId: notification.record.subject.uri.split('/')[notification.record.subject.uri.split('/').length - 1]!,
+          handle: session!.did,
+          postId: notification.record.subject.uri.split("/")[notification.record.subject.uri.split("/").length - 1]!,
         }}
         className="absolute inset-0"
       />
@@ -28,11 +28,11 @@ export function RepostNotification({ notification }: { notification: BSkyRepostN
               <Avatar
                 handle={notification.author.handle}
                 avatar={notification.author.avatar}
-                classNames={{ wrapper: 'size-8' }}
+                classNames={{ wrapper: "size-8" }}
               />
             </div>
             <div>
-              {notification.author.displayName} {t('repostedYourPost')}
+              {notification.author.displayName} {t("repostedYourPost")}
             </div>
           </div>
         </div>

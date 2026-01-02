@@ -1,6 +1,5 @@
-import { BSkyPostLabel } from './bsky-post-label';
-
-import { Type, Static } from '@sinclair/typebox';
+import { Type, type Static } from "@sinclair/typebox";
+import { BSkyPostLabel } from "./bsky-post-label";
 
 export const Author = Type.Object({
   did: Type.String(),
@@ -12,8 +11,8 @@ export const Author = Type.Object({
       muted: Type.Boolean(),
       blockedBy: Type.Boolean(),
       blocking: Type.Optional(Type.String()),
-      following: Type.Optional(Type.Union([Type.String(), Type.Undefined()])),
-      followedBy: Type.Optional(Type.Union([Type.String(), Type.Undefined()])),
+      following: Type.Optional(Type.Union([ Type.String(), Type.Undefined() ])),
+      followedBy: Type.Optional(Type.Union([ Type.String(), Type.Undefined() ])),
     }),
   ),
   labels: Type.Array(BSkyPostLabel),

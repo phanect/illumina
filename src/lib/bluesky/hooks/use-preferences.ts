@@ -1,13 +1,13 @@
-import { useQuery } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { useAuth } from './use-auth';
+import { useQuery } from "@tanstack/react-query";
+import { useBlueskyStore } from "../store";
+import { useAuth } from "./use-auth";
 
 export function usePreferences() {
   const { agent } = useBlueskyStore();
   const { isAuthenticated } = useAuth();
 
   return useQuery({
-    queryKey: ['preferences'],
+    queryKey: [ "preferences" ],
     queryFn: async () => {
       const response = await agent.app.bsky.actor.getPreferences();
       return response?.data.preferences;

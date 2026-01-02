@@ -1,21 +1,23 @@
-import ReactPlayer from 'react-player';
-import { BSkyPostEmbed } from '../../lib/bluesky/types/bsky-post-embed';
-import { Image } from '../ui/image';
-import { NotImplementedBox } from '../ui/not-implemented-box';
-import { cn } from '../../lib/utils';
-import { useSettings } from '../../hooks/use-setting';
-import { AppBskyEmbedRecordView } from './app-bsky-embed-record-view';
-import { Globe2 } from 'lucide-react';
-import { Link } from '../ui/link';
+import { Globe2 } from "lucide-react";
+import ReactPlayer from "react-player";
+import { AppBskyEmbedRecordView } from "./app-bsky-embed-record-view";
+import { useSettings } from "../../hooks/use-setting";
+import { cn } from "../../lib/utils";
+import { Image } from "../ui/image";
+import { Link } from "../ui/link";
+import { NotImplementedBox } from "../ui/not-implemented-box";
+import type { BSkyPostEmbed } from "../../lib/bluesky/types/bsky-post-embed";
 
-export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
+export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null; }) => {
   const { experiments } = useSettings();
-  if (!embed) return null;
+  if (!embed) {
+    return null;
+  }
 
   switch (embed.$type) {
-    case 'app.bsky.embed.images#view': {
+    case "app.bsky.embed.images#view": {
       return (
-        <div className={cn(embed.images.length >= 2 && 'grid grid-cols-2', 'gap-2')}>
+        <div className={cn(embed.images.length >= 2 && "grid grid-cols-2", "gap-2")}>
           {embed.images.map((image) => (
             <Image
               key={image.thumb}
@@ -24,16 +26,16 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
               width={image.aspectRatio?.width}
               alt={image.alt}
               classNames={{
-                image: cn(embed.images.length >= 2 && 'h-48', 'rounded-lg w-full object-cover'),
+                image: cn(embed.images.length >= 2 && "h-48", "rounded-lg w-full object-cover"),
               }}
             />
           ))}
         </div>
       );
     }
-    case 'app.bsky.embed.video#view':
+    case "app.bsky.embed.video#view":
       return (
-        <div className={cn('mb-3 w-full aspect-square', experiments.streamerMode && 'filter blur-md')}>
+        <div className={cn("mb-3 w-full aspect-square", experiments.streamerMode && "filter blur-md")}>
           <ReactPlayer
             url={embed.playlist}
             controls={true}
@@ -44,16 +46,18 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
             config={{
               file: {
                 attributes: {
-                  preload: 'none',
+                  preload: "none",
                 },
               },
             }}
           />
         </div>
       );
-    case 'app.bsky.embed.external#view': {
-      if (!embed.external.thumb) return null;
-      if (embed.external.uri.startsWith('https://youtu.be/') || embed.external.uri.startsWith('https://youtube.com/')) {
+    case "app.bsky.embed.external#view": {
+      if (!embed.external.thumb) {
+        return null;
+      }
+      if (embed.external.uri.startsWith("https://youtu.be/") || embed.external.uri.startsWith("https://youtube.com/")) {
         return (
           <div className="w-full aspect-video">
             <ReactPlayer
@@ -66,7 +70,7 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
               config={{
                 file: {
                   attributes: {
-                    preload: 'none',
+                    preload: "none",
                   },
                 },
               }}
@@ -75,7 +79,7 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
         );
       }
 
-      const isKnownGifSite = embed.external.uri.includes('tenor.com') || embed.external.uri.includes('gify.com');
+      const isKnownGifSite = embed.external.uri.includes("tenor.com") || embed.external.uri.includes("gify.com");
 
       return (
         <>
@@ -83,16 +87,16 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
             {isKnownGifSite ? (
               embed.external.thumb && (
                 <Image
-                  src={embed.external.uri.includes('.gif') ? embed.external.uri : embed.external.thumb}
+                  src={embed.external.uri.includes(".gif") ? embed.external.uri : embed.external.thumb}
                   alt={embed.external.title}
                   classNames={{
-                    image: 'w-full object-cover border-b group-hover:border-neutral-600 aspect-video',
+                    image: "w-full object-cover border-b group-hover:border-neutral-600 aspect-video",
                   }}
                   clickable={false}
                   // pause the gif on click
                   onClick={(e) => {
-                    e.currentTarget.src =
-                      e.currentTarget.src === embed.external.uri ? embed.external.thumb : embed.external.uri;
+                    e.currentTarget.src
+                      = e.currentTarget.src === embed.external.uri ? embed.external.thumb : embed.external.uri;
                   }}
                 />
               )
@@ -100,10 +104,10 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
               <Link href={embed.external.uri} target="_blank">
                 {embed.external.thumb && (
                   <Image
-                    src={embed.external.uri.includes('.gif') ? embed.external.uri : embed.external.thumb}
+                    src={embed.external.uri.includes(".gif") ? embed.external.uri : embed.external.thumb}
                     alt={embed.external.title}
                     classNames={{
-                      image: 'w-full object-cover border-b group-hover:border-neutral-600 aspect-video',
+                      image: "w-full object-cover border-b group-hover:border-neutral-600 aspect-video",
                     }}
                     clickable={false}
                   />
@@ -130,33 +134,35 @@ export const PostEmbed = ({ embed }: { embed?: BSkyPostEmbed | null }) => {
         </>
       );
     }
-    case 'app.bsky.embed.record#view': {
+    case "app.bsky.embed.record#view": {
       return <AppBskyEmbedRecordView embed={embed} />;
     }
-    case 'app.bsky.embed.recordWithMedia#view': {
-      const images =
-        embed.media.$type === 'app.bsky.embed.images#view'
+    case "app.bsky.embed.recordWithMedia#view": {
+      const images
+        = embed.media.$type === "app.bsky.embed.images#view"
           ? embed.media.images
           : embed.media.external?.thumb
             ? [
-                {
-                  thumb: embed.media.external?.uri ?? embed.media.external?.thumb,
-                  alt: embed.media.external?.description,
-                },
-              ]
+              {
+                thumb: embed.media.external?.uri ?? embed.media.external?.thumb,
+                alt: embed.media.external?.description,
+              },
+            ]
             : [];
 
-      if (images.length === 0) break;
+      if (images.length === 0) {
+        break;
+      }
 
       return (
-        <div className={cn(images.length >= 2 && 'grid grid-cols-2', 'gap-2 mb-3')}>
+        <div className={cn(images.length >= 2 && "grid grid-cols-2", "gap-2 mb-3")}>
           {images.map((image) => (
             <Image
               key={image.thumb}
               src={image.thumb}
               alt={image.alt}
               classNames={{
-                image: cn(images.length >= 2 && 'h-48', 'rounded-lg w-full object-cover'),
+                image: cn(images.length >= 2 && "h-48", "rounded-lg w-full object-cover"),
               }}
             />
           ))}

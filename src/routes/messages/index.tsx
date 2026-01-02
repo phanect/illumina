@@ -1,9 +1,11 @@
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { createFileRoute, redirect } from '@tanstack/react-router';
+import { createFileRoute, redirect } from "@tanstack/react-router";
+import { useBlueskyStore } from "@/lib/bluesky/store";
 
-export const Route = createFileRoute('/messages/')({
+export const Route = createFileRoute("/messages/")({
   beforeLoad: async () => {
     const isAuthenticated = useBlueskyStore.getState().isAuthenticated;
-    if (!isAuthenticated) throw redirect({ to: '/login', search: { redirect: '/messages/' } });
+    if (!isAuthenticated) {
+      throw redirect({ to: "/login", search: { redirect: "/messages/" }});
+    }
   },
 });

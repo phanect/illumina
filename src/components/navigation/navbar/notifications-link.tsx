@@ -1,10 +1,10 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from '../../ui/link';
-import { BellIcon } from 'lucide-react';
-import { useUnreadCount } from '@/lib/bluesky/hooks/use-unread-count';
+import { BellIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useUnreadCount } from "@/lib/bluesky/hooks/use-unread-count";
+import { Link } from "../../ui/link";
 
 export const NotificationsLink = () => {
-  const { t } = useTranslation('notifications');
+  const { t } = useTranslation("notifications");
   const { data: unreadCount } = useUnreadCount();
   return (
     <Link
@@ -19,7 +19,7 @@ export const NotificationsLink = () => {
           </span>
         )}
       </div>
-      <span className="hidden xl:block">{t('notifications')}</span>
+      <span className="hidden xl:block">{t("notifications")}</span>
     </Link>
   );
 };

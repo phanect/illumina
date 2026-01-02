@@ -1,17 +1,17 @@
-import { BlockedAuthor } from './blocked-author';
-import { BSkyPostLabel } from './bsky-post-label';
-import { Author } from './author';
-import { BSkyPostEmbed } from './bsky-post-embed';
-import { ThreadGate } from './thread-gate';
-import { BSkyFacet } from './bsky-facet';
-import { Static, Type } from '@sinclair/typebox';
+import { Type, type Static } from "@sinclair/typebox";
+import { Author } from "./author";
+import { BlockedAuthor } from "./blocked-author";
+import { BSkyFacet } from "./bsky-facet";
+import { BSkyPostEmbed } from "./bsky-post-embed";
+import { BSkyPostLabel } from "./bsky-post-label";
+import { ThreadGate } from "./thread-gate";
 
 export const BSkyPost = Type.Object({
   uri: Type.String(),
   cid: Type.String(),
-  author: Type.Union([Author, BlockedAuthor]),
+  author: Type.Union([ Author, BlockedAuthor ]),
   record: Type.Object({
-    $type: Type.Literal('app.bsky.feed.post'),
+    $type: Type.Literal("app.bsky.feed.post"),
     createdAt: Type.String(),
     embed: Type.Optional(BSkyPostEmbed),
     facets: Type.Optional(Type.Array(BSkyFacet)),

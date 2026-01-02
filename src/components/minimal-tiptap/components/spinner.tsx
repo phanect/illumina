@@ -1,15 +1,15 @@
-import { cn } from '@/lib/utils';
-import { forwardRef, memo, Ref, SVGProps } from 'react';
+import { forwardRef, memo, type Ref, type SVGProps } from "react";
+import { cn } from "@/lib/utils";
 
 export const Spinner = memo(
-  forwardRef(function Spinner({ className, ...props }: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) {
+  forwardRef(({ className, ...props }: SVGProps<SVGSVGElement>, ref: Ref<SVGSVGElement>) => {
     return (
       <svg
         ref={ref}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
-        className={cn('animate-spin', className)}
+        className={cn("animate-spin", className)}
         {...props}
       >
         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

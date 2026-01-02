@@ -1,22 +1,22 @@
-import { StrictMode } from 'react';
-import ReactDOM from 'react-dom/client';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
-import { TooltipProvider } from '@/components/ui/tooltip';
-import './i18n';
+import { createRouter, RouterProvider } from "@tanstack/react-router";
+import { StrictMode } from "react";
+import ReactDOM from "react-dom/client";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import "./i18n";
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ThemeProvider } from './components/theme-provider';
+import { routeTree } from "./routeTree.gen";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ThemeProvider } from "./components/theme-provider";
 
 // Create a new router instance
 const router = createRouter({ routeTree });
 
 // Register the router instance for type safety
-declare module '@tanstack/react-router' {
-  interface Register {
+declare module "@tanstack/react-router" {
+  type Register = {
     router: typeof router;
-  }
+  };
 }
 
 // Create a new query client instance
@@ -24,7 +24,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     mutations: {
       onError: (error) => {
-        console.error('Mutation error:', error);
+        console.error("Mutation error:", error);
       },
     },
     queries: {
@@ -34,7 +34,7 @@ const queryClient = new QueryClient({
   },
 });
 
-const rootElement = document.getElementById('root')!;
+const rootElement = document.getElementById("root")!;
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(

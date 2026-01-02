@@ -1,9 +1,9 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { PostCard } from '../components/post-card';
-import { useTag } from '../lib/bluesky/hooks/use-tag';
-import { Helmet } from 'react-helmet';
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { Helmet } from "react-helmet";
+import { PostCard } from "../components/post-card";
+import { useTag } from "../lib/bluesky/hooks/use-tag";
 
-export const Route = createLazyFileRoute('/tag/$tag')({
+export const Route = createLazyFileRoute("/tag/$tag")({
   component: Tag,
 });
 
@@ -14,7 +14,7 @@ function Tag() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href={`https://bsky.app/hashtag/${tag}`} />
+        <link rel="canonical" href={`https://bsky.app/hashtag/${ tag }`} />
       </Helmet>
       {posts?.map((post) => <PostCard key={post.uri} post={post} />)}
     </>

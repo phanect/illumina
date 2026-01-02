@@ -1,6 +1,6 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { BSkyNotification } from '../types/bsky-notification';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useBlueskyStore } from "../store";
+import type { BSkyNotification } from "../types/bsky-notification";
 
 type Notifications = {
   cursor: string;
@@ -11,7 +11,7 @@ export function useNotifications() {
   const agent = useBlueskyStore((store) => store.agent);
 
   return useInfiniteQuery<Notifications>({
-    queryKey: ['notifications'],
+    queryKey: [ "notifications" ],
     queryFn: async ({ pageParam: cursor }) => {
       const response = await agent.api.app.bsky.notification.listNotifications({ cursor: cursor as string });
       return response.data as Notifications;

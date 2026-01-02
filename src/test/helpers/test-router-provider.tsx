@@ -1,8 +1,8 @@
-import { createRootRoute, createRoute, createRouter, Outlet, RouterProvider } from '@tanstack/react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactNode } from 'react';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createRootRoute, createRoute, createRouter, Outlet, RouterProvider } from "@tanstack/react-router";
+import type { ReactNode } from "react";
 
-export function TestRouterProvider({ children }: { children: ReactNode }) {
+export function TestRouterProvider({ children }: { children: ReactNode; }) {
   const testQueryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -17,11 +17,11 @@ export function TestRouterProvider({ children }: { children: ReactNode }) {
 
   const indexRoute = createRoute({
     getParentRoute: () => rootRoute,
-    path: '/',
+    path: "/",
     component: () => children,
   });
 
-  const routeTree = rootRoute.addChildren([indexRoute]);
+  const routeTree = rootRoute.addChildren([ indexRoute ]);
   const router = createRouter({ routeTree });
 
   return (

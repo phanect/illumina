@@ -1,26 +1,26 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { BSkyPost } from '../types/bsky-post';
-import { toast } from 'sonner';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useBlueskyStore } from "../store";
+import type { BSkyPost } from "../types/bsky-post";
 
 export function useUnlike() {
   const { agent } = useBlueskyStore();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['unlike'],
-    mutationFn: async ({ uri }: { uri: string }) => {
+    mutationKey: [ "unlike" ],
+    mutationFn: async ({ uri }: { uri: string; }) => {
       await agent.deleteLike(uri);
     },
     onMutate: async ({ uri }) => {
       const cache = queryClient.getQueryCache();
       const timelineQueries = cache.findAll({
-        queryKey: ['feed'],
+        queryKey: [ "feed" ],
       });
       const authorFeedQueries = cache.findAll({
-        queryKey: ['author-feed'],
+        queryKey: [ "author-feed" ],
       });
-      const infiniteQueries = [...timelineQueries, ...authorFeedQueries];
+      const infiniteQueries = [ ...timelineQueries, ...authorFeedQueries ];
 
       for (const query of infiniteQueries) {
         await queryClient.cancelQueries({ queryKey: query.queryKey });
@@ -64,7 +64,7 @@ export function useUnlike() {
       }
 
       const postThreadQuery = cache.findAll({
-        queryKey: ['post-thread', uri],
+        queryKey: [ "post-thread", uri ],
       });
 
       for (const query of postThreadQuery) {
@@ -75,8 +75,12 @@ export function useUnlike() {
           parent?: BSkyPost;
           replies: BSkyPost[];
         }>(query.queryKey, (old) => {
-          if (!old) return old;
-          if (old.post.viewer?.like !== uri) return old;
+          if (!old) {
+            return old;
+          }
+          if (old.post.viewer?.like !== uri) {
+            return old;
+          }
 
           return {
             post: {
@@ -94,7 +98,7 @@ export function useUnlike() {
       }
 
       return {
-        previousData: [...infiniteQueries, ...postThreadQuery].map((query) => ({
+        previousData: [ ...infiniteQueries, ...postThreadQuery ].map((query) => ({
           queryKey: query.queryKey,
           state: query.state,
         })),
@@ -105,7 +109,7 @@ export function useUnlike() {
       for (const query of context?.previousData ?? []) {
         queryClient.setQueryData(query.queryKey, query.state.data);
       }
-      toast.error('failed to unlike post ' + (error as Error).message);
+      toast.error("failed to unlike post " + (error).message);
     },
   });
 }

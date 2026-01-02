@@ -1,28 +1,28 @@
-import path from 'path';
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
+import path from "node:path";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [ react() ],
   test: {
-    root: '.',
+    root: ".",
     globals: true,
     css: true,
     coverage: {
       enabled: true,
-      include: ['src/**/*'],
+      include: [ "src/**/*" ],
       cleanOnRerun: false,
       reportOnFailure: true,
     },
-    environment: 'happy-dom',
-    setupFiles: ['./src/test-setup.ts'],
-    reporters: process.env.GITHUB_ACTIONS ? ['verbose', 'github-actions'] : ['html'],
-    include: ['src/**/*.test.{ts,tsx}'],
+    environment: "happy-dom",
+    setupFiles: [ "./src/test-setup.ts" ],
+    reporters: process.env.GITHUB_ACTIONS ? [ "verbose", "github-actions" ] : [ "html" ],
+    include: [ "src/**/*.test.{ts,tsx}" ],
     open: true,
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 });

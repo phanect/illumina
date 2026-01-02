@@ -1,57 +1,57 @@
 import { core } from "@phanect/lint";
 import { react } from "@phanect/lint-react";
 import { defineConfig, globalIgnores, type Config } from "eslint/config";
-import reactRefresh from 'eslint-plugin-react-refresh';
-import i18next from 'eslint-plugin-i18next';
+import i18next from "eslint-plugin-i18next";
+import reactRefresh from "eslint-plugin-react-refresh";
 
 const configs = defineConfig([
   globalIgnores([
-    "dist/**"
+    "dist/**",
   ]),
 
-  i18next.configs['flat/recommended'] as Config,
+  i18next.configs["flat/recommended"] as Config,
 
   ...core,
   ...react,
 
   {
-    files: ['**/*.{ts,tsx}'],
+    files: [ "**/*.{ts,tsx}" ],
     rules: {
       // React 17 does not require importing React for JSX
-      'react/react-in-jsx-scope': 'off',
+      "react/react-in-jsx-scope": "off",
       // Prefer importing specific items from React instead of the default import
-      'no-restricted-imports': [
-        'error',
+      "no-restricted-imports": [
+        "error",
         {
           paths: [
             {
-              name: 'react',
-              importNames: ['default'],
-              message: 'Import specific items from react instead of the default import',
+              name: "react",
+              importNames: [ "default" ],
+              message: "Import specific items from react instead of the default import",
             },
           ],
         },
       ],
       // Prefer using inline props instead of React.FC or React.FunctionComponent
-      '@typescript-eslint/no-restricted-types': [
-        'error',
+      "@typescript-eslint/no-restricted-types": [
+        "error",
         {
           types: {
-            'React.FC': {
-              message: 'Use inline props instead of React.FC',
+            "React.FC": {
+              message: "Use inline props instead of React.FC",
             },
-            'React.FunctionComponent': {
-              message: 'Use inline props instead of React.FunctionComponent',
+            "React.FunctionComponent": {
+              message: "Use inline props instead of React.FunctionComponent",
             },
           },
         },
       ],
       // Avoid using export { ... };
-      'no-restricted-syntax': [
-        'error',
+      "no-restricted-syntax": [
+        "error",
         {
-          selector: 'ExportNamedDeclaration[specifiers.length > 0]',
-          message: 'Use inline exports instead of `export { ... };`.',
+          selector: "ExportNamedDeclaration[specifiers.length > 0]",
+          message: "Use inline exports instead of `export { ... };`.",
         },
       ],
 
@@ -89,7 +89,7 @@ const configs = defineConfig([
 
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
     },
   },

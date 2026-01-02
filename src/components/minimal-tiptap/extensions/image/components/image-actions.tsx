@@ -1,9 +1,9 @@
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { ClipboardCopyIcon, DotsHorizontalIcon, DownloadIcon, Link2Icon, SizeIcon } from '@radix-ui/react-icons';
-import { forwardRef, memo, ReactNode, Ref, useCallback, useMemo, useState } from 'react';
+import { ClipboardCopyIcon, DotsHorizontalIcon, DownloadIcon, Link2Icon, SizeIcon } from "@radix-ui/react-icons";
+import { forwardRef, memo, useCallback, useMemo, useState, type ReactNode, type Ref } from "react";
+import { Button } from "@/components/ui/button";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 type ImageActionsProps = {
   shouldMerge?: boolean;
@@ -15,16 +15,16 @@ type ImageActionsProps = {
 };
 
 export const ActionWrapper = memo(
-  forwardRef(function ActionWrapper(
+  forwardRef((
     { children, className, ...props }: React.HTMLAttributes<HTMLDivElement>,
     ref: Ref<HTMLDivElement>,
-  ) {
+  ) => {
     return (
       <div
         ref={ref}
         className={cn(
-          'absolute right-3 top-3 flex flex-row rounded px-0.5 opacity-0 group-hover/node-image:opacity-100',
-          'border-[0.5px] bg-[var(--mt-bg-secondary)] [backdrop-filter:saturate(1.8)_blur(20px)]',
+          "absolute right-3 top-3 flex flex-row rounded px-0.5 opacity-0 group-hover/node-image:opacity-100",
+          "border-[0.5px] bg-[var(--mt-bg-secondary)] [backdrop-filter:saturate(1.8)_blur(20px)]",
           className,
         )}
         {...props}
@@ -35,13 +35,13 @@ export const ActionWrapper = memo(
   }),
 );
 
-interface ActionButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+type ActionButtonProps = {
   icon: ReactNode;
   tooltip: string;
-}
+} & React.HTMLAttributes<HTMLButtonElement>;
 
 export const ActionButton = memo(
-  forwardRef(function ActionButton({ icon, tooltip, className, ...props }: ActionButtonProps, ref: Ref<HTMLButtonElement>) {
+  forwardRef(({ icon, tooltip, className, ...props }: ActionButtonProps, ref: Ref<HTMLButtonElement>) => {
     return (
       <Tooltip>
         <TooltipTrigger asChild>
@@ -49,8 +49,8 @@ export const ActionButton = memo(
             ref={ref}
             variant="ghost"
             className={cn(
-              'relative flex h-7 w-7 flex-row rounded-none p-0 text-muted-foreground hover:text-foreground',
-              'bg-transparent hover:bg-transparent',
+              "relative flex h-7 w-7 flex-row rounded-none p-0 text-muted-foreground hover:text-foreground",
+              "bg-transparent hover:bg-transparent",
               className,
             )}
             {...props}
@@ -64,26 +64,26 @@ export const ActionButton = memo(
   }),
 );
 
-type ActionKey = 'onView' | 'onDownload' | 'onCopy' | 'onCopyLink';
+type ActionKey = "onView" | "onDownload" | "onCopy" | "onCopyLink";
 
-const ActionItems: Array<{
+const ActionItems: {
   key: ActionKey;
   icon: ReactNode;
   tooltip: string;
   isLink?: boolean;
-}> = [
-  { key: 'onView', icon: <SizeIcon className="size-4" />, tooltip: 'View image' },
-  { key: 'onDownload', icon: <DownloadIcon className="size-4" />, tooltip: 'Download image' },
-  { key: 'onCopy', icon: <ClipboardCopyIcon className="size-4" />, tooltip: 'Copy image to clipboard' },
-  { key: 'onCopyLink', icon: <Link2Icon className="size-4" />, tooltip: 'Copy image link', isLink: true },
+}[] = [
+  { key: "onView", icon: <SizeIcon className="size-4" />, tooltip: "View image" },
+  { key: "onDownload", icon: <DownloadIcon className="size-4" />, tooltip: "Download image" },
+  { key: "onCopy", icon: <ClipboardCopyIcon className="size-4" />, tooltip: "Copy image to clipboard" },
+  { key: "onCopyLink", icon: <Link2Icon className="size-4" />, tooltip: "Copy image link", isLink: true },
 ];
 
-export const ImageActions = memo(function ImageActions({
+export const ImageActions = memo(({
   shouldMerge = false,
   isLink = false,
   ...actions
-}: ImageActionsProps) {
-  const [isOpen, setIsOpen] = useState(false);
+}: ImageActionsProps) => {
+  const [ isOpen, setIsOpen ] = useState(false);
 
   const handleAction = useCallback((e: React.MouseEvent, action: (() => void) | undefined) => {
     e.preventDefault();
@@ -91,10 +91,10 @@ export const ImageActions = memo(function ImageActions({
     action?.();
   }, []);
 
-  const filteredActions = useMemo(() => ActionItems.filter((item) => isLink || !item.isLink), [isLink]);
+  const filteredActions = useMemo(() => ActionItems.filter((item) => isLink || !item.isLink), [ isLink ]);
 
   return (
-    <ActionWrapper className={cn({ 'opacity-100': isOpen })}>
+    <ActionWrapper className={cn({ "opacity-100": isOpen })}>
       {shouldMerge ? (
         <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>

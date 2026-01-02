@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from "react";
 
 export const useScrollVisible = () => {
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
+  const [ isVisible, setIsVisible ] = useState(true);
+  const [ lastScrollY, setLastScrollY ] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,9 +16,9 @@ export const useScrollVisible = () => {
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [ lastScrollY ]);
 
   return isVisible;
 };

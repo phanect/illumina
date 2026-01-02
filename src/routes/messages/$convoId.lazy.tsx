@@ -1,39 +1,39 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { useConversation } from '@/lib/bluesky/hooks/use-conversation';
-import { cn } from '@/lib/utils';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { BSkyMessageWithReactions } from '@/lib/bluesky/types/bsky-message';
-import { Virtuoso } from 'react-virtuoso';
-import { forwardRef, HtmlHTMLAttributes, Ref, useEffect, useRef, useState } from 'react';
-import { Loading } from '@/components/ui/loading';
-import TimeAgo from 'react-timeago-i18n';
-import { FormattedText } from '@/components/ui/formatted-text';
-import { Helmet } from 'react-helmet';
-import { useTranslation } from 'react-i18next';
-import { Avatar } from '@/components/ui/avatar';
-import { Handle } from '@/components/ui/handle';
-import { MinimalTiptapEditor } from '@/components/minimal-tiptap';
-import { Button } from '@/components/ui/button';
-import { SendIcon } from 'lucide-react';
-import { useSendMessage } from '@/lib/bluesky/hooks/use-send-message';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { StickyHeader } from '@/components/sticky-header';
-import { FacetedText } from '@/components/faceted-text';
-import { Badge } from '@/components/ui/badge';
-import { useProfileLabels } from '@/lib/bluesky/hooks/use-profile-labels';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { SendIcon } from "lucide-react";
+import { forwardRef, useEffect, useRef, useState, type HtmlHTMLAttributes, type Ref } from "react";
+import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
+import TimeAgo from "react-timeago-i18n";
+import { Virtuoso } from "react-virtuoso";
+import { FacetedText } from "@/components/faceted-text";
+import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
+import { StickyHeader } from "@/components/sticky-header";
+import { Avatar } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { FormattedText } from "@/components/ui/formatted-text";
+import { Handle } from "@/components/ui/handle";
+import { Loading } from "@/components/ui/loading";
+import { useConversation } from "@/lib/bluesky/hooks/use-conversation";
+import { useProfileLabels } from "@/lib/bluesky/hooks/use-profile-labels";
+import { useSendMessage } from "@/lib/bluesky/hooks/use-send-message";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { cn } from "@/lib/utils";
+import type { BSkyMessageWithReactions } from "@/lib/bluesky/types/bsky-message";
 
-function Message({ message }: { message: BSkyMessageWithReactions }) {
+function Message({ message }: { message: BSkyMessageWithReactions; }) {
   const session = useBlueskyStore((state) => state.session);
   return (
-    <div className={cn('flex flex-col', message.sender.did === session?.did ? 'items-end' : 'items-start')}>
+    <div className={cn("flex flex-col", message.sender.did === session?.did ? "items-end" : "items-start")}>
       <div
         className={cn(
-          'p-2 w-fit rounded-sm text-white overflow-anchor-none max-w-[85%]',
+          "p-2 w-fit rounded-sm text-white overflow-anchor-none max-w-[85%]",
           message.sender.did === session?.did
-            ? 'bg-blue-500 dark:bg-blue-600'
-            : 'text-black dark:text-white bg-gray-300 dark:bg-gray-800',
+            ? "bg-blue-500 dark:bg-blue-600"
+            : "text-black dark:text-white bg-gray-300 dark:bg-gray-800",
         )}
-        key={message.id as string}
+        key={message.id}
       >
         {message.facets ? (
           <div className="[&>*]:!text-white [&>a]:underline">
@@ -43,7 +43,7 @@ function Message({ message }: { message: BSkyMessageWithReactions }) {
           <FormattedText text={message.text} />
         )}
       </div>
-      {message.reactions.length >= 1 && <div>{message.reactions.map((reaction) => reaction.emoji).join(' ')}</div>}
+      {message.reactions.length >= 1 && <div>{message.reactions.map((reaction) => reaction.emoji).join(" ")}</div>}
       <div className="dark:text-gray-500 text-xs">
         <TimeAgo date={message.sentAt} roundStrategy="floor" />
       </div>
@@ -51,7 +51,7 @@ function Message({ message }: { message: BSkyMessageWithReactions }) {
   );
 }
 
-export const Route = createLazyFileRoute('/messages/$convoId')({
+export const Route = createLazyFileRoute("/messages/$convoId")({
   component: Messages,
 });
 
@@ -63,21 +63,25 @@ function ReplyBox() {
   const queryClient = useQueryClient();
   const { convoId } = Route.useParams();
   const { mutateAsync, isPending } = useSendMessage({ convoId });
-  const [message, setMessage] = useState<string>('');
+  const [ message, setMessage ] = useState<string>("");
   const ref = useRef<TiptapMethods | null>(null);
 
   const sendMessage = async () => {
-    if (isPending) return;
-    if (!message.trim()) return;
+    if (isPending) {
+      return;
+    }
+    if (!message.trim()) {
+      return;
+    }
     await mutateAsync(
-      { message: message.trim().replace(/\n{3,}/g, '\n\n') },
+      { message: message.trim().replace(/\n{3,}/g, "\n\n") },
       {
         onSuccess: () => {
           queryClient.refetchQueries({
-            queryKey: ['conversation', { convoId }],
+            queryKey: [ "conversation", { convoId }],
           });
           ref.current?.clearContent();
-          setMessage('');
+          setMessage("");
         },
       },
     );
@@ -97,10 +101,10 @@ function ReplyBox() {
           onChange={(value) => setMessage(value as string)}
           output="text"
           classNames={{
-            wrapper: 'min-h-16 border-none',
+            wrapper: "min-h-16 border-none",
             // for now let's hide the toolbar
             // @TODO: enable this once we workout rich text DMs
-            toolbar: 'border-none hidden',
+            toolbar: "border-none hidden",
           }}
           placeholder="write a message"
         />
@@ -114,24 +118,24 @@ function ReplyBox() {
   );
 }
 
-const useMarkAsRead = ({ convoId }: { convoId: string }) => {
+const useMarkAsRead = ({ convoId }: { convoId: string; }) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['conversation', { convoId }],
+    mutationKey: [ "conversation", { convoId }],
     mutationFn: async () => {
-      const proxy = useBlueskyStore.getState().agent.withProxy('bsky_chat', 'did:web:api.bsky.chat');
+      const proxy = useBlueskyStore.getState().agent.withProxy("bsky_chat", "did:web:api.bsky.chat");
       await proxy.chat.bsky.convo.updateRead({ convoId });
 
       // invalidate conversations query to update unread count
       queryClient.invalidateQueries({
-        queryKey: ['conversations'],
+        queryKey: [ "conversations" ],
       });
     },
   });
 };
 
 function Messages() {
-  const { t } = useTranslation('messages');
+  const { t } = useTranslation("messages");
   const { convoId } = Route.useParams();
   const session = useBlueskyStore((state) => state.session);
   const { data, isLoading, isError, error } = useConversation({ convoId });
@@ -142,14 +146,18 @@ function Messages() {
   const { mutate: markAsRead } = useMarkAsRead({ convoId });
   const agent = useBlueskyStore((state) => state.agent);
   const { moderation } = useProfileLabels({ agent, did: otherMember?.did, handle: otherMember?.handle });
-  const profileLabels = moderation?.ui('profileList').informs.filter((label) => label.type === 'label');
+  const profileLabels = moderation?.ui("profileList").informs.filter((label) => label.type === "label");
 
   // mark as read on load if there are unread messages
   useEffect(() => {
-    if (hasUnread) markAsRead();
-  }, [hasUnread, markAsRead]);
+    if (hasUnread) {
+      markAsRead();
+    }
+  }, [ hasUnread, markAsRead ]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (isError) {
     return (
@@ -162,17 +170,19 @@ function Messages() {
   if (messages?.length === 0) {
     return (
       <div className="h-screen flex items-center justify-center">
-        <span>{t('noMessages')}</span>
+        <span>{t("noMessages")}</span>
       </div>
     );
   }
 
-  if (!otherMember) throw new Error('No other member found in conversation');
+  if (!otherMember) {
+    throw new Error("No other member found in conversation");
+  }
 
   return (
     <>
       <Helmet>
-        <title>{t('chat')}</title>
+        <title>{t("chat")}</title>
       </Helmet>
       <div className="flex flex-col h-screen pb-safe divide-y">
         <StickyHeader>
@@ -196,14 +206,16 @@ function Messages() {
             className="scrollbar-gutter-stable overflow-auto"
             itemContent={(index: number) => {
               const message = messages?.[index];
-              if (!message) return null;
+              if (!message) {
+                return null;
+              }
               return <Message key={message.id} message={message} />;
             }}
             components={{
-              List: forwardRef(function List(
+              List: forwardRef((
                 { children, style }: HtmlHTMLAttributes<HTMLDivElement>,
                 ref: Ref<HTMLDivElement>,
-              ) {
+              ) => {
                 return (
                   <div className="flex flex-col gap-2 mr-4" ref={ref} style={style}>
                     {children}

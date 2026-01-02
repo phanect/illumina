@@ -1,11 +1,11 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 type SearchHistory = {
   history: string[];
   setSearchHistory: (
     partial: SearchHistory | Partial<SearchHistory> | ((state: SearchHistory) => SearchHistory | Partial<SearchHistory>),
-    replace?: boolean | undefined,
+    replace?: boolean,
   ) => void;
 };
 
@@ -17,7 +17,7 @@ export const useSearchHistory = create<SearchHistory>()(
       setSearchHistory: set,
     }),
     {
-      name: 'settings',
+      name: "settings",
       partialize: (state) => ({
         history: state.history,
       }),

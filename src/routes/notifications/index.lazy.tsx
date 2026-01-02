@@ -1,53 +1,57 @@
-import { TabPanel, TabProvider } from '@ariakit/react';
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
-import { useEffect, useState } from 'react';
-import { useNotifications } from '@/lib/bluesky/hooks/use-notifications';
-import { Loading } from '@/components/ui/loading';
-import { GroupedNotifications } from './components/grouped-notifications';
-import { Notification } from './components/notification';
-import { Helmet } from 'react-helmet';
-import { TabList } from '@/components/ui/tab-list';
-import { Tab } from '@/components/ui/tab';
-import { useUpdateSeenNotifications } from '@/lib/bluesky/hooks/use-update-seen-notifications';
-import { NavHeader } from '@/components/navigation/navheader';
-import { StickyHeader } from '@/components/sticky-header';
-import { cn } from '@/lib/utils';
-import { useOfflineStatus } from '@/hooks/use-offline-status';
+import { TabPanel, TabProvider } from "@ariakit/react";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
+import { NavHeader } from "@/components/navigation/navheader";
+import { StickyHeader } from "@/components/sticky-header";
+import { Loading } from "@/components/ui/loading";
+import { Tab } from "@/components/ui/tab";
+import { TabList } from "@/components/ui/tab-list";
+import { useOfflineStatus } from "@/hooks/use-offline-status";
+import { useNotifications } from "@/lib/bluesky/hooks/use-notifications";
+import { useUpdateSeenNotifications } from "@/lib/bluesky/hooks/use-update-seen-notifications";
+import { cn } from "@/lib/utils";
+import { GroupedNotifications } from "./components/grouped-notifications";
+import { Notification } from "./components/notification";
 
-export const Route = createLazyFileRoute('/notifications/')({
+export const Route = createLazyFileRoute("/notifications/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { t } = useTranslation(['app', 'notifications']);
+  const { t } = useTranslation([ "app", "notifications" ]);
   const isOffline = useOfflineStatus();
   const { data, isLoading } = useNotifications();
   const notifications = data?.pages.flatMap((page) => page.notifications);
   const mentions = notifications?.filter(
     (notification) =>
-      notification.reason === 'mention' || notification.reason === 'reply' || notification.reason === 'quote',
+      notification.reason === "mention" || notification.reason === "reply" || notification.reason === "quote",
   );
-  const [selectedTab, setSelectedTab] = useState<string | undefined>();
+  const [ selectedTab, setSelectedTab ] = useState<string | undefined>();
   const { mutate: updateSeenNotifications } = useUpdateSeenNotifications();
 
   // update seen on mount
   useEffect(() => {
     updateSeenNotifications();
-  }, [updateSeenNotifications]);
+  }, [ updateSeenNotifications ]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <>
       <Helmet>
-        <title>{t('notifications:notifications')}</title>
+        <title>{t("notifications:notifications")}</title>
       </Helmet>
 
       <TabProvider
         defaultSelectedId={selectedTab}
         setSelectedId={(selectedId) => {
-          if (!selectedId) return;
+          if (!selectedId) {
+            return;
+          }
           setSelectedTab(selectedId);
         }}
       >
@@ -55,10 +59,10 @@ function RouteComponent() {
           <NavHeader />
           <TabList
             label="notifications"
-            className={cn('sticky bg-background z-40 w-full grid grid-cols-2', isOffline ? 'top-[46px]' : 'top-0')}
+            className={cn("sticky bg-background z-40 w-full grid grid-cols-2", isOffline ? "top-[46px]" : "top-0")}
           >
-            <Tab id="all" name={t('notifications:tabs.all')} selectedTab={selectedTab} />
-            <Tab id="mentions" name={t('notifications:tabs.mentions')} selectedTab={selectedTab} />
+            <Tab id="all" name={t("notifications:tabs.all")} selectedTab={selectedTab} />
+            <Tab id="mentions" name={t("notifications:tabs.mentions")} selectedTab={selectedTab} />
           </TabList>
         </StickyHeader>
         <div className="flex flex-col">

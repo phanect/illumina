@@ -1,27 +1,27 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { toast } from 'sonner';
-import { BSkyPost } from '../types/bsky-post';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useBlueskyStore } from "../store";
+import type { BSkyPost } from "../types/bsky-post";
 
 export function useLike() {
   const { agent } = useBlueskyStore();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['like'],
-    mutationFn: async ({ uri, cid }: { uri: string; cid: string }) => {
+    mutationKey: [ "like" ],
+    mutationFn: async ({ uri, cid }: { uri: string; cid: string; }) => {
       return await agent.like(uri, cid);
     },
     onMutate: async ({ uri }) => {
       const cache = queryClient.getQueryCache();
       const timelineQueries = cache.findAll({
-        queryKey: ['feed'],
+        queryKey: [ "feed" ],
       });
       const authorFeedQueries = cache.findAll({
-        queryKey: ['author-feed'],
+        queryKey: [ "author-feed" ],
       });
 
-      const queries = [...timelineQueries, ...authorFeedQueries];
+      const queries = [ ...timelineQueries, ...authorFeedQueries ];
 
       for (const query of queries) {
         await queryClient.cancelQueries({ queryKey: query.queryKey });
@@ -51,7 +51,7 @@ export function useLike() {
                     likeCount: post.likeCount + 1,
                     viewer: {
                       ...post.viewer,
-                      like: `at://did:${agent.session?.did}/app.bsky.feed.like/pending`,
+                      like: `at://did:${ agent.session?.did }/app.bsky.feed.like/pending`,
                     },
                   },
                 };
@@ -62,7 +62,7 @@ export function useLike() {
       }
 
       const postThreadQuery = cache.findAll({
-        queryKey: ['post-thread'],
+        queryKey: [ "post-thread" ],
       });
 
       for (const query of postThreadQuery) {
@@ -73,38 +73,42 @@ export function useLike() {
           parent?: BSkyPost;
           replies: BSkyPost[];
         }>(query.queryKey, (old) => {
-          if (!old) return old;
+          if (!old) {
+            return old;
+          }
           return {
             post:
               old.post.uri === uri
                 ? {
-                    ...old.post,
-                    likeCount: old.post.likeCount + 1,
-                    viewer: {
-                      ...old.post.viewer,
-                      like: `at://did:${agent.session?.did}/app.bsky.feed.like/pending`,
-                    },
-                  }
+                  ...old.post,
+                  likeCount: old.post.likeCount + 1,
+                  viewer: {
+                    ...old.post.viewer,
+                    like: `at://did:${ agent.session?.did }/app.bsky.feed.like/pending`,
+                  },
+                }
                 : old.post,
             parent:
               old.parent?.uri === uri
                 ? {
-                    ...old.parent,
-                    likeCount: old.parent.likeCount + 1,
-                    viewer: {
-                      ...old.parent.viewer,
-                      like: `at://did:${agent.session?.did}/app.bsky.feed.like/pending`,
-                    },
-                  }
+                  ...old.parent,
+                  likeCount: old.parent.likeCount + 1,
+                  viewer: {
+                    ...old.parent.viewer,
+                    like: `at://did:${ agent.session?.did }/app.bsky.feed.like/pending`,
+                  },
+                }
                 : old.parent,
             replies: old.replies.map((reply) => {
-              if (reply.uri !== uri) return reply;
+              if (reply.uri !== uri) {
+                return reply;
+              }
 
               return {
                 ...reply,
                 viewer: {
                   ...reply.viewer,
-                  like: `at://did:${agent.session?.did}/app.bsky.feed.like/pending`,
+                  like: `at://did:${ agent.session?.did }/app.bsky.feed.like/pending`,
                 },
               };
             }),
@@ -122,13 +126,13 @@ export function useLike() {
     onSuccess: async (data, { uri }) => {
       const cache = queryClient.getQueryCache();
       const timelineQueries = cache.findAll({
-        queryKey: ['feed'],
+        queryKey: [ "feed" ],
       });
       const authorFeedQueries = cache.findAll({
-        queryKey: ['author-feed'],
+        queryKey: [ "author-feed" ],
       });
 
-      const queries = [...timelineQueries, ...authorFeedQueries];
+      const queries = [ ...timelineQueries, ...authorFeedQueries ];
 
       for (const query of queries) {
         await queryClient.cancelQueries({ queryKey: query.queryKey });
@@ -171,7 +175,7 @@ export function useLike() {
       }
 
       const postThreadQuery = cache.findAll({
-        queryKey: ['post-thread'],
+        queryKey: [ "post-thread" ],
       });
 
       for (const query of postThreadQuery) {
@@ -182,31 +186,35 @@ export function useLike() {
           parent?: BSkyPost;
           replies: BSkyPost[];
         }>(query.queryKey, (old) => {
-          if (!old) return old;
-          console.info('old', old);
+          if (!old) {
+            return old;
+          }
+          console.info("old", old);
           return {
             post:
               old.post.uri === uri
                 ? {
-                    ...old.post,
-                    viewer: {
-                      ...old.post.viewer,
-                      like: data?.uri,
-                    },
-                  }
+                  ...old.post,
+                  viewer: {
+                    ...old.post.viewer,
+                    like: data?.uri,
+                  },
+                }
                 : old.post,
             parent:
               old.parent?.uri === uri
                 ? {
-                    ...old.parent,
-                    viewer: {
-                      ...old.parent.viewer,
-                      like: data?.uri,
-                    },
-                  }
+                  ...old.parent,
+                  viewer: {
+                    ...old.parent.viewer,
+                    like: data?.uri,
+                  },
+                }
                 : old.parent,
             replies: old.replies.map((reply) => {
-              if (reply.uri !== uri) return reply;
+              if (reply.uri !== uri) {
+                return reply;
+              }
 
               return {
                 ...reply,
@@ -225,7 +233,7 @@ export function useLike() {
       for (const query of context?.previousData ?? []) {
         queryClient.setQueryData(query.queryKey, query.state.data);
       }
-      toast.error('failed to unlike post ' + (error as Error).message);
+      toast.error("failed to unlike post " + (error).message);
     },
   });
 }

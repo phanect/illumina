@@ -1,13 +1,13 @@
-import { Author } from './author';
-import { BSkyFacet } from './bsky-facet';
-import { BSkyPostLabel } from './bsky-post-label';
-import { BSkyAuthor } from './bsky-author';
-import { Static, Type } from '@sinclair/typebox';
+import { Type, type Static } from "@sinclair/typebox";
+import { Author } from "./author";
+import { BSkyAuthor } from "./bsky-author";
+import { BSkyFacet } from "./bsky-facet";
+import { BSkyPostLabel } from "./bsky-post-label";
 
 export const BSkyPostEmbed = Type.Recursive((Self) => {
   return Type.Union([
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.external#view'),
+      $type: Type.Literal("app.bsky.embed.external#view"),
       external: Type.Object({
         uri: Type.String(),
         title: Type.String(),
@@ -16,7 +16,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       }),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.images#view'),
+      $type: Type.Literal("app.bsky.embed.images#view"),
       images: Type.Array(
         Type.Object({
           thumb: Type.String(),
@@ -32,27 +32,27 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       ),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.record#view'),
+      $type: Type.Literal("app.bsky.embed.record#view"),
       record: Type.Union([
         Type.Object({
-          $type: Type.Literal('app.bsky.embed.record#viewBlocked'),
+          $type: Type.Literal("app.bsky.embed.record#viewBlocked"),
           uri: Type.String(),
           blocked: Type.Boolean(),
           author: BSkyAuthor,
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.embed.record#viewRecord'),
+          $type: Type.Literal("app.bsky.embed.record#viewRecord"),
           uri: Type.String(),
           cid: Type.String(),
           author: BSkyAuthor,
           creator: Type.Optional(BSkyAuthor),
           value: Type.Object({
-            $type: Type.Literal('app.bsky.feed.post'),
+            $type: Type.Literal("app.bsky.feed.post"),
             createdAt: Type.String(),
             embed: Type.Optional(
               Type.Union([
                 Type.Object({
-                  $type: Type.Literal('app.bsky.embed.images'),
+                  $type: Type.Literal("app.bsky.embed.images"),
                   images: Type.Array(
                     Type.Object({
                       alt: Type.String(),
@@ -61,7 +61,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
                         width: Type.Number(),
                       }),
                       image: Type.Object({
-                        $type: Type.Literal('blob'),
+                        $type: Type.Literal("blob"),
                         ref: Type.Object({
                           $link: Type.String(),
                         }),
@@ -72,7 +72,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
                   ),
                 }),
                 Type.Object({
-                  $type: Type.Literal('app.bsky.embed.record'),
+                  $type: Type.Literal("app.bsky.embed.record"),
                   record: Type.Object({
                     cid: Type.String(),
                     uri: Type.String(),
@@ -106,11 +106,11 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
           facets: Type.Optional(Type.Array(BSkyFacet)),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.graph.defs#starterPackViewBasic'),
+          $type: Type.Literal("app.bsky.graph.defs#starterPackViewBasic"),
           uri: Type.String(),
           cid: Type.String(),
           record: Type.Object({
-            $type: Type.Literal('app.bsky.graph.starterpack'),
+            $type: Type.Literal("app.bsky.graph.starterpack"),
             createdAt: Type.String(),
             description: Type.String(),
             feeds: Type.Array(Type.Unknown()),
@@ -125,7 +125,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
           indexedAt: Type.String(),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.feed.defs#generatorView'),
+          $type: Type.Literal("app.bsky.feed.defs#generatorView"),
           uri: Type.String(),
           cid: Type.String(),
           did: Type.String(),
@@ -139,11 +139,11 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
           indexedAt: Type.String(),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.graph.defs#listView'),
+          $type: Type.Literal("app.bsky.graph.defs#listView"),
           uri: Type.String(),
           cid: Type.String(),
           name: Type.String(),
-          purpose: Type.Union([Type.Literal('app.bsky.graph.defs#curatelist'), Type.Literal('app.bsky.graph.defs#modlist')]),
+          purpose: Type.Union([ Type.Literal("app.bsky.graph.defs#curatelist"), Type.Literal("app.bsky.graph.defs#modlist") ]),
           listItemCount: Type.Number(),
           indexedAt: Type.String(),
           labels: Type.Array(BSkyPostLabel),
@@ -157,15 +157,15 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       ]),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.recordWithMedia'),
+      $type: Type.Literal("app.bsky.embed.recordWithMedia"),
       media: Type.Object({
-        $type: Type.Literal('app.bsky.embed.external'),
+        $type: Type.Literal("app.bsky.embed.external"),
         external: Type.Object({
           uri: Type.String(),
           title: Type.String(),
           description: Type.String(),
           thumb: Type.Object({
-            $type: Type.Literal('blob'),
+            $type: Type.Literal("blob"),
             ref: Type.Object({
               $link: Type.String(),
             }),
@@ -176,9 +176,9 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       }),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.recordWithMedia'),
+      $type: Type.Literal("app.bsky.embed.recordWithMedia"),
       media: Type.Object({
-        $type: Type.Literal('app.bsky.embed.images'),
+        $type: Type.Literal("app.bsky.embed.images"),
         images: Type.Array(
           Type.Object({
             alt: Type.String(),
@@ -187,7 +187,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
               width: Type.Number(),
             }),
             image: Type.Object({
-              $type: Type.Literal('blob'),
+              $type: Type.Literal("blob"),
               ref: Type.Object({
                 $link: Type.String(),
               }),
@@ -198,7 +198,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
         ),
       }),
       record: Type.Object({
-        $type: Type.Literal('app.bsky.embed.record'),
+        $type: Type.Literal("app.bsky.embed.record"),
         record: Type.Object({
           cid: Type.String(),
           uri: Type.String(),
@@ -206,10 +206,10 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       }),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.recordWithMedia#view'),
+      $type: Type.Literal("app.bsky.embed.recordWithMedia#view"),
       media: Type.Union([
         Type.Object({
-          $type: Type.Literal('app.bsky.embed.external#view'),
+          $type: Type.Literal("app.bsky.embed.external#view"),
           external: Type.Optional(
             Type.Object({
               uri: Type.String(),
@@ -220,7 +220,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
           ),
         }),
         Type.Object({
-          $type: Type.Literal('app.bsky.embed.images#view'),
+          $type: Type.Literal("app.bsky.embed.images#view"),
           images: Type.Array(
             Type.Object({
               thumb: Type.String(),
@@ -236,24 +236,24 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       ]),
       record: Type.Object({
         record: Type.Object({
-          $type: Type.Literal('app.bsky.embed.record#viewRecord'),
+          $type: Type.Literal("app.bsky.embed.record#viewRecord"),
           uri: Type.String(),
           cid: Type.String(),
           author: BSkyAuthor,
           value: Type.Object({
-            $type: Type.Literal('app.bsky.feed.post'),
+            $type: Type.Literal("app.bsky.feed.post"),
             createdAt: Type.String(),
             facets: Type.Optional(Type.Array(BSkyFacet)),
             embed: Type.Optional(
               Type.Union([
                 Type.Object({
-                  $type: Type.Literal('app.bsky.embed.recordWithMedia'),
+                  $type: Type.Literal("app.bsky.embed.recordWithMedia"),
                   media: Type.Object({
-                    $type: Type.Literal('app.bsky.embed.external'),
+                    $type: Type.Literal("app.bsky.embed.external"),
                     external: Type.Object({
                       description: Type.String(),
                       thumb: Type.Object({
-                        $type: Type.Literal('blob'),
+                        $type: Type.Literal("blob"),
                         ref: Type.Object({
                           $link: Type.String(),
                         }),
@@ -265,7 +265,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
                     }),
                   }),
                   record: Type.Object({
-                    $type: Type.Literal('app.bsky.embed.record'),
+                    $type: Type.Literal("app.bsky.embed.record"),
                     record: Type.Object({
                       cid: Type.String(),
                       uri: Type.String(),
@@ -273,7 +273,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
                   }),
                 }),
                 Type.Object({
-                  $type: Type.Literal('app.bsky.embed.images'),
+                  $type: Type.Literal("app.bsky.embed.images"),
                   images: Type.Array(
                     Type.Object({
                       alt: Type.String(),
@@ -282,7 +282,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
                         width: Type.Number(),
                       }),
                       image: Type.Object({
-                        $type: Type.Literal('blob'),
+                        $type: Type.Literal("blob"),
                         ref: Type.Object({
                           $link: Type.String(),
                         }),
@@ -320,7 +320,7 @@ export const BSkyPostEmbed = Type.Recursive((Self) => {
       }),
     }),
     Type.Object({
-      $type: Type.Literal('app.bsky.embed.video#view'),
+      $type: Type.Literal("app.bsky.embed.video#view"),
       cid: Type.String(),
       playlist: Type.String(),
       thumbnail: Type.String(),

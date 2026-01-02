@@ -1,19 +1,19 @@
-import type { TooltipContentProps } from '@radix-ui/react-tooltip';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
-import { Toggle } from '@/components/ui/toggle';
-import { cn } from '@/lib/utils';
-import { forwardRef } from 'react';
+import { forwardRef } from "react";
+import { Toggle } from "@/components/ui/toggle";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
+import type { TooltipContentProps } from "@radix-ui/react-tooltip";
 
-interface ToolbarButtonProps extends React.ComponentPropsWithoutRef<typeof Toggle> {
+type ToolbarButtonProps = {
   isActive?: boolean;
   tooltip?: string;
   tooltipOptions?: TooltipContentProps;
-}
+} & React.ComponentPropsWithoutRef<typeof Toggle>;
 
 export const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
   ({ isActive, children, tooltip, className, tooltipOptions, ...props }, ref) => {
     const toggleButton = (
-      <Toggle size="sm" ref={ref} className={cn('size-8 p-0', { 'bg-accent': isActive }, className)} {...props}>
+      <Toggle size="sm" ref={ref} className={cn("size-8 p-0", { "bg-accent": isActive }, className)} {...props}>
         {children}
       </Toggle>
     );
@@ -33,6 +33,6 @@ export const ToolbarButton = forwardRef<HTMLButtonElement, ToolbarButtonProps>(
   },
 );
 
-ToolbarButton.displayName = 'ToolbarButton';
+ToolbarButton.displayName = "ToolbarButton";
 
 export default ToolbarButton;

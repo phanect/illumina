@@ -1,23 +1,23 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { toast } from 'sonner';
-import { BSkyPost } from '../types/bsky-post';
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
+import { useBlueskyStore } from "../store";
+import type { BSkyPost } from "../types/bsky-post";
 
 export function useRepost() {
   const agent = useBlueskyStore((store) => store.agent);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['repost'],
-    mutationFn: async ({ uri, cid }: { uri: string; cid: string }) => {
-      toast.info('Reposting ' + uri);
+    mutationKey: [ "repost" ],
+    mutationFn: async ({ uri, cid }: { uri: string; cid: string; }) => {
+      toast.info("Reposting " + uri);
 
       return await agent.repost(uri, cid);
     },
     onMutate: async ({ uri }) => {
-      await queryClient.cancelQueries({ queryKey: ['feed'] });
+      await queryClient.cancelQueries({ queryKey: [ "feed" ]});
 
-      const previousData = queryClient.getQueryData(['feed']);
+      const previousData = queryClient.getQueryData([ "feed" ]);
 
       queryClient.setQueryData<{
         pages: {
@@ -28,7 +28,7 @@ export function useRepost() {
           cursor: string;
         }[];
         pageParams: unknown;
-      }>(['feed'], (old) => ({
+      }>([ "feed" ], (old) => ({
         pages:
           old?.pages.map((page) => ({
             ...page,
@@ -47,7 +47,7 @@ export function useRepost() {
                   repostCount: post.repostCount + 1,
                   viewer: {
                     ...post.viewer,
-                    repost: `at://did:${agent.session?.did}/app.bsky.feed.repost/pending`,
+                    repost: `at://did:${ agent.session?.did }/app.bsky.feed.repost/pending`,
                   },
                 },
               };
@@ -61,13 +61,13 @@ export function useRepost() {
     onSuccess: async (data, { uri }) => {
       const cache = queryClient.getQueryCache();
       const timelineQueries = cache.findAll({
-        queryKey: ['feed'],
+        queryKey: [ "feed" ],
       });
       const authorFeedQueries = cache.findAll({
-        queryKey: ['author-feed'],
+        queryKey: [ "author-feed" ],
       });
 
-      const queries = [...timelineQueries, ...authorFeedQueries];
+      const queries = [ ...timelineQueries, ...authorFeedQueries ];
 
       for (const query of queries) {
         await queryClient.cancelQueries({ queryKey: query.queryKey });
@@ -110,8 +110,8 @@ export function useRepost() {
       }
     },
     onError: (error, __, context) => {
-      queryClient.setQueryData(['feed'], context?.previousData);
-      toast.error('Failed to repost ' + (error as Error).message);
+      queryClient.setQueryData([ "feed" ], context?.previousData);
+      toast.error("Failed to repost " + (error).message);
     },
   });
 }

@@ -2,7 +2,7 @@
   "extends": "@phanect/configs/ts",
   "compilerOptions": {
     "target": "ES2023",
-    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "lib": [ "ESNext", "DOM", "DOM.Iterable" ],
 
     /* Bundler mode */
     "moduleDetection": "force",
@@ -14,7 +14,7 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [ "./src/*" ]
     },
     "types": [
       "vite/client",

@@ -1,8 +1,8 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { Helmet } from 'react-helmet';
-import { NotImplementedBox } from '@/components/ui/not-implemented-box';
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { Helmet } from "react-helmet";
+import { NotImplementedBox } from "@/components/ui/not-implemented-box";
 
-export const Route = createLazyFileRoute('/profile/$handle/feed/$feed')({
+export const Route = createLazyFileRoute("/profile/$handle/feed/$feed")({
   component: Feed,
 });
 
@@ -13,7 +13,7 @@ function Feed() {
   return (
     <>
       <Helmet>
-        <link rel="canonical" href={`https://bsky.app/profile/${handle}/feed/${params.feed}`} />
+        <link rel="canonical" href={`https://bsky.app/profile/${ handle }/feed/${ params.feed }`} />
       </Helmet>
       <div className="p-2">
         <NotImplementedBox type="feed" />

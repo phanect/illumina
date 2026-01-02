@@ -1,8 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { useAuth } from './use-auth';
-import { BSkyMessage, BSkyMessageWithReactions } from '../types/bsky-message';
-import AtpAgent from '@atproto/api';
+import { useQuery } from "@tanstack/react-query";
+import { useBlueskyStore } from "../store";
+import { useAuth } from "./use-auth";
+import type AtpAgent from "@atproto/api";
+import type { BSkyMessage, BSkyMessageWithReactions } from "../types/bsky-message";
 
 const getMessages = async (agent: AtpAgent, convoId: string) => {
   const response = await agent.api.chat.bsky.convo.getMessages({
@@ -50,14 +50,14 @@ const processMessageReactions = (messages: BSkyMessage[] | undefined): BSkyMessa
   return processed;
 };
 
-export function useConversation({ convoId }: { convoId: string }) {
+export function useConversation({ convoId }: { convoId: string; }) {
   const { agent } = useBlueskyStore();
   const { isAuthenticated } = useAuth();
 
   return useQuery({
-    queryKey: ['conversation', { convoId }],
+    queryKey: [ "conversation", { convoId }],
     queryFn: async () => {
-      const proxy = agent.withProxy('bsky_chat', 'did:web:api.bsky.chat');
+      const proxy = agent.withProxy("bsky_chat", "did:web:api.bsky.chat");
 
       const messages = await getMessages(proxy, convoId);
       const messagesWithReactions = processMessageReactions(messages);

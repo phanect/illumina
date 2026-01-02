@@ -1,11 +1,11 @@
-import { render } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
-import { PostCard } from './post-card';
-import { TestRouterProvider } from '@/test/helpers/test-router-provider';
-import { imagePost, textPost } from '@/lib/bluesky/types.data';
+import { render } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
+import { imagePost, textPost } from "@/lib/bluesky/types.data";
+import { TestRouterProvider } from "@/test/helpers/test-router-provider";
+import { PostCard } from "./post-card";
 
-describe('PostCard', () => {
-  test('renders nothing without a post', () => {
+describe("PostCard", () => {
+  test("renders nothing without a post", () => {
     const post = null;
     const { container } = render(
       <TestRouterProvider>
@@ -16,7 +16,7 @@ describe('PostCard', () => {
   });
 
   // times out because children are still fetching data
-  test('renders a text post', () => {
+  test("renders a text post", () => {
     const { container } = render(
       <TestRouterProvider>
         <PostCard post={textPost} />
@@ -25,7 +25,7 @@ describe('PostCard', () => {
     expect(container).not.toBeEmptyDOMElement();
   });
 
-  test('renders an image post', () => {
+  test("renders an image post", () => {
     const { container } = render(
       <TestRouterProvider>
         <PostCard post={imagePost} />

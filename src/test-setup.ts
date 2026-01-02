@@ -1,17 +1,17 @@
-import '@/i18n';
-import '@/index.css';
-import '@testing-library/react/dont-cleanup-after-each';
-import '@testing-library/jest-dom/vitest';
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeEach, expect } from 'vitest';
-import { debug, setDomPreviewContext } from 'dom-preview';
+import "@/i18n";
+import "@/index.css";
+import "@testing-library/react/dont-cleanup-after-each";
+import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { debug, setDomPreviewContext } from "dom-preview";
+import { afterEach, beforeEach, expect } from "vitest";
 
 beforeEach(() => {
-  setDomPreviewContext(expect.getState().currentTestName ?? 'initial');
+  setDomPreviewContext(expect.getState().currentTestName ?? "initial");
 });
 
-const isCI = process.env.CI === 'true';
-const wantsDomPreview = process.env.DOM_PREVIEW === 'true';
+const isCI = process.env.CI === "true";
+const wantsDomPreview = process.env.DOM_PREVIEW === "true";
 
 afterEach(() => {
   // Run dom-preview's debug if the test fails

@@ -1,17 +1,17 @@
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { useBlueskyStore } from '../store';
-import { AppBskyFeedDefs } from '@atproto/api';
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useBlueskyStore } from "../store";
+import type { AppBskyFeedDefs } from "@atproto/api";
 
 type AuthorFeed = {
   cursor: string;
   feed: AppBskyFeedDefs.FeedViewPost[];
 };
 
-export function useAuthorFeed({ handle }: { handle: string }) {
+export function useAuthorFeed({ handle }: { handle: string; }) {
   const { agent } = useBlueskyStore();
 
   return useInfiniteQuery<AuthorFeed>({
-    queryKey: ['author-feed', handle],
+    queryKey: [ "author-feed", handle ],
     queryFn: async ({ pageParam: cursor }) => {
       const response = await agent.getAuthorFeed({
         actor: handle,

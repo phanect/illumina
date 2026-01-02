@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Input } from './input';
-import { ProfileViewBasic } from '@atproto/api/dist/client/types/app/bsky/actor/defs';
-import { useTranslation } from 'react-i18next';
+import { useQuery } from "@tanstack/react-query";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Input } from "./input";
+import type { ProfileViewBasic } from "@atproto/api/dist/client/types/app/bsky/actor/defs";
 
 type HandleInputProps = {
   value: string;
@@ -12,21 +12,25 @@ type HandleInputProps = {
   className?: string;
 };
 
-const PUBLIC_API = 'https://public.api.bsky.app';
+const PUBLIC_API = "https://public.api.bsky.app";
 
 const searchProfiles = async (query: string) => {
-  if (query.length < 1) return [];
+  if (query.length < 1) {
+    return [];
+  }
 
   try {
     const response = await fetch(
-      `${PUBLIC_API}/xrpc/app.bsky.actor.searchActorsTypeahead?term=${encodeURIComponent(query)}&limit=5`,
+      `${ PUBLIC_API }/xrpc/app.bsky.actor.searchActorsTypeahead?term=${ encodeURIComponent(query) }&limit=5`,
     );
-    if (!response.ok) throw new Error('Failed to search profiles');
+    if (!response.ok) {
+      throw new Error("Failed to search profiles");
+    }
 
-    const data = (await response.json()) as { actors: ProfileViewBasic[] };
+    const data = (await response.json()) as { actors: ProfileViewBasic[]; };
     return data.actors;
   } catch (error) {
-    console.error('Failed to search profiles:', error);
+    console.error("Failed to search profiles:", error);
     return [];
   }
 };
@@ -34,15 +38,15 @@ export function HandleInput({
   value,
   onChange,
   onSelect,
-  placeholder = 'Enter handle...',
-  className = '',
+  placeholder = "Enter handle...",
+  className = "",
 }: HandleInputProps) {
-  const { t } = useTranslation(['app', 'handleSearch']);
-  const [isOpen, setIsOpen] = useState(false);
+  const { t } = useTranslation([ "app", "handleSearch" ]);
+  const [ isOpen, setIsOpen ] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const { data: profiles, isLoading } = useQuery({
-    queryKey: ['profile-search', value],
+    queryKey: [ "profile-search", value ],
     queryFn: () => searchProfiles(value),
     enabled: value.length > 0 && isOpen,
     staleTime: 1000 * 60 * 5, // Cache for 5 minutes
@@ -55,8 +59,8 @@ export function HandleInput({
       }
     }
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   return (
@@ -75,7 +79,7 @@ export function HandleInput({
       {isOpen && value && (
         <div className="absolute z-10 w-full mt-1 rounded-md shadow-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800">
           {isLoading ? (
-            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">{t('loading')}</div>
+            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">{t("loading")}</div>
           ) : profiles?.length ? (
             <ul className="max-h-60 overflow-auto">
               {profiles.map((profile) => (
@@ -97,7 +101,7 @@ export function HandleInput({
               ))}
             </ul>
           ) : (
-            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">{t('handleSearch:noResultsFound')}</div>
+            <div className="p-4 text-sm text-gray-500 dark:text-gray-400">{t("handleSearch:noResultsFound")}</div>
           )}
         </div>
       )}

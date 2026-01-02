@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { AtpSessionData, AtpAgent } from '@atproto/api';
+import { AtpAgent, type AtpSessionData } from "@atproto/api";
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 export type BlueskyCredentials = {
   handle: string;
@@ -11,12 +11,12 @@ export type BlueskyCredentials = {
 type Session = AtpSessionData & {
   didDoc?:
     | {
-        service: {
-          id: string;
-          serviceEndpoint: string;
-          type: 'AtprotoPersonalDataServer';
-        }[];
-      }
+      service: {
+        id: string;
+        serviceEndpoint: string;
+        type: "AtprotoPersonalDataServer";
+      }[];
+    }
     | undefined;
 };
 
@@ -29,8 +29,8 @@ type BlueskyState = {
   restoreSession: () => Promise<void>;
 };
 
-const AUTHENTICATED_ENDPOINT = 'https://bsky.social';
-const GUEST_ENDPOINT = 'https://public.api.bsky.app';
+const AUTHENTICATED_ENDPOINT = "https://bsky.social";
+const GUEST_ENDPOINT = "https://public.api.bsky.app";
 
 export const useBlueskyStore = create<BlueskyState>()(
   persist(
@@ -54,7 +54,7 @@ export const useBlueskyStore = create<BlueskyState>()(
           session: {
             ...session,
             active: true,
-            didDoc: session.didDoc as Session['didDoc'],
+            didDoc: session.didDoc as Session["didDoc"],
           },
         });
       },
@@ -73,7 +73,7 @@ export const useBlueskyStore = create<BlueskyState>()(
             await agent.resumeSession(session);
             set({ agent, isAuthenticated: true });
           } catch (error) {
-            console.error('Failed to restore session:', error);
+            console.error("Failed to restore session:", error);
             set({ agent: new AtpAgent({ service: GUEST_ENDPOINT }), isAuthenticated: false, session: null });
           }
         }
@@ -82,7 +82,7 @@ export const useBlueskyStore = create<BlueskyState>()(
       session: null,
     }),
     {
-      name: 'bluesky-store',
+      name: "bluesky-store",
       partialize: (state) => ({ session: state.session }),
     },
   ),

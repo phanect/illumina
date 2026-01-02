@@ -1,50 +1,49 @@
-import { NodeViewWrapper, type NodeViewProps } from '@tiptap/react';
-import type { ElementDimensions } from '../hooks/use-drag-resize';
-import { useDragResize } from '../hooks/use-drag-resize';
-import { ResizeHandle } from './resize-handle';
-import { cn } from '@/lib/utils';
-import { Controlled as ControlledZoom } from 'react-medium-image-zoom';
-import { ActionButton, ActionWrapper, ImageActions } from './image-actions';
-import { useImageActions } from '../hooks/use-image-actions';
-import { blobUrlToBase64, randomId } from '../../../utils';
-import { InfoCircledIcon, TrashIcon } from '@radix-ui/react-icons';
-import { ImageOverlay } from './image-overlay';
-import { Spinner } from '../../../components/spinner';
-import type { UploadReturnType } from '..';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { InfoCircledIcon, TrashIcon } from "@radix-ui/react-icons";
+import { NodeViewWrapper, type NodeViewProps } from "@tiptap/react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Controlled as ControlledZoom } from "react-medium-image-zoom";
+import { cn } from "@/lib/utils";
+import { ActionButton, ActionWrapper, ImageActions } from "./image-actions";
+import { ImageOverlay } from "./image-overlay";
+import { ResizeHandle } from "./resize-handle";
+import { Spinner } from "../../../components/spinner";
+import { blobUrlToBase64, randomId } from "../../../utils";
+import { useDragResize, type ElementDimensions } from "../hooks/use-drag-resize";
+import { useImageActions } from "../hooks/use-image-actions";
+import type { UploadReturnType } from "..";
 
 const MAX_HEIGHT = 600;
 const MIN_HEIGHT = 120;
 const MIN_WIDTH = 120;
 
-interface ImageState {
+type ImageState = {
   src: string;
   isServerUploading: boolean;
   imageLoaded: boolean;
   isZoomed: boolean;
   error: boolean;
   naturalSize: ElementDimensions;
-}
+};
 
 const normalizeUploadResponse = (res: UploadReturnType) => ({
-  src: typeof res === 'string' ? res : res.src,
-  id: typeof res === 'string' ? randomId() : res.id,
+  src: typeof res === "string" ? res : res.src,
+  id: typeof res === "string" ? randomId() : res.id,
 });
 
 export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: NodeViewProps) => {
-  const { t } = useTranslation('editor');
+  const { t } = useTranslation("editor");
   const { src: initialSrc, width: initialWidth, height: initialHeight, fileName } = node.attrs;
   const uploadAttemptedRef = useRef(false);
 
   const initSrc = useMemo(() => {
-    if (typeof initialSrc === 'string') {
+    if (typeof initialSrc === "string") {
       return initialSrc;
     }
     return initialSrc.src;
-  }, [initialSrc]);
+  }, [ initialSrc ]);
 
-  const [imageState, setImageState] = useState<ImageState>({
+  const [ imageState, setImageState ] = useState<ImageState>({
     src: initSrc,
     isServerUploading: false,
     imageLoaded: false,
@@ -54,19 +53,19 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
   });
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [activeResizeHandle, setActiveResizeHandle] = useState<'left' | 'right' | null>(null);
+  const [ activeResizeHandle, setActiveResizeHandle ] = useState<"left" | "right" | null>(null);
 
   const onDimensionsChange = useCallback(
     ({ width, height }: ElementDimensions) => {
       updateAttributes({ width, height });
     },
-    [updateAttributes],
+    [ updateAttributes ],
   );
 
   const aspectRatio = imageState.naturalSize.width / imageState.naturalSize.height;
   const maxWidth = MAX_HEIGHT * aspectRatio;
   const containerMaxWidth = containerRef.current
-    ? parseFloat(getComputedStyle(containerRef.current).getPropertyValue('--editor-width'))
+    ? parseFloat(getComputedStyle(containerRef.current).getPropertyValue("--editor-width"))
     : Infinity;
 
   const { isLink, onView, onDownload, onCopy, onCopyLink, onRemoveImg } = useImageActions({
@@ -88,7 +87,7 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
     maxWidth: containerMaxWidth > 0 ? containerMaxWidth : maxWidth,
   });
 
-  const shouldMerge = useMemo(() => currentWidth <= 180, [currentWidth]);
+  const shouldMerge = useMemo(() => currentWidth <= 180, [ currentWidth ]);
 
   const handleImageLoad = useCallback(
     (ev: React.SyntheticEvent<HTMLImageElement>) => {
@@ -113,7 +112,7 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
         updateDimensions((state) => ({ ...state, width: newNaturalSize.width }));
       }
     },
-    [initialWidth, updateAttributes, updateDimensions],
+    [ initialWidth, updateAttributes, updateDimensions ],
   );
 
   const handleImageError = useCallback(() => {
@@ -121,11 +120,11 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
   }, []);
 
   const handleResizeStart = useCallback(
-    (direction: 'left' | 'right') => (event: React.PointerEvent<HTMLDivElement>) => {
+    (direction: "left" | "right") => (event: React.PointerEvent<HTMLDivElement>) => {
       setActiveResizeHandle(direction);
       initiateResize(direction)(event);
     },
-    [initiateResize],
+    [ initiateResize ],
   );
 
   const handleResizeEnd = useCallback(() => {
@@ -136,16 +135,16 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
     if (!isResizing) {
       handleResizeEnd();
     }
-  }, [isResizing, handleResizeEnd]);
+  }, [ isResizing, handleResizeEnd ]);
 
   useEffect(() => {
     const handleImage = async () => {
-      if (!initSrc.startsWith('blob:') || uploadAttemptedRef.current) {
+      if (!initSrc.startsWith("blob:") || uploadAttemptedRef.current) {
         return;
       }
 
       uploadAttemptedRef.current = true;
-      const imageExtension = editor.options.extensions.find((ext) => ext.name === 'image');
+      const imageExtension = editor.options.extensions.find((ext) => ext.name === "image");
       const { uploadFn } = imageExtension?.options ?? {};
 
       if (!uploadFn) {
@@ -163,7 +162,7 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
         setImageState((prev) => ({ ...prev, isServerUploading: true }));
         const response = await fetch(initSrc);
         const blob = await response.blob();
-        const file = new File([blob], fileName, { type: blob.type });
+        const file = new File([ blob ], fileName, { type: blob.type });
 
         const url = await uploadFn(file, editor);
         const normalizedData = normalizeUploadResponse(url);
@@ -185,22 +184,22 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
     };
 
     handleImage();
-  }, [editor, fileName, initSrc, updateAttributes]);
+  }, [ editor, fileName, initSrc, updateAttributes ]);
 
   return (
     <NodeViewWrapper ref={containerRef} data-drag-handle className="relative text-center leading-none">
       <div
         className="group/node-image relative mx-auto rounded-md object-contain"
         style={{
-          maxWidth: `min(${maxWidth}px, 100%)`,
+          maxWidth: `min(${ maxWidth }px, 100%)`,
           width: currentWidth,
           maxHeight: MAX_HEIGHT,
-          aspectRatio: `${imageState.naturalSize.width} / ${imageState.naturalSize.height}`,
+          aspectRatio: `${ imageState.naturalSize.width } / ${ imageState.naturalSize.height }`,
         }}
       >
         <div
-          className={cn('relative flex h-full cursor-default flex-col items-center gap-2 rounded', {
-            'outline outline-2 outline-offset-1 outline-primary': selected || isResizing,
+          className={cn("relative flex h-full cursor-default flex-col items-center gap-2 rounded", {
+            "outline outline-2 outline-offset-1 outline-primary": selected || isResizing,
           })}
         >
           <div className="h-full contain-paint">
@@ -214,7 +213,7 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
               {imageState.error && (
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
                   <InfoCircledIcon className="size-8 text-destructive" />
-                  <p className="mt-2 text-sm text-muted-foreground">{t('toolbar.image.failedToLoad')}</p>
+                  <p className="mt-2 text-sm text-muted-foreground">{t("toolbar.image.failedToLoad")}</p>
                 </div>
               )}
 
@@ -223,12 +222,12 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
                 onZoomChange={() => setImageState((prev) => ({ ...prev, isZoomed: false }))}
               >
                 <img
-                  className={cn('h-auto rounded object-contain transition-shadow', {
-                    'opacity-0': !imageState.imageLoaded || imageState.error,
+                  className={cn("h-auto rounded object-contain transition-shadow", {
+                    "opacity-0": !imageState.imageLoaded || imageState.error,
                   })}
                   style={{
-                    maxWidth: `min(100%, ${maxWidth}px)`,
-                    minWidth: `${MIN_WIDTH}px`,
+                    maxWidth: `min(100%, ${ maxWidth }px)`,
+                    minWidth: `${ MIN_WIDTH }px`,
                     maxHeight: MAX_HEIGHT,
                   }}
                   width={currentWidth}
@@ -236,8 +235,8 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
                   src={imageState.src}
                   onError={handleImageError}
                   onLoad={handleImageLoad}
-                  alt={node.attrs.alt || ''}
-                  title={node.attrs.title || ''}
+                  alt={node.attrs.alt || ""}
+                  title={node.attrs.title || ""}
                   id={node.attrs.id}
                 />
               </ControlledZoom>
@@ -248,18 +247,18 @@ export const ImageViewBlock = ({ editor, node, selected, updateAttributes }: Nod
             {editor.isEditable && imageState.imageLoaded && !imageState.error && !imageState.isServerUploading && (
               <>
                 <ResizeHandle
-                  onPointerDown={handleResizeStart('left')}
-                  className={cn('left-1', {
-                    hidden: isResizing && activeResizeHandle === 'right',
+                  onPointerDown={handleResizeStart("left")}
+                  className={cn("left-1", {
+                    hidden: isResizing && activeResizeHandle === "right",
                   })}
-                  isResizing={isResizing && activeResizeHandle === 'left'}
+                  isResizing={isResizing && activeResizeHandle === "left"}
                 />
                 <ResizeHandle
-                  onPointerDown={handleResizeStart('right')}
-                  className={cn('right-1', {
-                    hidden: isResizing && activeResizeHandle === 'left',
+                  onPointerDown={handleResizeStart("right")}
+                  className={cn("right-1", {
+                    hidden: isResizing && activeResizeHandle === "left",
                   })}
-                  isResizing={isResizing && activeResizeHandle === 'right'}
+                  isResizing={isResizing && activeResizeHandle === "right"}
                 />
               </>
             )}

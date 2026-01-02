@@ -1,20 +1,20 @@
-import { createRootRoute, Outlet, redirect } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import '../index.css';
-import { ErrorBoundary } from '../components/error-boundary';
-import { useBlueskyStore } from '../lib/bluesky/store';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools/production';
-import { useSettings } from '../hooks/use-setting';
-import { cn } from '../lib/utils';
-import { Navbar } from '../components/navigation/navbar';
-import i18n from '../i18n';
-import { Toaster } from '@/components/ui/sonner';
-import { Helmet } from 'react-helmet';
-import { appName } from '@/config';
-import { useUnreadCount } from '@/lib/bluesky/hooks/use-unread-count';
-import { OfflineBanner } from '@/components/ui/offline-banner';
-import { useRegisterSW } from 'virtual:pwa-register/react';
-import { toast } from 'sonner';
+import { createRootRoute, Outlet, redirect } from "@tanstack/react-router";
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
+import { Helmet } from "react-helmet";
+import { toast } from "sonner";
+import { useRegisterSW } from "virtual:pwa-register/react";
+import { OfflineBanner } from "@/components/ui/offline-banner";
+import { Toaster } from "@/components/ui/sonner";
+import { appName } from "@/config";
+import { useUnreadCount } from "@/lib/bluesky/hooks/use-unread-count";
+import { ErrorBoundary } from "../components/error-boundary";
+import { Navbar } from "../components/navigation/navbar";
+import { useSettings } from "../hooks/use-setting";
+import "../index.css";
+import { useBlueskyStore } from "../lib/bluesky/store";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools/production";
+import { cn } from "../lib/utils";
+import i18n from "../i18n";
 
 export const Route = createRootRoute({
   component: Root,
@@ -22,19 +22,21 @@ export const Route = createRootRoute({
     // Attempt to restore the session
     await useBlueskyStore.getState().restoreSession();
 
-    if (location.pathname.startsWith('/login')) {
+    if (location.pathname.startsWith("/login")) {
       // if already authenticated, redirect to root
       const { isAuthenticated } = useBlueskyStore.getState();
-      if (isAuthenticated) throw redirect({ to: '/' });
+      if (isAuthenticated) {
+        throw redirect({ to: "/" });
+      }
 
       // if not authenticated, proceed to login
       return;
     }
 
     // redirect to profile
-    if (location.pathname.startsWith('/@')) {
+    if (location.pathname.startsWith("/@")) {
       throw redirect({
-        to: '/profile/$handle',
+        to: "/profile/$handle",
         params: { handle: location.pathname.slice(2) },
       });
     }
@@ -48,7 +50,7 @@ function Root() {
 
   const { updateServiceWorker } = useRegisterSW({
     onRegisteredSW(swUrl, registration) {
-      console.info(`Service Worker at: ${swUrl}`);
+      console.info(`Service Worker at: ${ swUrl }`);
       if (registration) {
         setInterval(() => {
           registration.update();
@@ -56,9 +58,9 @@ function Root() {
       }
     },
     onNeedRefresh() {
-      toast.info('A new version of the app is available.', {
+      toast.info("A new version of the app is available.", {
         action: {
-          label: 'Update',
+          label: "Update",
           onClick() {
             updateServiceWorker(true);
           },
@@ -66,26 +68,28 @@ function Root() {
       });
     },
     onRegisterError(error) {
-      if (experiments.devMode) toast.info('SW registration error', error);
+      if (experiments.devMode) {
+        toast.info("SW registration error", error);
+      }
     },
   });
 
   return (
     <>
-      <Helmet titleTemplate={`${unreadCount ? `(${unreadCount})` : ''} %s - ${appName}`} defaultTitle={appName} />
+      <Helmet titleTemplate={`${ unreadCount ? `(${ unreadCount })` : "" } %s - ${ appName }`} defaultTitle={appName} />
       <OfflineBanner />
       <main
         dir={dir}
         lang={language}
         className={cn(
-          'bg-background text-foreground w-full flex justify-center',
-          font.family === 'OpenDyslexic' && 'font-[OpenDyslexic]',
-          font.family === 'Atkinson-Hyperlegible' && 'font-[Atkinson-Hyperlegible]',
-          font.size === 'extra-small' && 'text-xs',
-          font.size === 'small' && 'text-sm',
-          font.size === 'medium' && 'text-base',
-          font.size === 'large' && 'text-lg',
-          font.size === 'extra-large' && 'text-xl',
+          "bg-background text-foreground w-full flex justify-center",
+          font.family === "OpenDyslexic" && "font-[OpenDyslexic]",
+          font.family === "Atkinson-Hyperlegible" && "font-[Atkinson-Hyperlegible]",
+          font.size === "extra-small" && "text-xs",
+          font.size === "small" && "text-sm",
+          font.size === "medium" && "text-base",
+          font.size === "large" && "text-lg",
+          font.size === "extra-large" && "text-xl",
         )}
       >
         <ErrorBoundary>
@@ -109,9 +113,9 @@ function Root() {
             <TanStackRouterDevtools
               toggleButtonProps={{
                 style: {
-                  position: 'fixed',
-                  bottom: '4rem',
-                  left: '1em',
+                  position: "fixed",
+                  bottom: "4rem",
+                  left: "1em",
                   zIndex: 50,
                 },
               }}

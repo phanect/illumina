@@ -1,16 +1,16 @@
-import { forwardRef, useState } from 'react';
-import { useFeed } from '../lib/bluesky/hooks/use-feed';
-import { PostCard } from './post-card';
-import { useHotkeys } from 'react-hotkeys-hook';
-import { useLike } from '../lib/bluesky/hooks/use-like';
-import { useRepost } from '../lib/bluesky/hooks/use-repost';
-import { useSettings } from '../hooks/use-setting';
-import { Virtuoso } from 'react-virtuoso';
-import { Loading } from './ui/loading';
-import { useUnlike } from '@/lib/bluesky/hooks/use-unlike';
-import { ErrorBoundary } from './error-boundary';
+import { forwardRef, useState } from "react";
+import { useHotkeys } from "react-hotkeys-hook";
+import { Virtuoso } from "react-virtuoso";
+import { useUnlike } from "@/lib/bluesky/hooks/use-unlike";
+import { ErrorBoundary } from "./error-boundary";
+import { PostCard } from "./post-card";
+import { Loading } from "./ui/loading";
+import { useSettings } from "../hooks/use-setting";
+import { useFeed } from "../lib/bluesky/hooks/use-feed";
+import { useLike } from "../lib/bluesky/hooks/use-like";
+import { useRepost } from "../lib/bluesky/hooks/use-repost";
 
-export function Timeline({ columnNumber = 1 }: { columnNumber: number }) {
+export function Timeline({ columnNumber = 1 }: { columnNumber: number; }) {
   const { columns } = useSettings();
   const selectedFeed = columns[columnNumber];
   const { data, isLoading, error, fetchNextPage } = useFeed(selectedFeed);
@@ -18,7 +18,7 @@ export function Timeline({ columnNumber = 1 }: { columnNumber: number }) {
   const unlike = useUnlike();
   const repost = useRepost();
   const posts = data?.pages.map((page) => page.feed).flat() ?? [];
-  const [selectedPost, setSelectedPost] = useState<string | null>(posts?.[0]?.post.uri ?? null);
+  const [ selectedPost, setSelectedPost ] = useState<string | null>(posts?.[0]?.post.uri ?? null);
   const getPost = (uri: string | null) => (uri ? posts.find(({ post }) => post.uri === uri)?.post : null);
   const getNextPost = (uri: string | null) => {
     const index = posts.findIndex(({ post }) => post.uri === uri);
@@ -31,10 +31,12 @@ export function Timeline({ columnNumber = 1 }: { columnNumber: number }) {
 
   // like post
   useHotkeys(
-    'l',
+    "l",
     () => {
       const post = getPost(selectedPost);
-      if (!post?.viewer) return;
+      if (!post?.viewer) {
+        return;
+      }
 
       // unlike
       if (post.viewer.like) {
@@ -45,65 +47,73 @@ export function Timeline({ columnNumber = 1 }: { columnNumber: number }) {
       // like
       like.mutate({ uri: post.uri, cid: post.cid });
     },
-    [selectedPost],
+    [ selectedPost ],
   );
 
   // repost post
   useHotkeys(
-    't',
+    "t",
     () => {
       const post = getPost(selectedPost);
-      if (!post) return;
+      if (!post) {
+        return;
+      }
 
       repost.mutate({ uri: post.uri, cid: post.cid });
     },
-    [selectedPost],
+    [ selectedPost ],
   );
 
   // next post
   useHotkeys(
-    'j',
+    "j",
     () => {
       const postUri = getNextPost(selectedPost)?.post.uri;
-      if (!postUri) return;
+      if (!postUri) {
+        return;
+      }
       setSelectedPost(postUri);
 
       // scroll to the post
       const post = document.getElementById(postUri);
       if (post) {
-        post.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        post.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     },
-    [selectedPost],
+    [ selectedPost ],
   );
 
   // previous post
   useHotkeys(
-    'k',
+    "k",
     () => {
       const postUri = getPrevPost(selectedPost)?.post.uri;
-      if (!postUri) return;
+      if (!postUri) {
+        return;
+      }
       setSelectedPost(postUri);
 
       // scroll to the post
       const post = document.getElementById(postUri);
       if (post) {
-        post.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        post.scrollIntoView({ behavior: "smooth", block: "center" });
       }
     },
-    [selectedPost],
+    [ selectedPost ],
   );
 
   // page down
   useHotkeys(
-    'space',
+    "space",
     () => {
       window.scrollBy(0, window.innerHeight);
     },
     [],
   );
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
   if (error) {
     return <div className="text-red-500 text-center py-8">{error.message}</div>;
@@ -116,7 +126,7 @@ export function Timeline({ columnNumber = 1 }: { columnNumber: number }) {
         totalCount={posts.length}
         endReached={() => fetchNextPage()}
         components={{
-          List: forwardRef(function List(props, ref) {
+          List: forwardRef((props, ref) => {
             return <div ref={ref} {...props} className="flex flex-col divide-y" />;
           }),
         }}

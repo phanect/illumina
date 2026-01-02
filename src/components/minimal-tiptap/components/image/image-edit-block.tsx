@@ -1,9 +1,9 @@
-import type { Editor } from '@tiptap/react';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { useTranslation } from 'react-i18next';
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import type { Editor } from "@tiptap/react";
 
 type ImageEditBlockProps = {
   editor: Editor;
@@ -11,9 +11,9 @@ type ImageEditBlockProps = {
 };
 
 export const ImageEditBlock = ({ editor, close }: ImageEditBlockProps) => {
-  const { t } = useTranslation('editor');
+  const { t } = useTranslation("editor");
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [link, setLink] = useState('');
+  const [ link, setLink ] = useState("");
 
   const handleClick = useCallback(() => {
     fileInputRef.current?.click();
@@ -22,7 +22,9 @@ export const ImageEditBlock = ({ editor, close }: ImageEditBlockProps) => {
   const handleFile = useCallback(
     async (e: React.ChangeEvent<HTMLInputElement>) => {
       const files = e.target.files;
-      if (!files?.length) return;
+      if (!files?.length) {
+        return;
+      }
 
       const insertImages = async () => {
         const contentBucket = [];
@@ -38,7 +40,7 @@ export const ImageEditBlock = ({ editor, close }: ImageEditBlockProps) => {
       await insertImages();
       close();
     },
-    [editor, close],
+    [ editor, close ],
   );
 
   const handleSubmit = useCallback(
@@ -51,13 +53,13 @@ export const ImageEditBlock = ({ editor, close }: ImageEditBlockProps) => {
         close();
       }
     },
-    [editor, link, close],
+    [ editor, link, close ],
   );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="space-y-1">
-        <Label htmlFor="image-link">{t('toolbar.link.displayText')}</Label>
+        <Label htmlFor="image-link">{t("toolbar.link.displayText")}</Label>
         <div className="flex">
           <Input
             id="image-link"
@@ -69,12 +71,12 @@ export const ImageEditBlock = ({ editor, close }: ImageEditBlockProps) => {
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setLink(e.target.value)}
           />
           <Button type="submit" className="ml-2">
-            {t('toolbar.image.submit')}
+            {t("toolbar.image.submit")}
           </Button>
         </div>
       </div>
       <Button type="button" className="w-full" onClick={handleClick}>
-        {t('toolbar.image.description')}
+        {t("toolbar.image.description")}
       </Button>
       <input type="file" accept="image/*" ref={fileInputRef} multiple className="hidden" onChange={handleFile} />
     </form>
