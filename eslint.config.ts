@@ -54,6 +54,16 @@ const configs = defineConfig([
           message: 'Use inline exports instead of `export { ... };`.',
         },
       ],
+
+      // TODO add these rules to @phanect/lint
+      "import/no-duplicates": [ "error", {
+        "prefer-inline": true,
+      }],
+      "import/newline-after-import": "error",
+      "@typescript-eslint/consistent-type-imports": [ "error", {
+        prefer: "type-imports",
+        fixStyle: "inline-type-imports", // 'separate-type-imports';
+      }],
     },
   },
   {
