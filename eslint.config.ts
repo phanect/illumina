@@ -16,11 +16,7 @@ const configs = defineConfig([
 
   {
     files: ['**/*.{ts,tsx}'],
-    plugins: {
-      'react-refresh': reactRefresh,
-    },
     rules: {
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
       // React 17 does not require importing React for JSX
       'react/react-in-jsx-scope': 'off',
       // Prefer importing specific items from React instead of the default import
@@ -58,6 +54,17 @@ const configs = defineConfig([
           message: 'Use inline exports instead of `export { ... };`.',
         },
       ],
+    },
+  },
+  {
+    files: [ "**/*.tsx" ],
+    plugins: {
+      "react-refresh": reactRefresh,
+    },
+    rules: {
+      "react-refresh/only-export-components": [ "warn", {
+        allowConstantExport: true,
+      }],
     },
   },
   {
