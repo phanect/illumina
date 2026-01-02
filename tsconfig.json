@@ -29,6 +29,7 @@
       "@/*": ["./src/*"]
     },
     "types": [
+      "vite/client",
       "vite-plugin-pwa/client"
     ]
   },
