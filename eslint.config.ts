@@ -1,13 +1,16 @@
 import { core } from "@phanect/lint";
 import { react } from "@phanect/lint-react";
-import { defineConfig, type Config } from "eslint/config";
+import { defineConfig, globalIgnores, type Config } from "eslint/config";
 import reactRefresh from 'eslint-plugin-react-refresh';
 import i18next from 'eslint-plugin-i18next';
 import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
 const configs = defineConfig([
+  globalIgnores([
+    "dist/**"
+  ]),
+
   i18next.configs['flat/recommended'] as Config,
-  { ignores: ['dist'] },
 
   ...core,
   ...react,
