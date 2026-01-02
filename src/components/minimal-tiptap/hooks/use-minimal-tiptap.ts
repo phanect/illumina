@@ -1,54 +1,52 @@
-import type { Editor } from '@tiptap/react';
-import type { Content, UseEditorOptions } from '@tiptap/react';
-import { StarterKit } from '@tiptap/starter-kit';
-import { Extension, useEditor } from '@tiptap/react';
-import { Typography } from '@tiptap/extension-typography';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { Underline } from '@tiptap/extension-underline';
-import { TextStyle } from '@tiptap/extension-text-style';
+import { Placeholder } from "@tiptap/extension-placeholder";
+import { TextStyle } from "@tiptap/extension-text-style";
+import { Typography } from "@tiptap/extension-typography";
+import { Underline } from "@tiptap/extension-underline";
+import { Extension, useEditor, type Content, type Editor, type UseEditorOptions } from "@tiptap/react";
+import { StarterKit } from "@tiptap/starter-kit";
+import { useCallback } from "react";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 import {
-  Link,
-  Image,
-  HorizontalRule,
   CodeBlockLowlight,
-  Selection,
   Color,
-  UnsetAllMarks,
-  ResetMarksOnEnter,
   FileHandler,
-} from '../extensions';
-import { cn } from '@/lib/utils';
-import { fileToBase64, getOutput, randomId } from '../utils';
-import { useThrottle } from '../hooks/use-throttle';
-import { toast } from 'sonner';
-import { useCallback } from 'react';
+  HorizontalRule,
+  Image,
+  Link,
+  ResetMarksOnEnter,
+  Selection,
+  UnsetAllMarks,
+} from "../extensions";
+import { useThrottle } from "../hooks/use-throttle";
+import { fileToBase64, getOutput, randomId } from "../utils";
 
-export interface UseMinimalTiptapEditorProps extends UseEditorOptions {
+export type UseMinimalTiptapEditorProps = {
   value?: Content;
-  output?: 'html' | 'json' | 'text';
+  output?: "html" | "json" | "text";
   placeholder?: string;
   editorClassName?: string;
   throttleDelay?: number;
   onUpdate?: (content: Content) => void;
   onBlur?: (content: Content) => void;
-}
+} & UseEditorOptions;
 
 const createExtensions = (placeholder: string) => [
   StarterKit.configure({
     horizontalRule: false,
     codeBlock: false,
-    paragraph: { HTMLAttributes: { class: 'text-node' } },
-    heading: { HTMLAttributes: { class: 'heading-node' } },
-    blockquote: { HTMLAttributes: { class: 'block-node' } },
-    bulletList: { HTMLAttributes: { class: 'list-node' } },
-    orderedList: { HTMLAttributes: { class: 'list-node' } },
-    code: { HTMLAttributes: { class: 'inline', spellcheck: 'true' } },
-    dropcursor: { width: 2, class: 'ProseMirror-dropcursor border' },
+    paragraph: { HTMLAttributes: { class: "text-node" }},
+    heading: { HTMLAttributes: { class: "heading-node" }},
+    blockquote: { HTMLAttributes: { class: "block-node" }},
+    bulletList: { HTMLAttributes: { class: "list-node" }},
+    orderedList: { HTMLAttributes: { class: "list-node" }},
+    code: { HTMLAttributes: { class: "inline", spellcheck: "true" }},
+    dropcursor: { width: 2, class: "ProseMirror-dropcursor border" },
   }),
   Link,
   Underline,
   Image.configure({
-    allowedMimeTypes: ['image/*'],
+    allowedMimeTypes: [ "image/*" ],
     maxFileSize: 5 * 1024 * 1024,
     allowBase64: true,
     uploadFn: async (file) => {
@@ -72,7 +70,7 @@ const createExtensions = (placeholder: string) => [
           const id = randomId();
 
           return {
-            type: 'image',
+            type: "image",
             attrs: {
               id,
               src: blobUrl,
@@ -85,48 +83,48 @@ const createExtensions = (placeholder: string) => [
       );
     },
     onImageRemoved({ id, src }) {
-      console.log('Image removed', { id, src });
+      console.log("Image removed", { id, src });
     },
     onValidationError(errors) {
       errors.forEach((error) => {
-        toast.error('Image validation error', {
-          position: 'bottom-right',
+        toast.error("Image validation error", {
+          position: "bottom-right",
           description: error.reason,
         });
       });
     },
     onActionSuccess({ action }) {
       const mapping = {
-        copyImage: 'Copy Image',
-        copyLink: 'Copy Link',
-        download: 'Download',
+        copyImage: "Copy Image",
+        copyLink: "Copy Link",
+        download: "Download",
       };
       toast.success(mapping[action], {
-        position: 'bottom-right',
-        description: 'Image action success',
+        position: "bottom-right",
+        description: "Image action success",
       });
     },
     onActionError(error, { action }) {
       const mapping = {
-        copyImage: 'Copy Image',
-        copyLink: 'Copy Link',
-        download: 'Download',
+        copyImage: "Copy Image",
+        copyLink: "Copy Link",
+        download: "Download",
       };
-      toast.error(`Failed to ${mapping[action]}`, {
-        position: 'bottom-right',
+      toast.error(`Failed to ${ mapping[action] }`, {
+        position: "bottom-right",
         description: error.message,
       });
     },
   }),
   FileHandler.configure({
     allowBase64: true,
-    allowedMimeTypes: ['image/*'],
+    allowedMimeTypes: [ "image/*" ],
     maxFileSize: 5 * 1024 * 1024,
     onDrop: (editor, files, pos) => {
       files.forEach(async (file) => {
         const src = await fileToBase64(file);
         editor.commands.insertContentAt(pos, {
-          type: 'image',
+          type: "image",
           attrs: { src },
         });
       });
@@ -135,15 +133,15 @@ const createExtensions = (placeholder: string) => [
       files.forEach(async (file) => {
         const src = await fileToBase64(file);
         editor.commands.insertContent({
-          type: 'image',
+          type: "image",
           attrs: { src },
         });
       });
     },
     onValidationError: (errors) => {
       errors.forEach((error) => {
-        toast.error('Image validation error', {
-          position: 'bottom-right',
+        toast.error("Image validation error", {
+          position: "bottom-right",
           description: error.reason,
         });
       });
@@ -159,15 +157,15 @@ const createExtensions = (placeholder: string) => [
   CodeBlockLowlight,
   Placeholder.configure({ placeholder: () => placeholder }),
   Extension.create({
-    name: 'keyboard-shortcuts',
+    name: "keyboard-shortcuts",
     addKeyboardShortcuts(this) {
       return {
-        'Mod-Enter'({ editor }) {
-          const submitEvent = new Event('submit', {
+        "Mod-Enter"({ editor }) {
+          const submitEvent = new Event("submit", {
             bubbles: true,
             cancelable: true,
           });
-          editor.$doc.element.closest('form')?.dispatchEvent(submitEvent);
+          editor.$doc.element.closest("form")?.dispatchEvent(submitEvent);
           return true;
         },
       };
@@ -177,8 +175,8 @@ const createExtensions = (placeholder: string) => [
 
 export const useMinimalTiptapEditor = ({
   value,
-  output = 'html',
-  placeholder = '',
+  output = "html",
+  placeholder = "",
   editorClassName,
   throttleDelay = 0,
   onUpdate,
@@ -189,7 +187,7 @@ export const useMinimalTiptapEditor = ({
 
   const handleUpdate = useCallback(
     (editor: Editor) => throttledSetValue(getOutput(editor, output)),
-    [output, throttledSetValue],
+    [ output, throttledSetValue ],
   );
 
   const handleCreate = useCallback(
@@ -198,19 +196,19 @@ export const useMinimalTiptapEditor = ({
         editor.commands.setContent(value);
       }
     },
-    [value],
+    [ value ],
   );
 
-  const handleBlur = useCallback((editor: Editor) => onBlur?.(getOutput(editor, output)), [output, onBlur]);
+  const handleBlur = useCallback((editor: Editor) => onBlur?.(getOutput(editor, output)), [ output, onBlur ]);
 
   const editor = useEditor({
     extensions: createExtensions(placeholder),
     editorProps: {
       attributes: {
-        autocomplete: 'on',
-        autocorrect: 'on',
-        autocapitalize: 'off',
-        class: cn('focus:outline-none flex-1 h-full p-5', editorClassName),
+        autocomplete: "on",
+        autocorrect: "on",
+        autocapitalize: "off",
+        class: cn("focus:outline-none flex-1 h-full p-5", editorClassName),
       },
     },
     onUpdate: ({ editor }) => handleUpdate(editor),

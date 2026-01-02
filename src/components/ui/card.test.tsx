@@ -1,9 +1,9 @@
-import { render } from '@testing-library/react';
-import { describe, expect, test } from 'vitest';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './card';
+import { render } from "@testing-library/react";
+import { describe, expect, test } from "vitest";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./card";
 
-describe('Card', () => {
-  test('renders', () => {
+describe("Card", () => {
+  test("renders", () => {
     const { container } = render(
       <Card>
         <CardHeader>

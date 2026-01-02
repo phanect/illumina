@@ -1,14 +1,14 @@
-import { AlertTriangleIcon } from 'lucide-react';
-import { useNavigate } from '@tanstack/react-router';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@radix-ui/react-accordion";
+import { useNavigate } from "@tanstack/react-router";
+import { AlertTriangleIcon } from "lucide-react";
+import { memo, type ReactElement } from "react";
 import ReactPlayer from "react-player";
-import { BSkyPost } from '../lib/bluesky/types/bsky-post';
-import { cn } from '../lib/utils';
+import { usePostLabels } from "@/lib/bluesky/hooks/use-post-labels";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { ErrorBoundary } from "./error-boundary";
+import { cn } from "../lib/utils";
 import { Image } from "./ui/image.tsx";
-import { memo, type ReactElement } from 'react';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { usePostLabels } from '@/lib/bluesky/hooks/use-post-labels';
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '@radix-ui/react-accordion';
-import { ErrorBoundary } from './error-boundary';
+import type { BSkyPost } from "../lib/bluesky/types/bsky-post";
 
 type ThumbnailImageProps = {
   post: BSkyPost;
@@ -19,17 +19,19 @@ const ThumbnailImage = ({ post }: ThumbnailImageProps): ReactElement | null => {
 
   const shortenTitle = (text: string) => text
     .split(" ")
-    .filter(textFragment => !textFragment.trim().startsWith("#"))
+    .filter((textFragment) => !textFragment.trim().startsWith("#"))
     .join(" ")
     .substring(0, 48);
 
   const onClick = () => {
     const cellText = document.getSelection();
-    if (cellText?.type === 'Range') return;
+    if (cellText?.type === "Range") {
+      return;
+    }
 
     navigate({
-      to: '/profile/$handle/post/$postId',
-      params: { handle: post.author.handle, postId: post.uri.split('/').pop()! },
+      to: "/profile/$handle/post/$postId",
+      params: { handle: post.author.handle, postId: post.uri.split("/").pop()! },
     });
   };
 
@@ -43,11 +45,11 @@ const ThumbnailImage = ({ post }: ThumbnailImageProps): ReactElement | null => {
           width={48}
           alt={post.embed.images[0].alt}
           classNames={{
-            image: cn('w-full h-48 aspect-square', 'rounded-lg object-cover'),
+            image: cn("w-full h-48 aspect-square", "rounded-lg object-cover"),
           }}
         />
       ) : post.embed?.$type === "app.bsky.embed.video#view" ? (
-        <div className={cn('mb-3 w-full aspect-square')}>
+        <div className={cn("mb-3 w-full aspect-square")}>
           <ReactPlayer
             url={post.embed.playlist}
             controls={true}
@@ -58,7 +60,7 @@ const ThumbnailImage = ({ post }: ThumbnailImageProps): ReactElement | null => {
             config={{
               file: {
                 attributes: {
-                  preload: 'none',
+                  preload: "none",
                 },
               },
             }}
@@ -71,7 +73,7 @@ const ThumbnailImage = ({ post }: ThumbnailImageProps): ReactElement | null => {
       </p>
     </div>
   );
-}
+};
 
 type ThumbnailInnerProps = {
   post: BSkyPost;
@@ -82,10 +84,12 @@ function ThumbnailInner({ post }: ThumbnailInnerProps) {
   const { moderation } = usePostLabels({ agent, post });
 
   // Hide post if it's filtered
-  if (moderation?.ui('contentList').filter) return null;
-  const contentMedia = moderation?.ui('contentMedia');
-  const moderationMediaLabel = contentMedia?.blurs[0]?.type === 'label' ? contentMedia.blurs[0]?.labelDef.locales[0] : null;
-  const moderationFilter = moderation?.ui('contentMedia').filter;
+  if (moderation?.ui("contentList").filter) {
+    return null;
+  }
+  const contentMedia = moderation?.ui("contentMedia");
+  const moderationMediaLabel = contentMedia?.blurs[0]?.type === "label" ? contentMedia.blurs[0]?.labelDef.locales[0] : null;
+  const moderationFilter = moderation?.ui("contentMedia").filter;
 
   return (
     <ErrorBoundary>
@@ -98,8 +102,8 @@ function ThumbnailInner({ post }: ThumbnailInnerProps) {
                   <AlertTriangleIcon size={20} />
                   {moderationMediaLabel?.name}
                 </div>
-                <div className="group-data-[state=open]:hidden">{'show'}</div>
-                <div className="hidden group-data-[state=open]:flex">{'hide'}</div>
+                <div className="group-data-[state=open]:hidden">show</div>
+                <div className="hidden group-data-[state=open]:flex">hide</div>
               </div>
             </AccordionTrigger>
             <AccordionContent className="pt-2">
@@ -121,8 +125,10 @@ type ThumbnailProps = {
   parent?: boolean;
 };
 
-export const Thumbnail = memo(function Thumbnail({ post, ...props }: ThumbnailProps) {
-  if (!post) return null;
+export const Thumbnail = memo(({ post, ...props }: ThumbnailProps) => {
+  if (!post) {
+    return null;
+  }
 
   return <ThumbnailInner {...props} post={post} />;
 });

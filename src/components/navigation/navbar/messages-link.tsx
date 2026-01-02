@@ -1,10 +1,10 @@
-import { useTranslation } from 'react-i18next';
-import { Link } from '../../ui/link';
-import { MailIcon } from 'lucide-react';
-import { useConversations } from '@/lib/bluesky/hooks/use-conversations';
+import { MailIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useConversations } from "@/lib/bluesky/hooks/use-conversations";
+import { Link } from "../../ui/link";
 
 export const MessagesLink = () => {
-  const { t } = useTranslation('messages');
+  const { t } = useTranslation("messages");
   const { data: convos } = useConversations();
   const unreadCount = convos?.filter((convo) => convo.unreadCount >= 1).length || 0;
   return (
@@ -20,7 +20,7 @@ export const MessagesLink = () => {
           </span>
         )}
       </div>
-      <span className="hidden xl:block">{t('messages')}</span>
+      <span className="hidden xl:block">{t("messages")}</span>
     </Link>
   );
 };

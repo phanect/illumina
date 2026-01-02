@@ -1,6 +1,6 @@
 type Events = {
-  translate: { language: string };
-  copyToClipboard: { type: 'post-text' | 'post-link' };
+  translate: { language: string; };
+  copyToClipboard: { type: "post-text" | "post-link"; };
 };
 
 declare global {
@@ -11,9 +11,9 @@ declare global {
     };
   }
 }
-const plausible = (window.plausible =
-  window.plausible ||
-  function (...args: unknown[]) {
+const plausible = (window.plausible
+  = window.plausible
+  || function(...args: unknown[]) {
     (window.plausible.q = window.plausible.q || []).push(args);
   });
 

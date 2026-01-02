@@ -1,10 +1,10 @@
-import { useForm, Controller } from 'react-hook-form';
-import { useTranslation } from 'react-i18next';
-import { useAuth } from '../lib/bluesky/hooks/use-auth';
-import { HandleInput } from './ui/handle-input';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
+import { Controller, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { Button } from "./ui/button";
+import { HandleInput } from "./ui/handle-input";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
+import { useAuth } from "../lib/bluesky/hooks/use-auth";
 
 type LoginFormData = {
   handle: string;
@@ -13,7 +13,7 @@ type LoginFormData = {
 };
 
 export function LoginForm() {
-  const { t } = useTranslation(['auth', 'app']);
+  const { t } = useTranslation([ "auth", "app" ]);
   const { login, isLoading, error } = useAuth();
   const {
     control,
@@ -30,40 +30,40 @@ export function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="p-2">
       <div className="flex flex-col gap-2">
         <div>
-          <Label htmlFor="handle">{t('app:blueskyHandle')}</Label>
+          <Label htmlFor="handle">{t("app:blueskyHandle")}</Label>
           <Controller
             name="handle"
             control={control}
-            rules={{ required: 'Handle is required' }}
-            render={({ field }) => <HandleInput value={field.value || ''} onChange={field.onChange} className="mt-1" />}
+            rules={{ required: "Handle is required" }}
+            render={({ field }) => <HandleInput value={field.value || ""} onChange={field.onChange} className="mt-1" />}
           />
           {errors.handle && <p className="mt-1 text-sm text-red-500">{errors.handle.message}</p>}
         </div>
 
         <div>
-          <Label htmlFor="password">{t('password')}</Label>
-          <Input id="password" type="password" {...register('password', { required: 'Password is required' })} />
+          <Label htmlFor="password">{t("password")}</Label>
+          <Input id="password" type="password" {...register("password", { required: "Password is required" })} />
           {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>}
         </div>
 
-        {error &&
-          (error?.message === 'A sign in code has been sent to your email address' ||
-          error?.message === 'Token is invalid' ? (
-            <div>
-              <Label htmlFor="authFactorToken">{t('authFactorToken')}</Label>
-              <Input
-                id="authFactorToken"
-                type="text"
-                {...register('authFactorToken', { required: 'Two-factor token is required' })}
-              />
-              {errors.authFactorToken && <p className="mt-1 text-sm text-red-500">{errors.authFactorToken?.message}</p>}
-            </div>
-          ) : (
-            <p className="text-red-500 text-sm">{error.message}</p>
-          ))}
+        {error
+          && (error?.message === "A sign in code has been sent to your email address"
+          || error?.message === "Token is invalid" ? (
+              <div>
+                <Label htmlFor="authFactorToken">{t("authFactorToken")}</Label>
+                <Input
+                  id="authFactorToken"
+                  type="text"
+                  {...register("authFactorToken", { required: "Two-factor token is required" })}
+                />
+                {errors.authFactorToken && <p className="mt-1 text-sm text-red-500">{errors.authFactorToken?.message}</p>}
+              </div>
+            ) : (
+              <p className="text-red-500 text-sm">{error.message}</p>
+            ))}
 
         <Button type="submit" disabled={isLoading} className="w-full">
-          {isLoading ? t('login.pending') : t('login.default')}
+          {isLoading ? t("login.pending") : t("login.default")}
         </Button>
       </div>
     </form>

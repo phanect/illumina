@@ -1,8 +1,8 @@
-import { languages, defaultNS } from '@/i18n';
+import type { defaultNS, languages } from "@/i18n";
 
-declare module 'i18next' {
-  interface CustomTypeOptions {
+declare module "i18next" {
+  type CustomTypeOptions = {
     defaultNS: typeof defaultNS;
-    resources: (typeof languages)['en'];
-  }
+    resources: (typeof languages)["en"];
+  };
 }

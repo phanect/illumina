@@ -1,8 +1,8 @@
-import { WebSocketHandler, RequestHandler } from 'msw';
-import { setupServer } from 'msw/node';
-import { afterAll, afterEach, beforeAll } from 'vitest';
+import { setupServer } from "msw/node";
+import { afterAll, afterEach, beforeAll } from "vitest";
+import type { RequestHandler, WebSocketHandler } from "msw";
 
-export const createHttpServer = (...handlers: Array<RequestHandler | WebSocketHandler>) => {
+export const createHttpServer = (...handlers: (RequestHandler | WebSocketHandler)[]) => {
   const server = setupServer(...handlers);
 
   beforeAll(() => {

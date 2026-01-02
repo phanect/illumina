@@ -1,8 +1,8 @@
-import stringByteSlice from 'string-byte-slice';
-import { Link } from './ui/link';
-import { FormattedText } from './ui/formatted-text';
-import { BSkyFacet } from '../lib/bluesky/types/bsky-facet';
-import { Fragment } from 'react/jsx-runtime';
+import { Fragment } from "react/jsx-runtime";
+import stringByteSlice from "string-byte-slice";
+import { FormattedText } from "./ui/formatted-text";
+import { Link } from "./ui/link";
+import type { BSkyFacet } from "../lib/bluesky/types/bsky-facet";
 
 export const FacetedText = ({ text, facets }: FacetedTextProps) => {
   // Sort facets by start index to process them in order
@@ -19,7 +19,9 @@ export const FacetedText = ({ text, facets }: FacetedTextProps) => {
 
   for (let i = 0; i < sortedFacets.length; i++) {
     const facet = sortedFacets[i];
-    if (!facet) continue;
+    if (!facet) {
+      continue;
+    }
 
     // Render the facet
     const facetText = stringByteSlice(text, facet.index.byteStart, facet.index.byteEnd);
@@ -27,29 +29,29 @@ export const FacetedText = ({ text, facets }: FacetedTextProps) => {
     // Determine rendering based on facet type
     const firstFeature = facet.features[0];
     switch (firstFeature?.$type) {
-      case 'app.bsky.richtext.facet#link':
+      case "app.bsky.richtext.facet#link":
         parts.push(
-          <Fragment key={`facet-${i}-link`}>
-            <FormattedText text={' '} key={`text-${i}-link`} />
-            <ExternalLink key={`facet-${i}-link`} href={firstFeature.uri}>
+          <Fragment key={`facet-${ i }-link`}>
+            <FormattedText text={" "} key={`text-${ i }-link`} />
+            <ExternalLink key={`facet-${ i }-link`} href={firstFeature.uri}>
               {facetText}
             </ExternalLink>
           </Fragment>,
         );
         break;
-      case 'app.bsky.richtext.facet#mention':
+      case "app.bsky.richtext.facet#mention":
         parts.push(
-          <Fragment key={`facet-${i}-mention`}>
-            <FormattedText text={' '} key={`text-${i}-mention`} />
-            <Mention key={`facet-${i}-mention`} handle={facetText.slice(1)} />
+          <Fragment key={`facet-${ i }-mention`}>
+            <FormattedText text={" "} key={`text-${ i }-mention`} />
+            <Mention key={`facet-${ i }-mention`} handle={facetText.slice(1)} />
           </Fragment>,
         );
         break;
-      case 'app.bsky.richtext.facet#tag':
+      case "app.bsky.richtext.facet#tag":
         parts.push(
-          <Fragment key={`facet-${i}-tag`}>
-            <FormattedText text={' '} key={`text-${i}-tag`} />
-            <HashTag key={`facet-${i}-tag`} tag={facetText.slice(1)} />
+          <Fragment key={`facet-${ i }-tag`}>
+            <FormattedText text={" "} key={`text-${ i }-tag`} />
+            <HashTag key={`facet-${ i }-tag`} tag={facetText.slice(1)} />
           </Fragment>,
         );
         break;
@@ -64,7 +66,7 @@ export const FacetedText = ({ text, facets }: FacetedTextProps) => {
   return parts;
 };
 
-function ExternalLink({ href, children }: { href: string; children: React.ReactNode }) {
+function ExternalLink({ href, children }: { href: string; children: React.ReactNode; }) {
   return (
     <Link href={href} className="text-blue-400">
       {children}
@@ -72,7 +74,7 @@ function ExternalLink({ href, children }: { href: string; children: React.ReactN
   );
 }
 
-function Mention({ handle }: { handle: string }) {
+function Mention({ handle }: { handle: string; }) {
   return (
     <Link
       to="/profile/$handle"
@@ -82,12 +84,12 @@ function Mention({ handle }: { handle: string }) {
         event.stopPropagation();
       }}
     >
-      <span className="text-purple-500 font-semibold">@{handle.replace('.bksy.social', '')}</span>
+      <span className="text-purple-500 font-semibold">@{handle.replace(".bksy.social", "")}</span>
     </Link>
   );
 }
 
-function HashTag({ tag }: { tag: string }) {
+function HashTag({ tag }: { tag: string; }) {
   return (
     <Link to="/tag/$tag" params={{ tag }}>
       <span className="text-green-500">#{tag}</span>

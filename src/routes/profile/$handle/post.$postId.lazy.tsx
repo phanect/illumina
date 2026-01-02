@@ -1,31 +1,31 @@
-import { createLazyFileRoute } from '@tanstack/react-router';
-import { useProfile } from '@/lib/bluesky/hooks/use-profile';
-import { usePostThread } from '@/lib/bluesky/hooks/use-post-thread';
-import { PostCard } from '@/components/post-card';
-import { BSkyPost } from '@/lib/bluesky/types/bsky-post';
-import { useTranslation } from 'react-i18next';
-import { Helmet } from 'react-helmet';
-import { Loading } from '@/components/ui/loading';
-import { Virtuoso } from 'react-virtuoso';
-import { forwardRef, HtmlHTMLAttributes, Ref, useEffect, useState } from 'react';
-import { StickyHeader } from '@/components/sticky-header';
-import { Avatar } from '@/components/ui/avatar';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { useCreatePost } from '@/lib/bluesky/hooks/use-create-post';
-import { Facet } from '@atproto/api';
-import { convertJSONToPost } from '@/components/convert';
-import { JSONContent } from '@tiptap/react';
-import { MinimalTiptapEditor } from '@/components/minimal-tiptap';
-import { VisuallyHidden } from '@ariakit/react';
-import { useQueryClient } from '@tanstack/react-query';
+import { VisuallyHidden } from "@ariakit/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { createLazyFileRoute } from "@tanstack/react-router";
+import { forwardRef, useEffect, useState, type HtmlHTMLAttributes, type Ref } from "react";
+import { Helmet } from "react-helmet";
+import { useTranslation } from "react-i18next";
+import { Virtuoso } from "react-virtuoso";
+import { convertJSONToPost } from "@/components/convert";
+import { MinimalTiptapEditor } from "@/components/minimal-tiptap";
+import { PostCard } from "@/components/post-card";
+import { StickyHeader } from "@/components/sticky-header";
+import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Loading } from "@/components/ui/loading";
+import { useCreatePost } from "@/lib/bluesky/hooks/use-create-post";
+import { usePostThread } from "@/lib/bluesky/hooks/use-post-thread";
+import { useProfile } from "@/lib/bluesky/hooks/use-profile";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import type { Facet } from "@atproto/api";
+import type { JSONContent } from "@tiptap/react";
+import type { BSkyPost } from "@/lib/bluesky/types/bsky-post";
 
-export const Route = createLazyFileRoute('/profile/$handle/post/$postId')({
+export const Route = createLazyFileRoute("/profile/$handle/post/$postId")({
   component: Post,
 });
 
-const List = forwardRef(function List(props: HtmlHTMLAttributes<HTMLDivElement>, ref: Ref<HTMLDivElement>) {
+const List = forwardRef((props: HtmlHTMLAttributes<HTMLDivElement>, ref: Ref<HTMLDivElement>) => {
   return <div ref={ref} {...props} className="flex flex-col divide-y" />;
 });
 
@@ -34,29 +34,33 @@ function Post() {
   const { data: profile, isLoading: isLoadingProfile } = useProfile({ handle });
   const params = Route.useParams();
   const { data: postThread, isLoading: isLoadingPost } = usePostThread({
-    uri: `at://${params.handle}/app.bsky.feed.post/${params.postId}`,
+    uri: `at://${ params.handle }/app.bsky.feed.post/${ params.postId }`,
   });
-  const { t } = useTranslation(['app', 'profile']);
+  const { t } = useTranslation([ "app", "profile" ]);
   const isLoading = isLoadingProfile || isLoadingPost;
-  const replies = (postThread?.replies as { post: BSkyPost }[]) ?? [];
+  const replies = (postThread?.replies as { post: BSkyPost; }[]) ?? [];
 
-  if (isLoading) return <Loading />;
+  if (isLoading) {
+    return <Loading />;
+  }
 
-  if (!profile) return <div className="w-137.5 h-screen overflow-y-scroll">{t('profile:notFound')}</div>;
+  if (!profile) {
+    return <div className="w-137.5 h-screen overflow-y-scroll">{t("profile:notFound")}</div>;
+  }
 
   return (
     <>
       <Helmet>
-        <link rel="canonical" href={`https://bsky.app/profile/${handle}/post/${params.postId}`} />
+        <link rel="canonical" href={`https://bsky.app/profile/${ handle }/post/${ params.postId }`} />
         <title>
           {profile.displayName ?? profile.handle}
-          {': "'}
+          : "
           {(postThread?.post as BSkyPost).record.text}
-          {'"'}
+          "
         </title>
       </Helmet>
       <StickyHeader>
-        <h1 className="text-xl font-bold">{t('post')}</h1>
+        <h1 className="text-xl font-bold">{t("post")}</h1>
       </StickyHeader>
       <div className="h-full">
         <Virtuoso
@@ -67,13 +71,15 @@ function Post() {
           totalCount={replies.length}
           itemContent={(index) => {
             const reply = replies?.[index];
-            if (!reply) return null;
+            if (!reply) {
+              return null;
+            }
             return reply.post && <PostCard post={reply.post} key={reply.post.uri} />;
           }}
           components={{
             Header: () => (
               <>
-                {!!postThread?.parent && <PostCard post={(postThread?.parent as { post: BSkyPost }).post} parent={true} />}
+                {!!postThread?.parent && <PostCard post={(postThread?.parent as { post: BSkyPost; }).post} parent={true} />}
                 <PostCard post={postThread?.post as BSkyPost} className="border-b" />
                 <ReplyBox />
               </>
@@ -89,34 +95,38 @@ function Post() {
 
 function ReplyBox() {
   const queryClient = useQueryClient();
-  const { t } = useTranslation(['app', 'profile']);
+  const { t } = useTranslation([ "app", "profile" ]);
   const params = Route.useParams();
   const { data: postThread } = usePostThread({
-    uri: `at://${params.handle}/app.bsky.feed.post/${params.postId}`,
+    uri: `at://${ params.handle }/app.bsky.feed.post/${ params.postId }`,
   });
   const session = useBlueskyStore((state) => state.session);
   const { mutate, isPending } = useCreatePost();
-  const [value, setValue] = useState<JSONContent | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
+  const [ value, setValue ] = useState<JSONContent | null>(null);
+  const [ isOpen, setIsOpen ] = useState(false);
   const { data: ownProfile } = useProfile({ handle: session?.did });
-  const [converted, setConverted] = useState<{
+  const [ converted, setConverted ] = useState<{
     text: string;
     facets: Facet[];
     position: number;
   } | null>(null);
 
   useEffect(() => {
-    if (!value) return;
+    if (!value) {
+      return;
+    }
     setConverted(convertJSONToPost(value));
-  }, [value]);
+  }, [ value ]);
 
   const onClickPost = () => {
-    if (!converted) return;
+    if (!converted) {
+      return;
+    }
 
     const parent = postThread?.parent as
       | {
-          post: BSkyPost;
-        }
+        post: BSkyPost;
+      }
       | undefined;
     const root = postThread?.post as BSkyPost;
 
@@ -141,7 +151,7 @@ function ReplyBox() {
           setConverted(null);
           setIsOpen(false);
           queryClient.invalidateQueries({
-            queryKey: ['post'],
+            queryKey: [ "post" ],
           });
         },
       },
@@ -152,7 +162,9 @@ function ReplyBox() {
     setIsOpen(false);
   };
 
-  if (!ownProfile?.handle) return null;
+  if (!ownProfile?.handle) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -160,29 +172,29 @@ function ReplyBox() {
         <div className="border-b p-1">
           <div className="hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-lg cursor-pointer w-full flex flex-row items-center gap-2 p-1">
             <Avatar handle={ownProfile?.handle} avatar={ownProfile?.avatar} className="size-8" hover={false} />
-            <div className="p-2 ">{'write your reply'}</div>
+            <div className="p-2 ">write your reply</div>
           </div>
         </div>
       </DialogTrigger>
       <DialogContent className="[&>button]:hidden p-0 border">
         <VisuallyHidden>
-          <DialogTitle>{t('reply')}</DialogTitle>
-          <DialogDescription>{t('replyToPost')}</DialogDescription>
+          <DialogTitle>{t("reply")}</DialogTitle>
+          <DialogDescription>{t("replyToPost")}</DialogDescription>
         </VisuallyHidden>
         <DialogHeader className="justify-between w-full p-2">
           <Button type="button" variant="ghost" onClick={onClickCancel} disabled={isPending} className="text-gray-500">
-            {t('cancel')}
+            {t("cancel")}
           </Button>
           <Button type="button" variant="outline" onClick={onClickPost} disabled={isPending}>
-            {isPending ? 'Posting...' : 'Post'}
+            {isPending ? "Posting..." : "Post"}
           </Button>
         </DialogHeader>
         <MinimalTiptapEditor
           value={value}
           onChange={(value) => setValue(value as JSONContent)}
           classNames={{
-            wrapper: 'w-full border-none',
-            editor: 'border-none pt-0',
+            wrapper: "w-full border-none",
+            editor: "border-none pt-0",
           }}
           output="json"
           placeholder="Type something..."

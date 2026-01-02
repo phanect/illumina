@@ -1,9 +1,9 @@
-import type { ShouldShowProps } from '../../types';
-import type { Editor } from '@tiptap/react';
-import { BubbleMenu } from '@tiptap/react/menus';
-import { LinkEditBlock } from '../link/link-edit-block';
-import { LinkPopoverBlock } from '../link/link-popover-block';
-import { useCallback, useState } from 'react';
+import { BubbleMenu } from "@tiptap/react/menus";
+import { useCallback, useState } from "react";
+import { LinkEditBlock } from "../link/link-edit-block";
+import { LinkPopoverBlock } from "../link/link-popover-block";
+import type { Editor } from "@tiptap/react";
+import type { ShouldShowProps } from "../../types";
 
 type LinkBubbleMenuProps = {
   editor: Editor;
@@ -15,25 +15,25 @@ type LinkAttributes = {
 };
 
 export const LinkBubbleMenu = ({ editor }: LinkBubbleMenuProps) => {
-  const [showEdit, setShowEdit] = useState(false);
-  const [linkAttrs, setLinkAttrs] = useState<LinkAttributes>({ href: '', target: '' });
-  const [selectedText, setSelectedText] = useState('');
+  const [ showEdit, setShowEdit ] = useState(false);
+  const [ linkAttrs, setLinkAttrs ] = useState<LinkAttributes>({ href: "", target: "" });
+  const [ selectedText, setSelectedText ] = useState("");
 
   const updateLinkState = useCallback(() => {
     const { from, to } = editor.state.selection;
-    const { href, target } = editor.getAttributes('link');
-    const text = editor.state.doc.textBetween(from, to, ' ');
+    const { href, target } = editor.getAttributes("link");
+    const text = editor.state.doc.textBetween(from, to, " ");
 
     setLinkAttrs({ href, target });
     setSelectedText(text);
-  }, [editor]);
+  }, [ editor ]);
 
   const shouldShow = useCallback(
     ({ editor, from, to }: ShouldShowProps) => {
       if (from === to) {
         return false;
       }
-      const { href } = editor.getAttributes('link');
+      const { href } = editor.getAttributes("link");
 
       if (href) {
         updateLinkState();
@@ -41,7 +41,7 @@ export const LinkBubbleMenu = ({ editor }: LinkBubbleMenuProps) => {
       }
       return false;
     },
-    [updateLinkState],
+    [ updateLinkState ],
   );
 
   const handleEdit = useCallback(() => {
@@ -53,40 +53,40 @@ export const LinkBubbleMenu = ({ editor }: LinkBubbleMenuProps) => {
       editor
         .chain()
         .focus()
-        .extendMarkRange('link')
+        .extendMarkRange("link")
         .insertContent({
-          type: 'text',
+          type: "text",
           text: text || url,
           marks: [
             {
-              type: 'link',
+              type: "link",
               attrs: {
                 href: url,
-                target: openInNewTab ? '_blank' : '',
+                target: openInNewTab ? "_blank" : "",
               },
             },
           ],
         })
-        .setLink({ href: url, target: openInNewTab ? '_blank' : '' })
+        .setLink({ href: url, target: openInNewTab ? "_blank" : "" })
         .run();
       setShowEdit(false);
       updateLinkState();
     },
-    [editor, updateLinkState],
+    [ editor, updateLinkState ],
   );
 
   const onUnsetLink = useCallback(() => {
-    editor.chain().focus().extendMarkRange('link').unsetLink().run();
+    editor.chain().focus().extendMarkRange("link").unsetLink().run();
     setShowEdit(false);
     updateLinkState();
-  }, [editor, updateLinkState]);
+  }, [ editor, updateLinkState ]);
 
   return (
     <BubbleMenu
       editor={editor}
       shouldShow={shouldShow}
       options={{
-        placement: 'bottom-start',
+        placement: "bottom-start",
         onHide: () => setShowEdit(false),
       }}
     >
@@ -94,7 +94,7 @@ export const LinkBubbleMenu = ({ editor }: LinkBubbleMenuProps) => {
         <LinkEditBlock
           defaultUrl={linkAttrs.href}
           defaultText={selectedText}
-          defaultIsNewTab={linkAttrs.target === '_blank'}
+          defaultIsNewTab={linkAttrs.target === "_blank"}
           onSave={onSetLink}
           className="w-full min-w-80 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none"
         />

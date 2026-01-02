@@ -1,42 +1,46 @@
-import { AtpAgent, moderateProfile, ModerationOpts } from '@atproto/api';
-import { useQuery } from '@tanstack/react-query';
-import { useMemo } from 'react';
+import { moderateProfile, type AtpAgent, type ModerationOpts } from "@atproto/api";
+import { useQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 
-interface ProfileLabelsConfig {
+type ProfileLabelsConfig = {
   agent: AtpAgent;
   did: string | null | undefined;
   handle: string | null | undefined;
-}
+};
 
 export const useProfileLabels = ({ agent, did, handle }: ProfileLabelsConfig) => {
   // Fetch user preferences including moderation settings
   const { data: preferences, isLoading: prefsLoading } = useQuery({
-    queryKey: ['preferences', agent.session?.did],
+    queryKey: [ "preferences", agent.session?.did ],
     queryFn: async () => agent.getPreferences(),
     enabled: !!agent.session?.did,
   });
 
   // Fetch label definitions
   const { data: labelDefs, isLoading: defsLoading } = useQuery({
-    queryKey: ['labelDefinitions', preferences?.moderationPrefs],
+    queryKey: [ "labelDefinitions", preferences?.moderationPrefs ],
     queryFn: async () => agent.getLabelDefinitions(preferences!),
     enabled: !!preferences,
   });
 
   // Create moderation options
   const moderationOpts: ModerationOpts | undefined = useMemo(() => {
-    if (!preferences || !labelDefs) return undefined;
+    if (!preferences || !labelDefs) {
+      return undefined;
+    }
 
     return {
       userDid: agent.session?.did,
       prefs: preferences.moderationPrefs,
       labelDefs,
     };
-  }, [agent.session?.did, preferences, labelDefs]);
+  }, [ agent.session?.did, preferences, labelDefs ]);
 
   // Get moderation UI state
   const moderation = useMemo(() => {
-    if (!moderationOpts || !handle || !did) return null;
+    if (!moderationOpts || !handle || !did) {
+      return null;
+    }
 
     return moderateProfile(
       {
@@ -45,7 +49,7 @@ export const useProfileLabels = ({ agent, did, handle }: ProfileLabelsConfig) =>
       },
       moderationOpts,
     );
-  }, [moderationOpts, did, handle]);
+  }, [ moderationOpts, did, handle ]);
 
   return {
     moderation,

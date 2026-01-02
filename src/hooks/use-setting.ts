@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import { languages } from '@/i18n';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { languages } from "@/i18n";
 
 type Settings = {
   experiments: {
@@ -12,14 +12,14 @@ type Settings = {
     cleanHandles: boolean;
   };
   columns: string[];
-  language: 'system' | keyof typeof languages;
+  language: "system" | keyof typeof languages;
   font: {
-    family: 'system' | 'OpenDyslexic' | 'Atkinson-Hyperlegible';
-    size: 'system' | 'extra-small' | 'small' | 'medium' | 'large' | 'extra-large';
+    family: "system" | "OpenDyslexic" | "Atkinson-Hyperlegible";
+    size: "system" | "extra-small" | "small" | "medium" | "large" | "extra-large";
   };
   setSettings: (
     partial: Settings | Partial<Settings> | ((state: Settings) => Settings | Partial<Settings>),
-    replace?: boolean | undefined,
+    replace?: boolean,
   ) => void;
 };
 
@@ -37,14 +37,14 @@ export const useSettings = create<Settings>()(
       },
       setSettings: set,
       columns: [],
-      language: 'system',
+      language: "system",
       font: {
-        family: 'system',
-        size: 'system',
+        family: "system",
+        size: "system",
       },
     }),
     {
-      name: 'settings',
+      name: "settings",
       partialize: (state) => ({
         experiments: state.experiments,
         columns: state.columns,

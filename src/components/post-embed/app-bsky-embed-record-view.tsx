@@ -1,39 +1,43 @@
-import { useLocation, useNavigate } from '@tanstack/react-router';
-import { BSkyPostEmbed } from '@/lib/bluesky/types/bsky-post-embed';
-import { cn } from '@/lib/utils';
-import TimeAgo from 'react-timeago-i18n';
-import { PostEmbed } from '.';
-import { FacetedText } from '../faceted-text';
-import { Debug } from '@/components/ui/debug';
-import { Handle } from '@/components/ui/handle';
-import { NotImplementedBox } from '@/components/ui/not-implemented-box';
-import { Link } from '@/components/ui/link';
-import { useTranslation } from 'react-i18next';
-import { Avatar } from '../ui/avatar';
-import { FormattedText } from '../ui/formatted-text';
-import { SatelliteDish } from 'lucide-react';
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { SatelliteDish } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import TimeAgo from "react-timeago-i18n";
+import { Debug } from "@/components/ui/debug";
+import { Handle } from "@/components/ui/handle";
+import { Link } from "@/components/ui/link";
+import { NotImplementedBox } from "@/components/ui/not-implemented-box";
+import { cn } from "@/lib/utils";
+import { PostEmbed } from ".";
+import { FacetedText } from "../faceted-text";
+import { Avatar } from "../ui/avatar";
+import { FormattedText } from "../ui/formatted-text";
+import type { BSkyPostEmbed } from "@/lib/bluesky/types/bsky-post-embed";
 
-export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
-  const { t } = useTranslation('post');
+export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed; }) => {
+  const { t } = useTranslation("post");
   const navigate = useNavigate();
   const location = useLocation();
-  if (embed.$type !== 'app.bsky.embed.record#view') return null;
-  const author =
-    embed.record.$type === 'app.bsky.embed.record#viewRecord' || embed.record.$type === 'app.bsky.embed.record#viewBlocked'
+  if (embed.$type !== "app.bsky.embed.record#view") {
+    return null;
+  }
+  const author
+    = embed.record.$type === "app.bsky.embed.record#viewRecord" || embed.record.$type === "app.bsky.embed.record#viewBlocked"
       ? embed.record.author
       : embed.record.creator;
-  if (!author) return <Debug value={embed.record} />;
+  if (!author) {
+    return <Debug value={embed.record} />;
+  }
   if (author.viewer?.blockedBy) {
     return (
-      <div className={cn('bg-white dark:bg-neutral-900 p-4 rounded-lg shadow')}>
-        <div className="text-gray-800 dark:text-gray-200 mb-3">{t('blockedByAuthor')}</div>
+      <div className={cn("bg-white dark:bg-neutral-900 p-4 rounded-lg shadow")}>
+        <div className="text-gray-800 dark:text-gray-200 mb-3">{t("blockedByAuthor")}</div>
       </div>
     );
   }
   if (author.viewer?.blocking) {
     return (
-      <div className={cn('bg-white dark:bg-neutral-900 p-4 rounded-lg shadow')}>
-        <div className="text-gray-800 dark:text-gray-200 mb-3">{t('blockedAuthor')}</div>
+      <div className={cn("bg-white dark:bg-neutral-900 p-4 rounded-lg shadow")}>
+        <div className="text-gray-800 dark:text-gray-200 mb-3">{t("blockedAuthor")}</div>
       </div>
     );
   }
@@ -41,22 +45,28 @@ export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
   const onClick = (event: React.MouseEvent) => {
     event.stopPropagation();
     const cellText = document.getSelection();
-    if (cellText?.type === 'Range') return;
-    if (embed.record.$type !== 'app.bsky.embed.record#viewRecord') return;
+    if (cellText?.type === "Range") {
+      return;
+    }
+    if (embed.record.$type !== "app.bsky.embed.record#viewRecord") {
+      return;
+    }
 
     const handle = embed.record.author.handle;
-    const postId = embed.record.uri.split('/').pop()!;
-    if (location.pathname === `/profile/${handle}/post/${postId}`) return;
-    console.info('Navigating from %s to %s', location.pathname, `/profile/${handle}/post/${postId}`);
+    const postId = embed.record.uri.split("/").pop()!;
+    if (location.pathname === `/profile/${ handle }/post/${ postId }`) {
+      return;
+    }
+    console.info("Navigating from %s to %s", location.pathname, `/profile/${ handle }/post/${ postId }`);
     navigate({
-      to: '/profile/$handle/post/$postId',
+      to: "/profile/$handle/post/$postId",
       params: { handle, postId },
     });
   };
 
   return (
     <div className="p-4 rounded-lg shadow border border-neutral-200 dark:border-neutral-800 hover:bg-neutral-200 hover:bg-opacity-10 z-10">
-      {embed.record.$type === 'app.bsky.embed.record#viewRecord' && (
+      {embed.record.$type === "app.bsky.embed.record#viewRecord" && (
         <div onClick={onClick}>
           <div className="flex items-center space-x-3 mb-2">
             <Avatar handle={author.handle} avatar={author.avatar} />
@@ -70,12 +80,12 @@ export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
                 <Link to="/profile/$handle" params={{ handle: author.handle }} className="hover:no-underline">
                   <Handle handle={author.handle} />
                 </Link>
-                {' · '}
+                {" · "}
                 <Link
                   to="/profile/$handle/post/$postId"
                   params={{
                     handle: author.handle,
-                    postId: embed.record.uri.split('/').pop()!,
+                    postId: embed.record.uri.split("/").pop()!,
                   }}
                   className="hover:no-underline"
                 >
@@ -94,31 +104,31 @@ export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
           <PostEmbed embed={embed.record.embeds?.[0]} />
         </div>
       )}
-      {embed.record.$type === 'app.bsky.graph.defs#starterPackViewBasic' && (
+      {embed.record.$type === "app.bsky.graph.defs#starterPackViewBasic" && (
         <div className="text-gray-800 dark:text-gray-200">
           <NotImplementedBox type={embed.record.$type} data={embed.record} />
         </div>
       )}
-      {embed.record.$type === 'app.bsky.feed.defs#generatorView' && (
+      {embed.record.$type === "app.bsky.feed.defs#generatorView" && (
         <Link to="/profile/$handle/feed/$feed" params={{ handle: embed.record.creator.handle, feed: embed.record.cid }}>
           <div className="flex flex-row gap-2">
             <Avatar avatar={embed.record.avatar} handle={embed.record.displayName} />
             <div className="flex flex-col">
               <div>{embed.record.displayName}</div>
               <div>
-                {'feed by '}
+                {"feed by "}
                 <Handle handle={embed.record.creator.handle} />
               </div>
             </div>
           </div>
           <div>
-            {'liked by '}
+            {"liked by "}
             {embed.record.likeCount}
-            {' people'}
+            {" people"}
           </div>
         </Link>
       )}
-      {embed.record.$type === 'app.bsky.graph.defs#listView' && (
+      {embed.record.$type === "app.bsky.graph.defs#listView" && (
         <div className="flex flex-col gap-2">
           <div className="flex flex-row gap-3">
             {embed.record.avatar ? (
@@ -131,8 +141,8 @@ export const AppBskyEmbedRecordView = ({ embed }: { embed: BSkyPostEmbed }) => {
             <div className="flex flex-col">
               <div>{embed.record.name}</div>
               <div className="text-sm text-gray-500 dark:text-gray-400">
-                {embed.record.purpose === 'app.bsky.graph.defs#modlist' && 'mod'}
-                {'list by'} <Handle handle={author.handle} />
+                {embed.record.purpose === "app.bsky.graph.defs#modlist" && "mod"}
+                list by <Handle handle={author.handle} />
               </div>
             </div>
           </div>

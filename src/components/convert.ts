@@ -1,30 +1,30 @@
-import { Facet } from '@atproto/api';
-import { JSONContent } from '@tiptap/react';
+import type { Facet } from "@atproto/api";
+import type { JSONContent } from "@tiptap/react";
 
 const markTypeToFacetType = {
-  link: 'app.bsky.richtext.facet#link',
-  mention: 'app.bsky.richtext.facet#mention',
-  bold: 'app.bsky.richtext.facet#bold',
-  italic: 'app.bsky.richtext.facet#italic',
-  underline: 'app.bsky.richtext.facet#underline',
+  link: "app.bsky.richtext.facet#link",
+  mention: "app.bsky.richtext.facet#mention",
+  bold: "app.bsky.richtext.facet#bold",
+  italic: "app.bsky.richtext.facet#italic",
+  underline: "app.bsky.richtext.facet#underline",
 };
 
 export function convertJSONToPost(
   node: JSONContent,
   currentPosition = 0,
   listCounter = 1,
-  listType: 'orderedList' | 'bulletList' | null = null,
+  listType: "orderedList" | "bulletList" | null = null,
 ): {
   text: string;
   facets: Facet[];
   position: number;
 } {
-  let text = '';
+  let text = "";
   const facets: Facet[] = [];
 
   // if node is hardBreak
-  if (node.type === 'hardBreak') {
-    return { text: '\n', facets, position: currentPosition + 1 };
+  if (node.type === "hardBreak") {
+    return { text: "\n", facets, position: currentPosition + 1 };
   }
 
   // If node has direct text
@@ -42,7 +42,7 @@ export function convertJSONToPost(
           features: [
             {
               $type: markTypeToFacetType[mark.type as keyof typeof markTypeToFacetType],
-              ...(mark.type === 'link' ? { uri: mark.attrs?.href } : {}),
+              ...(mark.type === "link" ? { uri: mark.attrs?.href } : {}),
             },
           ],
         });
@@ -53,12 +53,12 @@ export function convertJSONToPost(
   }
 
   // If node is an ordered list, process each list item
-  if (node.type === 'orderedList' && node.content) {
+  if (node.type === "orderedList" && node.content) {
     let currentPos = currentPosition;
     listCounter = node.attrs?.start ?? listCounter;
 
     for (const childNode of node.content) {
-      const result = convertJSONToPost(childNode, currentPos, listCounter, 'orderedList');
+      const result = convertJSONToPost(childNode, currentPos, listCounter, "orderedList");
       text += result.text;
       facets.push(...result.facets);
       currentPos = result.position;
@@ -69,12 +69,12 @@ export function convertJSONToPost(
   }
 
   // If node is a bullet list, process each list item
-  if (node.type === 'bulletList' && node.content) {
+  if (node.type === "bulletList" && node.content) {
     let currentPos = currentPosition;
 
     for (const childNode of node.content) {
-      const result = convertJSONToPost(childNode, currentPos, listCounter, 'bulletList');
-      text += result.text + '\n';
+      const result = convertJSONToPost(childNode, currentPos, listCounter, "bulletList");
+      text += result.text + "\n";
       facets.push(...result.facets);
       currentPos = result.position;
     }
@@ -83,19 +83,19 @@ export function convertJSONToPost(
   }
 
   // If node is a list item, process its content and prepend the list number or bullet
-  if (node.type === 'listItem' && node.content) {
+  if (node.type === "listItem" && node.content) {
     let currentPos = currentPosition;
-    let itemText = '';
+    let itemText = "";
 
-    if (listType === 'orderedList') {
-      itemText = `${listCounter}. `;
+    if (listType === "orderedList") {
+      itemText = `${ listCounter }. `;
     } else {
-      itemText = `• `;
+      itemText = "• ";
     }
 
     for (const childNode of node.content) {
-      const result = convertJSONToPost(childNode, currentPos + itemText.length, listCounter, 'orderedList');
-      itemText += result.text + '\n';
+      const result = convertJSONToPost(childNode, currentPos + itemText.length, listCounter, "orderedList");
+      itemText += result.text + "\n";
       facets.push(...result.facets);
       currentPos = result.position;
     }
@@ -109,11 +109,11 @@ export function convertJSONToPost(
 
     for (const childNode of node.content) {
       const result = convertJSONToPost(childNode, currentPos, listCounter, listType);
-      text += result.text + (childNode.type === 'paragraph' ? '\n' : '');
+      text += result.text + (childNode.type === "paragraph" ? "\n" : "");
       facets.push(...result.facets);
       currentPos = result.position;
     }
   }
 
-  return { text: text.replace(/\n$/, ''), facets, position: currentPosition + text.length };
+  return { text: text.replace(/\n$/, ""), facets, position: currentPosition + text.length };
 }

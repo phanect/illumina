@@ -1,20 +1,20 @@
-import { useLocation } from '@tanstack/react-router';
-import { HashIcon, SettingsIcon } from 'lucide-react';
-import { useAuth } from '@/lib/bluesky/hooks/use-auth';
-import { cn } from '@/lib/utils';
-import { Button } from '../ui/button';
-import { Image } from '../ui/image';
-import { Sidebar } from './sidebar';
-import { Link } from '../ui/link';
+import { useLocation } from "@tanstack/react-router";
+import { HashIcon, SettingsIcon } from "lucide-react";
+import { useAuth } from "@/lib/bluesky/hooks/use-auth";
+import { cn } from "@/lib/utils";
+import { Sidebar } from "./sidebar";
+import { Button } from "../ui/button";
+import { Image } from "../ui/image";
+import { Link } from "../ui/link";
 
 export const NavHeader = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   return (
-    <div className={cn('w-full flex items-center justify-between p-2 pb-0', !isAuthenticated && 'border-b')}>
+    <div className={cn("w-full flex items-center justify-between p-2 pb-0", !isAuthenticated && "border-b")}>
       <Sidebar />
-      {location.pathname === '/' && (
+      {location.pathname === "/" && (
         <Button
           onClick={() => {
             // scroll to top and invalidate the query
@@ -27,13 +27,13 @@ export const NavHeader = () => {
             src="/images/logo.svg"
             alt="Illumina"
             classNames={{
-              image: 'size-12',
+              image: "size-12",
             }}
             clickable={false}
           />
         </Button>
       )}
-      {location.pathname === '/' ? (
+      {location.pathname === "/" ? (
         <Button variant="ghost" asChild>
           <Link to="/feeds">
             <HashIcon className="size-12" />

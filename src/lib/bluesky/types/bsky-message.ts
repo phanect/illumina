@@ -1,5 +1,5 @@
-import { Static, Type } from '@sinclair/typebox';
-import { BSkyFacet } from './bsky-facet';
+import { Type, type Static } from "@sinclair/typebox";
+import { BSkyFacet } from "./bsky-facet";
 
 export const BSkyMessage = Type.Object({
   id: Type.String(),

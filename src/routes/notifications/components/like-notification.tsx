@@ -1,31 +1,37 @@
-import { Avatar } from '@/components/ui/avatar';
-import { FormattedText } from '@/components/ui/formatted-text';
-import { Link } from '@/components/ui/link';
-import { Loading } from '@/components/ui/loading';
-import { usePost } from '@/lib/bluesky/hooks/use-post';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { BSkyLikeNotification, isBSkyLikeNotification } from '@/lib/bluesky/types/bsky-notification';
-import { HeartIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { HeartIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { Avatar } from "@/components/ui/avatar";
+import { FormattedText } from "@/components/ui/formatted-text";
+import { Link } from "@/components/ui/link";
+import { Loading } from "@/components/ui/loading";
+import { usePost } from "@/lib/bluesky/hooks/use-post";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { isBSkyLikeNotification, type BSkyLikeNotification } from "@/lib/bluesky/types/bsky-notification";
 
-export function LikeNotification({ notifications }: { notifications: BSkyLikeNotification[] }) {
-  const { t } = useTranslation('notifications');
+export function LikeNotification({ notifications }: { notifications: BSkyLikeNotification[]; }) {
+  const { t } = useTranslation("notifications");
   const { session } = useBlueskyStore();
   const notification = notifications[0];
 
-  if (!notification) throw new Error('Notification is missing');
-  if (!session) throw new Error('Session is missing');
+  if (!notification) {
+    throw new Error("Notification is missing");
+  }
+  if (!session) {
+    throw new Error("Session is missing");
+  }
   const othersCount = notifications.length - 1;
 
-  if (!isBSkyLikeNotification(notification)) throw new Error('Notification is not a like notification');
+  if (!isBSkyLikeNotification(notification)) {
+    throw new Error("Notification is not a like notification");
+  }
 
   return (
     <div className="relative">
       <Link
         to="/profile/$handle/post/$postId"
         params={{
-          handle: session.did!,
-          postId: notification.record.subject.uri.split('/')[notification.record.subject.uri.split('/').length - 1]!,
+          handle: session.did,
+          postId: notification.record.subject.uri.split("/")[notification.record.subject.uri.split("/").length - 1]!,
         }}
         className="absolute inset-0"
       />
@@ -41,15 +47,15 @@ export function LikeNotification({ notifications }: { notifications: BSkyLikeNot
                   key={notification.author.did}
                   handle={notification.author.handle}
                   avatar={notification.author.avatar}
-                  classNames={{ wrapper: 'size-8' }}
+                  classNames={{ wrapper: "size-8" }}
                 />
               ))}
             </div>
             <div>
               {notifications.map((notification) => notification.author.displayName).slice(-1)}
-              {notifications.length - 1 >= 1 &&
-                `${'and'} ${othersCount} ${othersCount >= 1 && (othersCount === 1 ? 'other' : 'others')} `}{' '}
-              {t('likedYourPost')}
+              {notifications.length - 1 >= 1
+                && `${ "and" } ${ othersCount } ${ othersCount >= 1 && (othersCount === 1 ? "other" : "others") } `}{" "}
+              {t("likedYourPost")}
             </div>
             <div className="text-sm text-gray-500">
               <LikePost notification={notification} />
@@ -61,13 +67,17 @@ export function LikeNotification({ notifications }: { notifications: BSkyLikeNot
   );
 }
 
-function LikePost({ notification }: { notification: BSkyLikeNotification }) {
+function LikePost({ notification }: { notification: BSkyLikeNotification; }) {
   const session = useBlueskyStore((state) => state.session);
-  const rkey = notification.record.subject.uri.split('/')[notification.record.subject.uri.split('/').length - 1] as string;
+  const rkey = notification.record.subject.uri.split("/")[notification.record.subject.uri.split("/").length - 1]!;
   const { data: post, isLoading } = usePost({ handle: session!.did, rkey });
 
-  if (isLoading) <Loading />;
-  if (!post) return null;
+  if (isLoading) {
+    <Loading />;
+  }
+  if (!post) {
+    return null;
+  }
 
   return <FormattedText text={post.text} />;
 }

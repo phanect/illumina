@@ -1,41 +1,43 @@
-import { useEffect, useState } from 'react';
-import { Theme, ThemeProviderContext } from './context';
+import { useEffect, useState } from "react";
+import { ThemeProviderContext, type Theme } from "./context";
 
-type ColorScheme = 'light' | 'dark';
+type ColorScheme = "light" | "dark";
 type ColorSchemeCallback = (scheme: ColorScheme) => void;
 
 function useColorScheme(callback?: ColorSchemeCallback) {
   // Initialize state with current color scheme
-  const [colorScheme, setColorScheme] = useState<ColorScheme>(() => {
+  const [ colorScheme, setColorScheme ] = useState<ColorScheme>(() => {
     // Check if window is defined (for SSR)
-    if (typeof window === 'undefined') return 'light';
+    if (typeof window === "undefined") {
+      return "light";
+    }
 
     // Get initial color scheme
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return 'dark';
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
     }
-    return 'light';
+    return "light";
   });
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 
     // Handler function to update state and call callback
     const handleChange = (e: MediaQueryListEvent | MediaQueryList) => {
-      const newScheme: ColorScheme = e.matches ? 'dark' : 'light';
+      const newScheme: ColorScheme = e.matches ? "dark" : "light";
       setColorScheme(newScheme);
       callback?.(newScheme);
     };
 
     // Add listener and call it immediately to set initial value
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
     handleChange(mediaQuery);
 
     // Cleanup
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     };
-  }, [callback]);
+  }, [ callback ]);
 
   return colorScheme;
 }
@@ -48,17 +50,17 @@ type ThemeProviderProps = {
 
 export function ThemeProvider({
   children,
-  defaultTheme = 'system',
-  storageKey = 'vite-ui-theme',
+  defaultTheme = "system",
+  storageKey = "vite-ui-theme",
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
+  const [ theme, setTheme ] = useState<Theme>(() => (localStorage.getItem(storageKey) as Theme) || defaultTheme);
   useColorScheme((systemTheme) => {
     const root = window.document.documentElement;
 
-    root.classList.remove('light', 'dark');
+    root.classList.remove("light", "dark");
 
-    if (theme === 'system') {
+    if (theme === "system") {
       root.classList.add(systemTheme);
       return;
     }
@@ -69,17 +71,17 @@ export function ThemeProvider({
   useEffect(() => {
     const root = window.document.documentElement;
 
-    root.classList.remove('light', 'dark');
+    root.classList.remove("light", "dark");
 
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 
       root.classList.add(systemTheme);
       return;
     }
 
     root.classList.add(theme);
-  }, [theme]);
+  }, [ theme ]);
 
   const value = {
     theme,

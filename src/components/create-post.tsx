@@ -1,22 +1,22 @@
-import { useCreatePost } from '../lib/bluesky/hooks/use-create-post';
-import { Button } from './ui/button';
-import { useEffect, useState } from 'react';
-import { type JSONContent } from '@tiptap/react';
-import { MinimalTiptapEditor } from './minimal-tiptap';
-import { Facet } from '@atproto/api';
-import { useBlueskyStore } from '@/lib/bluesky/store';
-import { convertJSONToPost } from './convert';
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from './ui/dialog';
-import { useTranslation } from 'react-i18next';
-import { PencilIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { type JSONContent } from "@tiptap/react";
+import { PencilIcon } from "lucide-react";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { cn } from "@/lib/utils";
+import { convertJSONToPost } from "./convert";
+import { MinimalTiptapEditor } from "./minimal-tiptap";
+import { Button } from "./ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTrigger } from "./ui/dialog";
+import { useCreatePost } from "../lib/bluesky/hooks/use-create-post";
+import type { Facet } from "@atproto/api";
 
-export function CreatePost({ className }: { className?: string }) {
-  const { t } = useTranslation(['app', 'post']);
+export function CreatePost({ className }: { className?: string; }) {
+  const { t } = useTranslation([ "app", "post" ]);
   const { mutate, isPending } = useCreatePost();
-  const [value, setValue] = useState<JSONContent | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
-  const [converted, setConverted] = useState<{
+  const [ value, setValue ] = useState<JSONContent | null>(null);
+  const [ isOpen, setIsOpen ] = useState(false);
+  const [ converted, setConverted ] = useState<{
     text: string;
     facets: Facet[];
     position: number;
@@ -24,12 +24,16 @@ export function CreatePost({ className }: { className?: string }) {
   const { isAuthenticated } = useBlueskyStore();
 
   useEffect(() => {
-    if (!value) return;
+    if (!value) {
+      return;
+    }
     setConverted(convertJSONToPost(value));
-  }, [value]);
+  }, [ value ]);
 
   const onClickPost = () => {
-    if (!converted) return;
+    if (!converted) {
+      return;
+    }
 
     mutate(
       {
@@ -52,7 +56,9 @@ export function CreatePost({ className }: { className?: string }) {
     setIsOpen(false);
   };
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -61,33 +67,33 @@ export function CreatePost({ className }: { className?: string }) {
           variant="outline"
           className={cn(
             // mobile
-            'fixed bottom-16 right-2 rounded-full aspect-square size-16',
+            "fixed bottom-16 right-2 rounded-full aspect-square size-16",
             // tablet
-            'md:bottom-2',
+            "md:bottom-2",
             // desktop
-            'xl:static xl:aspect-auto xl:size-auto',
+            "xl:static xl:aspect-auto xl:size-auto",
             className,
           )}
         >
-          <span className="hidden xl:block">{t('post:createPost')}</span>
+          <span className="hidden xl:block">{t("post:createPost")}</span>
           <PencilIcon className="block xl:hidden size-10" />
         </Button>
       </DialogTrigger>
       <DialogContent className="[&>button]:hidden p-0 border">
         <DialogHeader className="justify-between w-full p-2">
           <Button type="button" variant="ghost" onClick={onClickCancel} disabled={isPending} className="text-gray-500">
-            {t('cancel')}
+            {t("cancel")}
           </Button>
           <Button type="button" variant="outline" onClick={onClickPost} disabled={isPending}>
-            {isPending ? 'Posting...' : 'Post'}
+            {isPending ? "Posting..." : "Post"}
           </Button>
         </DialogHeader>
         <MinimalTiptapEditor
           value={value}
           onChange={(value) => setValue(value as JSONContent)}
           classNames={{
-            wrapper: 'w-full border-none',
-            editor: 'border-none pt-0',
+            wrapper: "w-full border-none",
+            editor: "border-none pt-0",
           }}
           output="json"
           placeholder="Type something..."

@@ -1,4 +1,4 @@
-import { Static, Type } from '@sinclair/typebox';
+import { Type, type Static } from "@sinclair/typebox";
 
 export const BSkyConvo = Type.Object({
   id: Type.String(),
@@ -28,7 +28,7 @@ export const BSkyConvo = Type.Object({
     }),
   ),
   lastMessage: Type.Object({
-    $type: Type.Literal('chat.bsky.convo.defs#messageView'),
+    $type: Type.Literal("chat.bsky.convo.defs#messageView"),
     id: Type.String(),
     rev: Type.String(),
     sender: Type.Object({

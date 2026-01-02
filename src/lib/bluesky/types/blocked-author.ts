@@ -1,7 +1,7 @@
-import { Static, Type } from '@sinclair/typebox';
-import { TypeCompiler } from '@sinclair/typebox/compiler';
-import { BSkyPostLabel } from './bsky-post-label';
-import { Author } from './author';
+import { Type, type Static } from "@sinclair/typebox";
+import { TypeCompiler } from "@sinclair/typebox/compiler";
+import { BSkyPostLabel } from "./bsky-post-label";
+import type { Author } from "./author";
 
 export const BlockedAuthor = Type.Object({
   did: Type.String(),
@@ -12,8 +12,8 @@ export const BlockedAuthor = Type.Object({
     muted: Type.Boolean(),
     blockedBy: Type.Literal(true),
     blocking: Type.Optional(Type.String()),
-    following: Type.Optional(Type.Union([Type.String(), Type.Undefined()])),
-    followedBy: Type.Optional(Type.Union([Type.String(), Type.Undefined()])),
+    following: Type.Optional(Type.Union([ Type.String(), Type.Undefined() ])),
+    followedBy: Type.Optional(Type.Union([ Type.String(), Type.Undefined() ])),
   }),
   labels: Type.Array(BSkyPostLabel),
   createdAt: Type.String(),

@@ -1,7 +1,7 @@
-import { ArrowLeftIcon } from 'lucide-react';
-import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
-import { useScrollVisible } from '@/hooks/use-scroll-visible';
+import { ArrowLeftIcon } from "lucide-react";
+import { useScrollVisible } from "@/hooks/use-scroll-visible";
+import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 export const StickyHeader = ({
   children,
@@ -17,9 +17,9 @@ export const StickyHeader = ({
   return (
     <div
       className={cn(
-        'p-2 sticky top-0 bg-background z-40 border-b flex flex-row gap-2 items-center transform transition-transform duration-200 ease-in-out',
+        "p-2 sticky top-0 bg-background z-40 border-b flex flex-row gap-2 items-center transform transition-transform duration-200 ease-in-out",
         className,
-        isVisible ? 'translate-y-0' : '-translate-y-full',
+        isVisible ? "translate-y-0" : "-translate-y-full",
       )}
     >
       {backButton && (

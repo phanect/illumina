@@ -1,8 +1,8 @@
-import { Separator } from '@/components/ui/separator';
-import { ToolbarButton } from '../toolbar-button';
-import { CopyIcon, ExternalLinkIcon, LinkBreak2Icon } from '@radix-ui/react-icons';
-import { useTranslation } from 'react-i18next';
-import { useState, useCallback } from 'react';
+import { CopyIcon, ExternalLinkIcon, LinkBreak2Icon } from "@radix-ui/react-icons";
+import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Separator } from "@/components/ui/separator";
+import { ToolbarButton } from "../toolbar-button";
 
 type LinkPopoverBlockProps = {
   url: string;
@@ -11,8 +11,8 @@ type LinkPopoverBlockProps = {
 };
 
 export const LinkPopoverBlock = ({ url, onClear, onEdit }: LinkPopoverBlockProps) => {
-  const [copyTitle, setCopyTitle] = useState<string>('Copy');
-  const { t } = useTranslation('editor');
+  const [ copyTitle, setCopyTitle ] = useState<string>("Copy");
+  const { t } = useTranslation("editor");
 
   const handleCopy = useCallback(
     (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -20,23 +20,23 @@ export const LinkPopoverBlock = ({ url, onClear, onEdit }: LinkPopoverBlockProps
       navigator.clipboard
         .writeText(url)
         .then(() => {
-          setCopyTitle('Copied!');
-          setTimeout(() => setCopyTitle('Copy'), 1000);
+          setCopyTitle("Copied!");
+          setTimeout(() => setCopyTitle("Copy"), 1000);
         })
         .catch(console.error);
     },
-    [url],
+    [ url ],
   );
 
   const handleOpenLink = useCallback(() => {
-    window.open(url, '_blank', 'noopener,noreferrer');
-  }, [url]);
+    window.open(url, "_blank", "noopener,noreferrer");
+  }, [ url ]);
 
   return (
     <div className="flex h-10 overflow-hidden rounded bg-background p-2 shadow-lg">
       <div className="inline-flex items-center gap-1">
         <ToolbarButton tooltip="Edit link" onClick={onEdit} className="w-auto px-2">
-          {t('toolbar.editLink')}
+          {t("toolbar.editLink")}
         </ToolbarButton>
         <Separator orientation="vertical" />
         <ToolbarButton tooltip="Open link in a new tab" onClick={handleOpenLink}>
@@ -52,7 +52,9 @@ export const LinkPopoverBlock = ({ url, onClear, onEdit }: LinkPopoverBlockProps
           onClick={handleCopy}
           tooltipOptions={{
             onPointerDownOutside: (e) => {
-              if (e.target === e.currentTarget) e.preventDefault();
+              if (e.target === e.currentTarget) {
+                e.preventDefault();
+              }
             },
           }}
         >

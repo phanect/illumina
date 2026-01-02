@@ -1,16 +1,18 @@
-import { MailIcon } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-import { Link } from '../../ui/link';
-import { useConversations } from '@/lib/bluesky/hooks/use-conversations';
-import { useBlueskyStore } from '@/lib/bluesky/store';
+import { MailIcon } from "lucide-react";
+import { useTranslation } from "react-i18next";
+import { useConversations } from "@/lib/bluesky/hooks/use-conversations";
+import { useBlueskyStore } from "@/lib/bluesky/store";
+import { Link } from "../../ui/link";
 
 export const MessagesLink = () => {
   const isAuthenticated = useBlueskyStore((store) => store.isAuthenticated);
-  const { t } = useTranslation('messages');
+  const { t } = useTranslation("messages");
   const { data: convos } = useConversations();
   const unreadCount = convos?.filter((convo) => convo.unreadCount >= 1).length || 0;
 
-  if (!isAuthenticated) return null;
+  if (!isAuthenticated) {
+    return null;
+  }
 
   return (
     <Link
@@ -25,7 +27,7 @@ export const MessagesLink = () => {
           </span>
         )}
       </div>
-      <span>{t('chat')}</span>
+      <span>{t("chat")}</span>
     </Link>
   );
 };

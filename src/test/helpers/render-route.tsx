@@ -1,7 +1,7 @@
-import { render } from '@testing-library/react';
-import { createRouter, createMemoryHistory, RouterProvider } from '@tanstack/react-router';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { routeTree } from '../../routeTree.gen';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { createMemoryHistory, createRouter, RouterProvider } from "@tanstack/react-router";
+import { render } from "@testing-library/react";
+import { routeTree } from "../../routeTree.gen";
 
 export function renderRoute(route: string) {
   const testQueryClient = new QueryClient({
@@ -13,7 +13,7 @@ export function renderRoute(route: string) {
   });
 
   const memoryHistory = createMemoryHistory({
-    initialEntries: [route],
+    initialEntries: [ route ],
   });
 
   const router = createRouter({
@@ -21,7 +21,7 @@ export function renderRoute(route: string) {
     context: {
       queryClient: testQueryClient,
     },
-    defaultPreload: 'intent', // not sure if I need this or the next line
+    defaultPreload: "intent", // not sure if I need this or the next line
     defaultPreloadStaleTime: 0,
     history: memoryHistory, // also not sure if this is necessary but probably is
   });

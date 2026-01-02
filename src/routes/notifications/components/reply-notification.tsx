@@ -1,19 +1,19 @@
-import { PostEmbed } from '@/components/post-embed';
-import { Avatar } from '@/components/ui/avatar';
-import { FormattedText } from '@/components/ui/formatted-text';
-import { Handle } from '@/components/ui/handle';
-import { Link } from '@/components/ui/link';
-import { BSkyReplyNotification } from '@/lib/bluesky/types/bsky-notification';
-import { ReplyIcon } from 'lucide-react';
+import { ReplyIcon } from "lucide-react";
+import { PostEmbed } from "@/components/post-embed";
+import { Avatar } from "@/components/ui/avatar";
+import { FormattedText } from "@/components/ui/formatted-text";
+import { Handle } from "@/components/ui/handle";
+import { Link } from "@/components/ui/link";
+import type { BSkyReplyNotification } from "@/lib/bluesky/types/bsky-notification";
 
-export function ReplyNotification({ notification }: { notification: BSkyReplyNotification }) {
+export function ReplyNotification({ notification }: { notification: BSkyReplyNotification; }) {
   return (
     <div className="relative">
       <Link
         to="/profile/$handle/post/$postId"
         params={{
           handle: notification.author.handle,
-          postId: notification.uri.split('/')[notification.uri.split('/').length - 1]!,
+          postId: notification.uri.split("/")[notification.uri.split("/").length - 1]!,
         }}
         className="absolute inset-0"
       />
@@ -22,7 +22,7 @@ export function ReplyNotification({ notification }: { notification: BSkyReplyNot
           <Avatar
             handle={notification.author.handle}
             avatar={notification.author.avatar}
-            classNames={{ wrapper: 'stroke-green-400 size-10' }}
+            classNames={{ wrapper: "stroke-green-400 size-10" }}
           />
         </div>
         <div className="hover:no-underline w-full">
@@ -32,7 +32,7 @@ export function ReplyNotification({ notification }: { notification: BSkyReplyNot
                 {notification.author.displayName} <Handle handle={notification.author.handle} />
               </div>
               <div className="flex items-center text-sm text-gray-500 gap-1">
-                <ReplyIcon /> {'replied to you'}
+                <ReplyIcon /> replied to you
               </div>
             </div>
             <FormattedText text={notification.record.text} />

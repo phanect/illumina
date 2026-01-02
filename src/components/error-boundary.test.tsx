@@ -1,9 +1,9 @@
-import { render } from '@testing-library/react';
-import { describe, expect, test, vitest } from 'vitest';
-import { ErrorBoundary } from './error-boundary';
+import { render } from "@testing-library/react";
+import { describe, expect, test, vitest } from "vitest";
+import { ErrorBoundary } from "./error-boundary";
 
-describe('ErrorBoundary', () => {
-  test('renders', () => {
+describe("ErrorBoundary", () => {
+  test("renders", () => {
     const { container } = render(
       <ErrorBoundary>
         <div>hi</div>
@@ -12,18 +12,18 @@ describe('ErrorBoundary', () => {
     expect(container).not.toBeEmptyDOMElement();
   });
 
-  test('renders error', () => {
+  test("renders error", () => {
     const ErrorComponent = () => {
-      throw new Error('test');
+      throw new Error("test");
     };
 
-    vitest.spyOn(console, 'error').mockImplementation(() => vitest.fn());
+    vitest.spyOn(console, "error").mockImplementation(() => vitest.fn());
     const { container } = render(
       <ErrorBoundary>
         <ErrorComponent />
       </ErrorBoundary>,
     );
     vitest.restoreAllMocks();
-    expect(container).toHaveTextContent('test');
+    expect(container).toHaveTextContent("test");
   });
 });

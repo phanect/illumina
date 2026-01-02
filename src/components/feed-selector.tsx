@@ -1,48 +1,48 @@
-import { useAuth } from '../lib/bluesky/hooks/use-auth';
-import { usePreferences } from '../lib/bluesky/hooks/use-preferences';
-import { useSettings } from '../hooks/use-setting';
-import { TabPanel, TabProvider } from '@ariakit/react';
-import { Timeline } from './timeline';
-import { Loading } from './ui/loading';
-import { TabList } from './ui/tab-list';
-import { Tab } from './ui/tab';
-import { useQueryClient } from '@tanstack/react-query';
-import { useOfflineStatus } from '@/hooks/use-offline-status';
-import { cn } from '@/lib/utils';
-import { StickyHeader } from './sticky-header';
-import { NavHeader } from './navigation/navheader';
-import { useActorFeeds } from '@/lib/bluesky/hooks/use-actor-feeds';
+import { TabPanel, TabProvider } from "@ariakit/react";
+import { useQueryClient } from "@tanstack/react-query";
+import { useOfflineStatus } from "@/hooks/use-offline-status";
+import { useActorFeeds } from "@/lib/bluesky/hooks/use-actor-feeds";
+import { cn } from "@/lib/utils";
+import { NavHeader } from "./navigation/navheader";
+import { StickyHeader } from "./sticky-header";
+import { Timeline } from "./timeline";
+import { Loading } from "./ui/loading";
+import { Tab } from "./ui/tab";
+import { TabList } from "./ui/tab-list";
+import { useSettings } from "../hooks/use-setting";
+import { useAuth } from "../lib/bluesky/hooks/use-auth";
+import { usePreferences } from "../lib/bluesky/hooks/use-preferences";
 
-export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => {
+export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number; }) => {
   const isOffline = useOfflineStatus();
   const queryClient = useQueryClient();
   const { setSettings, columns } = useSettings();
   const { isAuthenticated } = useAuth();
   const { data: preferences } = usePreferences();
   const savedFeedsPrefV2 = isAuthenticated
-    ? preferences?.find((item) => item.$type === 'app.bsky.actor.defs#savedFeedsPrefV2')
+    ? preferences?.find((item) => item.$type === "app.bsky.actor.defs#savedFeedsPrefV2")
     : null;
   const feeds = (
     savedFeedsPrefV2?.items as
       | (
           | {
-              type: 'feed';
-              value: `at://${string}`;
-              pinned: boolean;
-              id: string;
-            }
+            type: "feed";
+            value: `at://${ string }`;
+            pinned: boolean;
+            id: string;
+          }
           | {
-              type: 'timeline';
-              value: string;
-              pinned: boolean;
-              id: string;
-            }
-        )[]
+            type: "timeline";
+            value: string;
+            pinned: boolean;
+            id: string;
+          }
+      )[]
       | undefined
   )
-    ?.filter((item) => item.type === 'feed')
+    ?.filter((item) => item.type === "feed")
     .filter((item) => item.pinned)
-    ?.map((item) => item.value) ?? ['at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot'];
+    ?.map((item) => item.value) ?? [ "at://did:plc:z72i7hdynmk6r22z27h6tvur/app.bsky.feed.generator/whats-hot" ];
   const { isLoading, error, data } = useActorFeeds();
   const selectedFeed = columns[columnNumber] ?? feeds[0];
 
@@ -58,9 +58,11 @@ export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => 
         <TabProvider
           defaultSelectedId={selectedFeed}
           setSelectedId={(selectedId) => {
-            if (!selectedId) return;
+            if (!selectedId) {
+              return;
+            }
             setSettings((state) => {
-              const columns = [...state.columns];
+              const columns = [ ...state.columns ];
               columns[columnNumber] = selectedId;
               return {
                 ...state,
@@ -73,7 +75,7 @@ export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => 
             <NavHeader />
             {/* if there are less than 2 feeds, don't show the selector */}
             {feeds.length >= 2 && (
-              <TabList label="feed selector" className={cn('sticky bg-background z-40', isOffline ? 'top-[46px]' : 'top-0')}>
+              <TabList label="feed selector" className={cn("sticky bg-background z-40", isOffline ? "top-[46px]" : "top-0")}>
                 {data?.map((feed) => {
                   return (
                     <Tab
@@ -85,7 +87,7 @@ export const FeedSelector = ({ columnNumber = 1 }: { columnNumber: number }) => 
                         // if this tab is already selected we need to invalidate the associated query
                         if (selectedFeed === feed.uri) {
                           await queryClient.invalidateQueries({
-                            queryKey: ['feed', { feed: selectedFeed }],
+                            queryKey: [ "feed", { feed: selectedFeed }],
                           });
                         }
                       }}

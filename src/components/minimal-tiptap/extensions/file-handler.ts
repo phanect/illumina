@@ -1,7 +1,6 @@
-import { type Editor, Extension } from '@tiptap/react';
-import { Plugin, PluginKey } from '@tiptap/pm/state';
-import type { FileError, FileValidationOptions } from '../utils';
-import { filterFiles } from '../utils';
+import { Plugin, PluginKey } from "@tiptap/pm/state";
+import { Extension, type Editor } from "@tiptap/react";
+import { filterFiles, type FileError, type FileValidationOptions } from "../utils";
 
 type FileHandlePluginOptions = {
   key?: PluginKey;
@@ -15,7 +14,7 @@ const FileHandlePlugin = (options: FileHandlePluginOptions) => {
   const { key, editor, onPaste, onDrop, onValidationError, allowedMimeTypes, maxFileSize } = options;
 
   return new Plugin({
-    key: key || new PluginKey('fileHandler'),
+    key: key || new PluginKey("fileHandler"),
 
     props: {
       handleDrop(view, event) {
@@ -33,7 +32,7 @@ const FileHandlePlugin = (options: FileHandlePluginOptions) => {
           top: event.clientY,
         });
 
-        const [validFiles, errors] = filterFiles(Array.from(dataTransfer.files), {
+        const [ validFiles, errors ] = filterFiles(Array.from(dataTransfer.files), {
           allowedMimeTypes,
           maxFileSize,
           allowBase64: options.allowBase64,
@@ -58,12 +57,12 @@ const FileHandlePlugin = (options: FileHandlePluginOptions) => {
           return;
         }
 
-        const [validFiles, errors] = filterFiles(Array.from(clipboardData.files), {
+        const [ validFiles, errors ] = filterFiles(Array.from(clipboardData.files), {
           allowedMimeTypes,
           maxFileSize,
           allowBase64: options.allowBase64,
         });
-        const html = clipboardData.getData('text/html');
+        const html = clipboardData.getData("text/html");
 
         if (errors.length > 0 && onValidationError) {
           onValidationError(errors);
@@ -77,8 +76,8 @@ const FileHandlePlugin = (options: FileHandlePluginOptions) => {
   });
 };
 
-export const FileHandler = Extension.create<Omit<FileHandlePluginOptions, 'key' | 'editor'>>({
-  name: 'fileHandler',
+export const FileHandler = Extension.create<Omit<FileHandlePluginOptions, "key" | "editor">>({
+  name: "fileHandler",
 
   addOptions() {
     return {
