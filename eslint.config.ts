@@ -3,7 +3,6 @@ import { react } from "@phanect/lint-react";
 import { defineConfig, globalIgnores, type Config } from "eslint/config";
 import reactRefresh from 'eslint-plugin-react-refresh';
 import i18next from 'eslint-plugin-i18next';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
 const configs = defineConfig([
   globalIgnores([
@@ -75,23 +74,6 @@ const configs = defineConfig([
       react: {
         version: 'detect',
       },
-    },
-  },
-  {
-    plugins: {
-      unicorn: eslintPluginUnicorn,
-    },
-    rules: {
-      'unicorn/filename-case': [
-        'warn',
-        {
-          case: 'kebabCase',
-          ignore: [
-            // match anything with a $ in it
-            /.*\$.*/,
-          ],
-        },
-      ],
     },
   },
 ]);
