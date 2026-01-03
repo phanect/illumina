@@ -9,7 +9,7 @@ export type Session = {
 };
 
 const getSession = async (): Promise<IronSession<Session>> => {
-  return await getIronSession<Session>(await cookies(), {
+  return getIronSession<Session>(await cookies(), {
     cookieName: "sid",
     password: process.env.COOKIE_PASSWORD as string,
   });
