@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import type { FormEvent } from "react";
 import { signOut } from "@/lib/actions";
+import type { FormEvent } from "react";
 
 // This is the logout button
 export default function LogoutButton() {
@@ -15,7 +15,7 @@ export default function LogoutButton() {
     // Sign out
     await signOut();
 
-    router.push(`/`);
+    router.push("/");
   };
 
   return (

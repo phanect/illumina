@@ -2,22 +2,22 @@ import {
   NodeOAuthClient,
   type OAuthClientMetadataInput,
 } from "@atproto/oauth-client-node";
-import type { PrismaClient } from "@prisma/client";
 import { SessionStore, StateStore } from "@/lib/storage";
+import type { PrismaClient } from "@prisma/client";
 
 export function blueskyClientMetadata(): OAuthClientMetadataInput {
   const baseUrl: string = process.env.NEXT_PUBLIC_URL as string;
 
   return {
     client_name: "Project Name",
-    client_id: `${baseUrl}/client-metadata.json`,
-    client_uri: `${baseUrl}`,
-    redirect_uris: [`${baseUrl}/oauth/callback`],
-    policy_uri: `${baseUrl}/policy`,
-    tos_uri: `${baseUrl}/tos`,
+    client_id: `${ baseUrl }/client-metadata.json`,
+    client_uri: `${ baseUrl }`,
+    redirect_uris: [ `${ baseUrl }/oauth/callback` ],
+    policy_uri: `${ baseUrl }/policy`,
+    tos_uri: `${ baseUrl }/tos`,
     scope: "atproto transition:generic",
-    grant_types: ["authorization_code", "refresh_token"],
-    response_types: ["code"],
+    grant_types: [ "authorization_code", "refresh_token" ],
+    response_types: [ "code" ],
     application_type: "web",
     token_endpoint_auth_method: "none",
     dpop_bound_access_tokens: true,

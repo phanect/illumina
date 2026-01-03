@@ -10,8 +10,8 @@ import {
 import { ToolbarSection } from "../toolbar-section";
 import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@/components/ui/toggle/variants";
 import type { FormatAction } from "../../types";
+import type { toggleVariants } from "@/components/ui/toggle/variants";
 
 type TextStyleAction = "bold" | "italic" | "underline" | "strikethrough" | "code" | "clearFormatting";
 
