@@ -3,7 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createUser } from "@/functions/create-user";
 import createBlueskyClient from "@/lib/atproto";
 import getSession from "@/lib/iron";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.ts";
 
 export async function GET(request: NextRequest) {
   const nextUrl = request.nextUrl;

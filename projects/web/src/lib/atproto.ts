@@ -3,7 +3,7 @@ import {
   type OAuthClientMetadataInput,
 } from "@atproto/oauth-client-node";
 import { SessionStore, StateStore } from "@/lib/storage";
-import type { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@/lib/prisma/client.ts";
 
 export function blueskyClientMetadata(): OAuthClientMetadataInput {
   const baseUrl = process.env.NEXT_PUBLIC_URL;
