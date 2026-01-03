@@ -11,6 +11,10 @@
   [tasks."lint:types"]
   run = "tsc --noEmit"
 
+  [tasks.prebuild]
+  run = "prisma generate"
+  raw = true # Required for the spinner and interactive UIs
+
 [env]
 _.path = "{{config_root}}/node_modules/.bin"
 

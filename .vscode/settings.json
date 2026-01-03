@@ -42,6 +42,9 @@
   "[astro]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
 
   "eslint.useFlatConfig": true,
   "eslint.validate": [
