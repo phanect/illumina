@@ -1,13 +1,13 @@
 {
   "extends": "@phanect/configs/ts",
   "compilerOptions": {
-    "target": "ES2017",
+    "target": "ES2023",
     "lib": [
       "dom",
       "dom.iterable",
       "esnext"
     ],
-    "esModuleInterop": true,
+    "esModuleInterop": true, // Required for Prisma
     "plugins": [{
       "name": "next"
     }],

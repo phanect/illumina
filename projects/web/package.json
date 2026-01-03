@@ -5,7 +5,8 @@
   "dependencies": {
     "@atproto/api": "0.18.9",
     "@atproto/oauth-client-node": "0.3.14",
-    "@prisma/client": "^6.16.2",
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "iron-session": "^8.0.4",
     "next": "^16.1.1",
     "react": "^19.1.0",
@@ -17,7 +18,7 @@
     "@types/node": "^24.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "prisma": "^6.16.2",
+    "prisma": "^7.2.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

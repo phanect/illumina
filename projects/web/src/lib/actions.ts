@@ -2,7 +2,7 @@
 
 import createBlueskyClient from "@/lib/atproto";
 import getSession from "@/lib/iron";
-import { prisma } from "@/lib/prisma";
+import { prisma } from "@/lib/prisma.ts";
 
 /**
  * Prepare to login with Bluesky and return Bluesky login URL
