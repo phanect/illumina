@@ -1,12 +1,12 @@
 [tasks]
   [tasks.dev]
-  run = "next dev --turbopack"
+  run = "next dev"
 
   [tasks.start]
   run = "next start"
 
   [tasks.build]
-  run = "next build --turbopack"
+  run = "next build"
 
   [tasks."lint:types"]
   run = "tsc --noEmit"
