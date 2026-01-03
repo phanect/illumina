@@ -26,7 +26,7 @@ export default defineConfig({
           {
             // Cache frequently accessed images
             urlPattern: ({ request }) => request.destination === "image",
-            handler: "CacheFirst",
+            handler: "StaleWhileRevalidate",
             options: {
               cacheName: "images-cache",
               expiration: {
