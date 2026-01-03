@@ -2,15 +2,19 @@ experimental_monorepo_root = true
 
 [tools]
 node = "24"
+"npm:nushell" = "latest"
 
 [tasks]
   [tasks.dev]
+  depends = [ "prebuild" ]
   run = { task = "//projects/...:dev" }
 
   [tasks.build]
+  depends = [ "prebuild" ]
   run = { task = "//projects/...:build" }
 
   [tasks.lint]
+  depends = [ "prebuild" ]
   run = [
     { tasks = [ "lint:types", "lint:es", "lint:style" ]}
   ]
@@ -25,6 +29,7 @@ node = "24"
   run = "stylelint \"**/*.{css,scss}\""
 
   [tasks.fix]
+  depends = [ "prebuild" ]
   run = [
     { tasks = [ "fix:es", "fix:style" ]}
   ]
@@ -36,16 +41,22 @@ node = "24"
   run = "stylelint --fix \"**/*.{css,scss}\""
 
   [tasks.test]
+  depends = [ "prebuild" ]
   run = { task = "//projects/...:test" }
 
   [tasks.test-lang]
+  depends = [ "prebuild" ]
   run = { task = "//projects/...:test-lang" }
 
   [tasks.testui]
+  depends = [ "prebuild" ]
   run = { task = "//projects/...:testui" }
 
   [tasks.clean]
-  run = "git clean -dX --exclude=\"!.env\" --exclude=\"!mise.local.toml\" --force"
+  run = [
+    "git clean -dX --exclude=\"!.env\" --exclude=\"!mise.local.toml\" --force",
+    { task = "clean:containers" }
+  ]
 
   [tasks.refresh]
   depends = [ "clean" ]
@@ -53,18 +64,26 @@ node = "24"
     "rm --force ./pnpm-lock.yaml",
     "corepack enable",
     "corepack up",
-    "pnpm install"
+    "pnpm install",
+    { task = "prebuild" },
   ]
+  depends_post = "//projects/...:refresh"
+
+  [tasks.prebuild]
+  depends_post = "//projects/...:prebuild"
 
 [hooks]
 postinstall = [
   "corepack enable",
   "pnpm install --frozen-lockfile",
+  "mise prebuild",
 ]
 
 [env]
 _.file = ".env"
 _.path = "{{config_root}}/node_modules/.bin"
+
+SERVER_ENV = { required = "The environment variable SERVER_ENV is missing. If you are on your local machine, copy .env.example to .env, or set `SERVER_ENV=development` manually." }
 
 [settings]
 jobs = 8

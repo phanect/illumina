@@ -1,0 +1,24 @@
+name: illumina-local
+
+services:
+  db:
+    image: postgres:17-alpine
+    restart: always
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: illumina
+      POSTGRES_PASSWORD: illumina
+      POSTGRES_DB: illumina
+      # With this configuration, password is no longer required to login PostgreSQL
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5432:5432
+    volumes:
+      - illumina-db:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD", "pg_isready", "--username=illumina", "--dbname=illumina", "--host=localhost", "--port=5432" ]
+      interval: 1s
+      timeout: 1m
+
+volumes:
+  illumina-db: {}

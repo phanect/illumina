@@ -4,6 +4,7 @@
     "EditorConfig.EditorConfig",
     "hverlin.mise-vscode",
     "tamasfe.even-better-toml",
+    "Prisma.prisma",
     "vitest.explorer"
   ]
 }
