@@ -6,7 +6,11 @@ import { SessionStore, StateStore } from "@/lib/storage";
 import type { PrismaClient } from "@prisma/client";
 
 export function blueskyClientMetadata(): OAuthClientMetadataInput {
-  const baseUrl: string = process.env.NEXT_PUBLIC_URL as string;
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
+
+  if (!baseUrl) {
+    throw new Error("`NEXT_PUBLIC_URL` is not set. Sorry, this is probably a bug of Illumina. Error code: IL-S358J");
+  }
 
   return {
     client_name: "Project Name",

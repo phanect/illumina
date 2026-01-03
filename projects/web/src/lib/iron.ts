@@ -9,9 +9,13 @@ export type Session = {
 };
 
 const getSession = async (): Promise<IronSession<Session>> => {
+  if (!process.env.COOKIE_PASSWORD) {
+    throw new Error("`COOKIE_PASSWORD` is not set. Sorry, this is probably a bug in Illumina. Error code: IL-K882A");
+  }
+
   return getIronSession<Session>(await cookies(), {
     cookieName: "sid",
-    password: process.env.COOKIE_PASSWORD as string,
+    password: process.env.COOKIE_PASSWORD,
   });
 };
 
