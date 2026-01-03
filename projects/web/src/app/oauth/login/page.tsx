@@ -1,20 +1,20 @@
 "use client";
 
-import { signInWithBluesky } from "@/lib/actions";
 import { useRouter } from "next/navigation";
-import { type FormEvent, useEffect, useState } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import { signInWithBluesky } from "@/lib/actions";
 
 // This is the login page
 export default function Page() {
   const router = useRouter();
 
   // This is a controlled input
-  const [handle, setHandle] = useState("");
+  const [ handle, setHandle ] = useState("");
 
   // Remove the @ symbol from the handle
   useEffect(() => {
     setHandle(handle.replace("@", ""));
-  }, [handle]);
+  }, [ handle ]);
 
   // Handle the form submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {

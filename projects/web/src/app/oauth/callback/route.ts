@@ -1,5 +1,5 @@
 import { Agent } from "@atproto/api";
-import { type NextRequest, NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { createUser } from "@/functions/create-user";
 import createBlueskyClient from "@/lib/atproto";
 import getSession from "@/lib/iron";
@@ -34,17 +34,17 @@ export async function GET(request: NextRequest) {
     await ironSession.save();
 
     // Redirect to the private page
-    return NextResponse.redirect(`${process.env.NEXT_PUBLIC_URL}/private`);
+    return NextResponse.redirect(`${ process.env.NEXT_PUBLIC_URL }/private`);
   } catch (e: unknown) {
     if (e instanceof Error) {
       // Bluesky error
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_URL}/oauth/login?error=${e.message}`,
+        `${ process.env.NEXT_PUBLIC_URL }/oauth/login?error=${ e.message }`,
       );
     } else {
       // Unknown error
       return NextResponse.redirect(
-        `${process.env.NEXT_PUBLIC_URL}/oauth/login?error=Unknown error`,
+        `${ process.env.NEXT_PUBLIC_URL }/oauth/login?error=Unknown error`,
       );
     }
   }

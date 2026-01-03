@@ -7,8 +7,8 @@ import { ToolbarButton } from "../toolbar-button";
 import type { Level } from "@tiptap/extension-heading";
 import type { Editor } from "@tiptap/react";
 import type { VariantProps } from "class-variance-authority";
-import type { toggleVariants } from "@/components/ui/toggle/variants";
 import type { FormatAction } from "../../types";
+import type { toggleVariants } from "@/components/ui/toggle/variants";
 
 type TextStyle = {
   element: keyof JSX.IntrinsicElements;
