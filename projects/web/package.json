@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "dependencies": {
-    "@atproto/api": "^0.16.11",
-    "@atproto/oauth-client-node": "^0.3.8",
+    "@atproto/api": "0.18.9",
+    "@atproto/oauth-client-node": "0.3.14",
     "@prisma/client": "^6.16.2",
     "iron-session": "^8.0.4",
     "next": "15.5.4",
@@ -12,7 +12,7 @@
     "react-dom": "19.1.0"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/forms": "0.5.11",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
