@@ -1,6 +1,5 @@
 {
-  "name": "bluesky-oauth-nextjs",
-  "version": "1.0.0",
+  "name": "illumina-web",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",

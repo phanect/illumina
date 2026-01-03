@@ -1,0 +1,14 @@
+[tasks]
+  [tasks."lint:types"]
+  run = "tsc --noEmit"
+
+[env]
+_.path = "{{config_root}}/node_modules/.bin"
+
+[settings]
+jobs = 8
+
+# Required for hooks & monorepo tasks as of 2026.01
+# https://mise.jdx.dev/hooks.html
+# https://mise.jdx.dev/tasks/monorepo.html
+experimental = true
