@@ -2,6 +2,10 @@ packages:
   - projects/*
 
 onlyBuiltDependencies:
+  - '@prisma/engines'
+  - core-js
   - esbuild
   - msw
+  - prisma
+  - sharp
   - unrs-resolver
