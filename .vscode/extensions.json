@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
     "hverlin.mise-vscode",
-    "tamasfe.even-better-toml"
+    "tamasfe.even-better-toml",
+    "vitest.explorer"
   ]
 }
