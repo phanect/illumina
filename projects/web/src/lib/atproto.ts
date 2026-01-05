@@ -2,7 +2,7 @@ import {
   NodeOAuthClient,
   type OAuthClientMetadataInput,
 } from "@atproto/oauth-client-node";
-import { SessionStore, StateStore } from "@/lib/storage";
+import { SessionStore, StateStore } from "@/lib/storage.ts";
 import type { PrismaClient } from "@/lib/prisma/client.ts";
 
 export function blueskyClientMetadata(): OAuthClientMetadataInput {

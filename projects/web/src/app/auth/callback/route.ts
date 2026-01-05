@@ -1,8 +1,8 @@
 import { Agent } from "@atproto/api";
 import { NextResponse, type NextRequest } from "next/server";
-import { createUser } from "@/functions/create-user";
-import createBlueskyClient from "@/lib/atproto";
-import getSession from "@/lib/iron";
+import { createUser } from "@/functions/create-user.ts";
+import createBlueskyClient from "@/lib/atproto.ts";
+import getSession from "@/lib/iron.ts";
 import { prisma } from "@/lib/prisma.ts";
 
 export async function GET(request: NextRequest) {

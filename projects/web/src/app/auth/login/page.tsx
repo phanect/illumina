@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
-import { loginWithBluesky } from "@/lib/actions";
+import { loginWithBluesky } from "@/lib/actions.ts";
 
 export default function LoginPage() {
   const router = useRouter();

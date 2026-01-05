@@ -2,7 +2,7 @@
 
 import { getIronSession, type IronSession } from "iron-session";
 import { cookies } from "next/headers";
-import type { User } from "@/functions/create-user";
+import type { User } from "@/functions/create-user.ts";
 
 export type Session = {
   user: User | null;
