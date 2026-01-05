@@ -7,8 +7,6 @@ import { signInWithBluesky } from "@/lib/actions";
 // This is the login page
 export default function Page() {
   const router = useRouter();
-
-  // This is a controlled input
   const [ handle, setHandle ] = useState("");
 
   // Remove the @ symbol from the handle
@@ -16,7 +14,6 @@ export default function Page() {
     setHandle(handle.replace("@", ""));
   }, [ handle ]);
 
-  // Handle the form submission
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -24,7 +21,6 @@ export default function Page() {
       return;
     }
 
-    // Sign in with Bluesky
     const url: string = await signInWithBluesky(handle);
 
     // Redirect to the Bluesky login page
