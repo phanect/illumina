@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { signOut } from "@/lib/actions";
+import { signOut } from "@/lib/actions.ts";
 import type { FormEvent } from "react";
 
 export default function LogoutButton() {

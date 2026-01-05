@@ -1,7 +1,7 @@
 "use server";
 
-import createBlueskyClient from "@/lib/atproto";
-import getSession from "@/lib/iron";
+import createBlueskyClient from "@/lib/atproto.ts";
+import getSession from "@/lib/iron.ts";
 import { prisma } from "@/lib/prisma.ts";
 
 /**
