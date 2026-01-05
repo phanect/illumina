@@ -6,12 +6,9 @@ import { prisma } from "@/lib/prisma";
 
 export async function loginWithBluesky(handle: string): Promise<string> {
   const blueskyClient = await createBlueskyClient(prisma);
+  const blueskyLoginURL: URL = await blueskyClient.authorize(handle);
 
-  // Get the URL to authorize the user
-  const url: URL = await blueskyClient.authorize(handle);
-
-  // Return the URL
-  return url.toString();
+  return blueskyLoginURL.toString();
 }
 
 export async function signOut(): Promise<void> {
