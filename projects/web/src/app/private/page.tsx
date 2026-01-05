@@ -1,5 +1,5 @@
-import LoginButton from "@/components/login-button";
-import LogoutButton from "@/components/logout-button";
+import LoginButton from "@/components/LoginButton.tsx";
+import LogoutButton from "@/components/LogoutButton.tsx";
 import getSession from "@/lib/iron";
 
 export default async function Page() {
