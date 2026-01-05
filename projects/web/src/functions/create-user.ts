@@ -1,6 +1,5 @@
 import type { AppBskyActorDefs } from "@atproto/api";
 
-// User type
 export type User = {
   did: string;
   handle: string;
@@ -8,7 +7,6 @@ export type User = {
   avatar: string | null;
 };
 
-// Create a user
 export function createUser(data: AppBskyActorDefs.ProfileViewDetailed): User {
   return {
     did: data.did,
