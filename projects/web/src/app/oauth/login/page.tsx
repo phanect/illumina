@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
-import { signInWithBluesky } from "@/lib/actions";
+import { loginWithBluesky } from "@/lib/actions";
 
 // This is the login page
 export default function Page() {
@@ -21,7 +21,7 @@ export default function Page() {
       return;
     }
 
-    const url: string = await signInWithBluesky(handle);
+    const url: string = await loginWithBluesky(handle);
 
     // Redirect to the Bluesky login page
     router.push(url);
