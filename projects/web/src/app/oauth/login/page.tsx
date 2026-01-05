@@ -4,8 +4,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent } from "react";
 import { loginWithBluesky } from "@/lib/actions";
 
-// This is the login page
-export default function Page() {
+export default function LoginPage() {
   const router = useRouter();
   const [ handle, setHandle ] = useState("");
 
@@ -21,10 +20,9 @@ export default function Page() {
       return;
     }
 
-    const url: string = await loginWithBluesky(handle);
+    const loginURL: string = await loginWithBluesky(handle);
 
-    // Redirect to the Bluesky login page
-    router.push(url);
+    router.push(loginURL);
   };
 
   return (
