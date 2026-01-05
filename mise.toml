@@ -73,6 +73,7 @@ _.path = "./node_modules/.bin"
 
 [settings]
 jobs = 8
+npm.package_manager = "pnpm"
 
 # Required for hooks as of 2025.10
 # https://mise.jdx.dev/hooks.html
