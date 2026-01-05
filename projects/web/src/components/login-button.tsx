@@ -15,7 +15,7 @@ export default function LoginButton() {
   return (
     <button
       type="button"
-      onClick={handleClick}
+      onClick={(event) => void handleClick(event)}
       className="rounded-md bg-blue-600 px-2.5 py-1.5 font-semibold text-sm text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blue-600 focus-visible:outline-offset-2"
     >
       Login with Bluesky

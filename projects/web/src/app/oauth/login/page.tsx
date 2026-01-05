@@ -27,7 +27,7 @@ export default function LoginPage() {
 
   return (
     <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={(event) => void handleSubmit(event)} className="space-y-5">
         <div>
           <label
             htmlFor="handle"
