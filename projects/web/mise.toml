@@ -1,5 +1,8 @@
 [tasks]
   [tasks.dev]
+  run = [{ tasks = [ "dev:app", "dev:ngrok" ]}]
+
+  [tasks."dev:app"]
   run = "next dev"
 
   [tasks.start]

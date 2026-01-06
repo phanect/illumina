@@ -78,6 +78,13 @@ const configs = defineConfig([
     },
   },
   {
+    files: [ "**/.mise/tasks/**/*.ts" ],
+    rules: {
+      // For the `//MISE ...` configs
+      "@stylistic/spaced-comment": "off",
+    },
+  },
+  {
     // Do not add `files: [ "*" ],` here.
 
     languageOptions: {
