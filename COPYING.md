@@ -2,7 +2,8 @@
 
 ## License
 
-This repository is licensed under the [GNU Affero General Public License](./LICENSE-AGPLv3.txt).
+1. This repository is licensed under the [GNU Affero General Public License](./LICENSE-AGPLv3.txt), except for the files under [vendor/](./vendor/) directory.
+2. See [vendor/CREDITS.md](./vendor/CREDITS.md) about the licensing of the files under the [vendor/](./vendor/) directory. I strongly recommend to download it from the official sources.
 
 ## Credits
 
