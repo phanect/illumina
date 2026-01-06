@@ -15,6 +15,13 @@ export default {
     "color-hex-length": "long",
 
     //
+    // Disabled
+    //
+
+    // Not working for TailwindCSS?
+    "at-rule-descriptor-value-no-unknown": null,
+
+    //
     // Disabled ― Style Preferences
     //
     "custom-property-empty-line-before": null,
