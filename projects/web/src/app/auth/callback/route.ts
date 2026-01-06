@@ -26,12 +26,12 @@ export async function GET(request: NextRequest) {
     if (e instanceof Error) {
       // Bluesky error
       return NextResponse.redirect(
-        `${ process.env.NEXT_PUBLIC_URL }/oauth/login?error=${ e.message }`,
+        `${ process.env.NEXT_PUBLIC_URL }/auth/login?error=${ e.message }`,
       );
     } else {
       // Unknown error
       return NextResponse.redirect(
-        `${ process.env.NEXT_PUBLIC_URL }/oauth/login?error=Unknown error`,
+        `${ process.env.NEXT_PUBLIC_URL }/auth/login?error=Unknown error`,
       );
     }
   }
