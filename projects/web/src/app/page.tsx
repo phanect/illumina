@@ -1,5 +1,5 @@
+import Image from "next/image";
 import Link from "next/link";
-import BlueskyLogo from "@/components/bluesky-logo";
 
 export default function Home() {
   return (
@@ -11,7 +11,14 @@ export default function Home() {
           href="/oauth/login"
           rel="noopener noreferrer"
         >
-          <BlueskyLogo className="size-6 fill-background dark:invert" />
+          <Image
+            src="/vendor/bluesky/bluesky-logo.svg"
+            alt=""
+            width={24}
+            height={24}
+            className="fill-background dark:invert"
+            decoding="async"
+          />
           Login with Bluesky
         </Link>
         <a
