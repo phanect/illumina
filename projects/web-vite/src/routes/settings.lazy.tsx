@@ -24,13 +24,9 @@ function RouteComponent() {
 
   const handleLanguageChange = async (event: ChangeEvent<HTMLSelectElement>) => {
     const value = event.target.value as "system" | keyof typeof languages;
-    if (value === "system") {
-      await i18n.changeLanguage(window.navigator.language);
-      setSettings(() => ({ language: "system" }));
-    } else {
-      await i18n.changeLanguage(value);
-      setSettings(() => ({ language: value }));
-    }
+
+    await i18n.changeLanguage(value === "system" ? window.navigator.language : value);
+    setSettings(() => ({ language: value }));
   };
 
   return (
