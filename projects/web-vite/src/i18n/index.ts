@@ -44,7 +44,7 @@ export const languages = {
 const isProduction = process.env.NODE_ENV === "production";
 const isTest = process.env.NODE_ENV === "test";
 
-i18n
+await i18n
   .use(
     new Pseudo({
       enabled: !isProduction && !isTest,
