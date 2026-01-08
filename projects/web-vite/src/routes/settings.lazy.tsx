@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/bluesky/hooks/use-auth";
 import { Input } from "../components/ui/input";
 import { ToggleSwitch } from "../components/ui/toggle-switch";
 import { useSettings } from "../hooks/use-setting";
+import type { ChangeEvent } from "react";
 
 export const Route = createLazyFileRoute("/settings")({
   component: RouteComponent,
@@ -20,6 +21,17 @@ function RouteComponent() {
   const { setSettings, experiments, font, language } = useSettings();
   const { logout, isAuthenticated } = useAuth();
   const { t } = useTranslation([ "settings", "auth", "app" ]);
+
+  const handleLanguageChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    const value = event.target.value as "system" | keyof typeof languages;
+    if (value === "system") {
+      i18n.changeLanguage(window.navigator.language);
+      setSettings(() => ({ language: "system" }));
+    } else {
+      i18n.changeLanguage(value);
+      setSettings(() => ({ language: value }));
+    }
+  };
 
   return (
     <>
@@ -90,16 +102,7 @@ function RouteComponent() {
             <select
               className="w-64 p-2 text-black"
               defaultValue={language}
-              onChange={(event) => {
-                const value = event.target.value as "system" | keyof typeof languages;
-                if (value === "system") {
-                  i18n.changeLanguage(window.navigator.language);
-                  setSettings(() => ({ language: "system" }));
-                } else {
-                  i18n.changeLanguage(value);
-                  setSettings(() => ({ language: value }));
-                }
-              }}
+              onChange={(event) => handleLanguageChange(event)}
             >
               <>
                 {[ "system", ...Object.keys(languages) ].map((lang) => (
