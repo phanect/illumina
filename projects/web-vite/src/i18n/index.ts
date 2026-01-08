@@ -1,6 +1,5 @@
 import i18n from "i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
-import Pseudo from "i18next-pseudo";
 import { initReactI18next } from "react-i18next";
 import { de } from "./lang/de.ts";
 import { en } from "./lang/en.ts";
@@ -41,16 +40,7 @@ export const languages = {
   "zh-Hant": zh_Hant.translations,
 };
 
-const isProduction = process.env.NODE_ENV === "production";
-const isTest = process.env.NODE_ENV === "test";
-
 await i18n
-  .use(
-    new Pseudo({
-      enabled: !isProduction && !isTest,
-      wrapped: true,
-    }),
-  )
   .use(initReactI18next)
   .use(LanguageDetector)
   .init({
@@ -60,7 +50,6 @@ await i18n
     interpolation: {
       escapeValue: false, // react already safes from xss
     },
-    postProcess: [ "pseudo" ],
   });
 
 export default i18n;
