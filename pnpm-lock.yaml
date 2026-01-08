@@ -217,8 +217,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       i18next:
-        specifier: ^24.1.0
-        version: 24.2.3(typescript@5.9.3)
+        specifier: ^25.7.4
+        version: 25.7.4(typescript@5.9.3)
       i18next-browser-languagedetector:
         specifier: ^8.0.2
         version: 8.2.0
@@ -251,7 +251,7 @@ importers:
         version: 4.6.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       react-i18next:
         specifier: ^15.2.0
-        version: 15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
+        version: 15.7.4(i18next@25.7.4(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3)
       react-intersection-observer:
         specifier: ^9.8.1
         version: 9.16.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -4989,8 +4989,8 @@ packages:
   i18next@19.9.2:
     resolution: {integrity: sha512-0i6cuo6ER6usEOtKajUUDj92zlG+KArFia0857xxiEHAQcUwh/RtOQocui1LPJwunSYT574Pk64aNva1kwtxZg==}
 
-  i18next@24.2.3:
-    resolution: {integrity: sha512-lfbf80OzkocvX7nmZtu7nSTNbrTYR52sLWxPtlXX1zAhVw8WEnFk4puUkCR4B1dNQwbSpEHHHemcZu//7EcB7A==}
+  i18next@25.7.4:
+    resolution: {integrity: sha512-hRkpEblXXcXSNbw8mBNq9042OEetgyB/ahc/X17uV/khPwzV+uB8RHceHh3qavyrkPJvmXFKXME2Sy1E0KjAfw==}
     peerDependencies:
       typescript: ^5
     peerDependenciesMeta:
@@ -12094,7 +12094,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.28.4
 
-  i18next@24.2.3(typescript@5.9.3):
+  i18next@25.7.4(typescript@5.9.3):
     dependencies:
       '@babel/runtime': 7.28.4
     optionalDependencies:
@@ -13118,11 +13118,11 @@ snapshots:
       react: 19.2.3
       react-dom: 19.2.3(react@19.2.3)
 
-  react-i18next@15.7.4(i18next@24.2.3(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
+  react-i18next@15.7.4(i18next@25.7.4(typescript@5.9.3))(react-dom@19.2.3(react@19.2.3))(react@19.2.3)(typescript@5.9.3):
     dependencies:
       '@babel/runtime': 7.28.4
       html-parse-stringify: 3.0.1
-      i18next: 24.2.3(typescript@5.9.3)
+      i18next: 25.7.4(typescript@5.9.3)
       react: 19.2.3
     optionalDependencies:
       react-dom: 19.2.3(react@19.2.3)
