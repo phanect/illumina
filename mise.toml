@@ -69,7 +69,6 @@ _.path = "{{config_root}}/node_modules/.bin"
 [settings]
 jobs = 8
 task.monorepo_depth = 2
-npm.package_manager = "pnpm"
 
 # Required for hooks & monorepo tasks as of 2026.01
 # https://mise.jdx.dev/hooks.html
