@@ -1,5 +1,5 @@
 # Build stage
-FROM node:20-slim AS builder
+FROM node:25-slim AS builder
 
 # Set environment variables for build
 ENV NODE_ENV=production \
@@ -37,7 +37,7 @@ COPY index.html ./index.html
 RUN npm run build
 
 # Production stage
-FROM node:20-slim AS runner
+FROM node:25-slim AS runner
 
 # Set environment variables
 ENV NODE_ENV=production \
