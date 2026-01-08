@@ -13,7 +13,7 @@ export function blueskyClientMetadata(): OAuthClientMetadataInput {
   }
 
   return {
-    client_name: "Project Name",
+    client_name: "Illumina",
     client_id: `${ baseUrl }/client-metadata.json`,
     client_uri: `${ baseUrl }`,
     redirect_uris: [ `${ baseUrl }/auth/callback` ],
