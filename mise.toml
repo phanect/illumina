@@ -69,7 +69,7 @@ postinstall = [
 ]
 
 [env]
-_.path = "./node_modules/.bin"
+_.path = "{{config_root}}/node_modules/.bin"
 
 [settings]
 jobs = 8
